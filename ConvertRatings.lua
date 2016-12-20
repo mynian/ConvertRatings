@@ -122,8 +122,28 @@ if rawmastery ~= 0
 
 --As I have no idea on how to put the values into the tooltip, the lines below should output the converted stats to the chat frame, this obviously is not really how it should be handled
 --Ideally they would be added to the existing tooltip, or maybe a little additional tooltip that is anchored to the main one
-DEFAULT_CHAT_FRAME:AddMessage(pcrit .. "% Crit")
-DEFAULT_CHAT_FRAME:AddMessage(phaste .. "% Haste")
-DEFAULT_CHAT_FRAME:AddMessage(pversin .. "% Versatility Damage")
-DEFAULT_CHAT_FRAME:AddMessage(pversout .. "% Versatility Reduction")
-DEFAULT_CHAT_FRAME:AddMessage(pmastery .. "% Mastery")
+if pcrit ~= 0
+   then
+      DEFAULT_CHAT_FRAME:AddMessage(pcrit .. "% Crit")
+   else
+   end
+if phaste ~= 0
+   then
+      DEFAULT_CHAT_FRAME:AddMessage(phaste .. "% Haste")
+   else
+   end
+if pversin ~= 0
+   then
+      DEFAULT_CHAT_FRAME:AddMessage(pversin .. "% Versatility Damage")
+   else
+   end
+if pversout ~= 0
+   then
+      DEFAULT_CHAT_FRAME:AddMessage(pversout .. "% Versatility Reduction")
+   else
+   end
+if pmastery ~= 0
+   then
+      DEFAULT_CHAT_FRAME:AddMessage(pmastery .. "% Mastery")
+   else
+   end
