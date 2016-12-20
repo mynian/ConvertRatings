@@ -1,0 +1,6 @@
+## Interface: 70100
+## Title: ConvertRatings
+## Notes: Ratings on Item Tooltips
+## Version: 1.0
+
+ConvertRatings.lua

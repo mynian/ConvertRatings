@@ -48,39 +48,37 @@ local versinamt = 400
 local versoutamt = 800
 local masteryamt = 350
 
---Get Current Player Spec
---These calls will have to be set to call upon login and when a spec change is detected
---This call pulls the spec number for that particular class will only return 1 2 3 or 4
-local specn = GetSpecialization()
 
---This call pulls the specific info from the spec number that the player currently is using, item 1 from the call is the unique spec number
-local specid = select(1,GetSpecializationInfo(specn))
-
---turn the integer that is returned from the last call to a string so that it can be properly concatenated with the class name
-tostring(specn)
-
---Get Current Player Class
---This should only need to be run on login, item 2 from the call is the english name for the spec, this should be used to avoid having localization issues in non english clients
-local classn = select(2,UnitClass("player"))
-
---Concatenate class and specid for mastery coefficent lookup
-local masterycs = classn .. specid
-
---Pull the coeff from the mastery table using the class name and spec id
-local masterycf = masterytab[masterycs]
 
 --Attempt to pull itemid from mouseover
 --Would need to be called when a tooltip is shown
 
 -- No goddam idea on how to actually do this
 
-
 --populate item stats table using item ID
 
 -- Ideally the itemid would be stored in a variable that we can use in this next pull I set it to iid for now
 
-local stats = GetItemStats(iid)
+--local stats = GetItemStats(iid)
 
+--CHANGES:Lanrutcon:New function for GameTooltip's "OnTooltipSetItem"
+local function getItemIdFromTooltip(self)
+	local name, itemLink = self:GetItem();
+	
+	--Gets stats from item using itemLink - it's a table
+	stats = GetItemStats(itemLink);
+	
+	--iterate through the stats
+	for statName, value in pairs(stats) do
+		--Add a line for each stat. E.g. Armor: 23
+		GameTooltip:AddLine(_G[statName] .. ": " .. value);
+	end
+end
+GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
+
+
+--CHANGES:Lanrutcon:Commenting this block - TODO: Save the formulas. The rest can be deleted.
+--[[
 --pull individual stats from stats table
 
 local rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
@@ -147,3 +145,37 @@ if pmastery ~= 0
       DEFAULT_CHAT_FRAME:AddMessage(pmastery .. "% Mastery")
    else
    end
+]]--
+   
+--CHANGES:Lanrutcon:Create a start-up function - This is needed because some WoW API is only available after some events.
+local AddOn = CreateFrame("FRAME", "ConvertRatings");
+AddOn:SetScript("OnEvent", function(self, event, ...)
+	
+	if(event == "PLAYER_ENTERING_WORLD") then
+		--Getting Player Information
+	
+		--Get Current Player Spec
+		--These calls will have to be set to call upon login and when a spec change is detected
+		--This call pulls the spec number for that particular class will only return 1 2 3 or 4
+		local specn = GetSpecialization()
+
+		--This call pulls the specific info from the spec number that the player currently is using, item 1 from the call is the unique spec number
+		local specid = select(1,GetSpecializationInfo(specn))
+
+		--turn the integer that is returned from the last call to a string so that it can be properly concatenated with the class name
+		tostring(specn)
+
+		--Get Current Player Class
+		--This should only need to be run on login, item 2 from the call is the english name for the spec, this should be used to avoid having localization issues in non english clients
+		local classn = select(2,UnitClass("player"))
+
+		--Concatenate class and specid for mastery coefficent lookup
+		local masterycs = classn .. specid
+
+		--Pull the coeff from the mastery table using the class name and spec id
+		local masterycf = masterytab[masterycs]
+	end
+
+end);
+
+AddOn:RegisterEvent("PLAYER_ENTERING_WORLD");
