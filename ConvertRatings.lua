@@ -1,181 +1,157 @@
 -- Define a table to list all the different spec mastery coefficents
-local masterytab = {1.5,1.5,2.25,1,0.75,2,2,0.5,0.6,2.25,0.625,0.5,1.2,0.75,2.25,1,10,1.25,1.5,1,1.5,1.5,1.25,2.5,4,2.2,2.76,2.25,2,3,3.125,1.8,3,2,1.4,1.5}
+masterytab = {}
 
--- Assign each class and spec combo the table index number from the mastery table
--- The class name is the english name from the UnitClass pull and the number is the spec id returned from the GetSpecializationInfo call on the player's current spec
-local DEATHKNIGHT250 = 1
-local DEATHKNIGHT251 = 2
-local DEATHKNIGHT252 = 3
-local DEMONHUNTER577 = 4
-local DEMONHUNTER581 = 5
-local DRUID102 = 6
-local DRUID103 = 7
-local DRUID104 = 8
-local DRUID105 = 9
-local HUNTER253 = 10
-local HUNTER254 = 11
-local HUNTER255 = 12
-local MAGE62 = 13
-local MAGE63 = 14
-local MAGE64 = 15
-local MONK268 = 16
-local MONK269 = 17
-local MONK270 = 18
-local PALADIN65 = 19
-local PALADIN66 = 20
-local PALADIN70 = 21
-local PRIEST256 = 22
-local PRIEST257 = 23
-local PRIEST258 = 24
-local ROGUE259 = 25
-local ROGUE260 = 26
-local ROGUE261 = 27
-local SHAMAN262 = 28
-local SHAMAN263 = 29
-local SHAMAN264 = 30
-local WARLOCK265 = 31
-local WARLOCK266 = 32
-local WARLOCK267 = 33
-local WARRIOR71 = 34
-local WARRIOR72 = 35
-local WARRIOR73 = 36
+-- Populate the table with mastery coefficents
+masterytab.DEATHKNIGHT250 = 1.5
+masterytab.DEATHKNIGHT251 = 1.5
+masterytab.DEATHKNIGHT252 = 2.25
+masterytab.DEMONHUNTER577 = 1
+masterytab.DEMONHUNTER581 = 0.75
+masterytab.DRUID102 = 2
+masterytab.DRUID103 = 2
+masterytab.DRUID104 = 0.5
+masterytab.DRUID105 = 0.6
+masterytab.HUNTER253 = 2.25
+masterytab.HUNTER254 = 0.625
+masterytab.HUNTER255 = 0.5
+masterytab.MAGE62 = 1.2
+masterytab.MAGE63 = 0.75
+masterytab.MAGE64 = 2.25
+masterytab.MONK268 = 1
+masterytab.MONK269 = 10
+masterytab.MONK270 = 1.25
+masterytab.PALADIN65 = 1.5
+masterytab.PALADIN66 = 1
+masterytab.PALADIN70 = 1.5
+masterytab.PRIEST256 = 1.5
+masterytab.PRIEST257 = 1.25
+masterytab.PRIEST258 = 2.5
+masterytab.ROGUE259 = 4
+masterytab.ROGUE260 = 2.2
+masterytab.ROGUE261 = 2.76
+masterytab.SHAMAN262 = 2.25
+masterytab.SHAMAN263 = 2
+masterytab.SHAMAN264 = 3
+masterytab.WARLOCK265 = 3.125
+masterytab.WARLOCK266 = 1.8
+masterytab.WARLOCK267 = 3
+masterytab.WARRIOR71 = 2
+masterytab.WARRIOR72 = 1.4
+masterytab.WARRIOR73 = 1.5
 
 --These are the amounts of each rating for 1 percent for each rating
 --The mastery amount is the base rating amount before the coefficent is applied
-local critamt = 350
-local hasteamt = 325
-local versinamt = 400
-local versoutamt = 800
-local masteryamt = 350
+critamt = 350
+hasteamt = 325
+versinamt = 400
+versoutamt = 800
+masteryamt = 350
 
-
-
---Attempt to pull itemid from mouseover
---Would need to be called when a tooltip is shown
-
--- No goddam idea on how to actually do this
-
---populate item stats table using item ID
-
--- Ideally the itemid would be stored in a variable that we can use in this next pull I set it to iid for now
-
---local stats = GetItemStats(iid)
-
---CHANGES:Lanrutcon:New function for GameTooltip's "OnTooltipSetItem"
-local function getItemIdFromTooltip(self)
-	local name, itemLink = self:GetItem();
-	
-	--Gets stats from item using itemLink - it's a table
-	stats = GetItemStats(itemLink);
-	
-	--iterate through the stats
-	for statName, value in pairs(stats) do
-		--Add a line for each stat. E.g. Armor: 23
-		GameTooltip:AddLine(_G[statName] .. ": " .. value);
-	end
-end
-GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
-
-
---CHANGES:Lanrutcon:Commenting this block - TODO: Save the formulas. The rest can be deleted.
---[[
---pull individual stats from stats table
-
-local rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
-local rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
-local rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
-local rawvers = stats["ITEM_MOD_VERSATILITY"]
---I did not include leech, avoidance and speed, because they aren't that important
-
---convert raw stats into percentages so long as they exist else assign a zero
-if rawcrit ~= 0
-   then
-       local pcrit = rawcrit / critamt
-   else
-       local pcrit = 0
-   end
-
-if rawhaste ~= 0
-   then
-       local phaste = rawhaste / hasteamt
-   else
-       local phaste = 0
-   end
-
-if rawvers ~= 0
-   then
-       local pversin = rawvers / versinamt
-       local pversout = rawvers / versoutamt
-   else
-       local pversin = 0
-       local pversout = 0
-   end
-
-if rawmastery ~= 0
-   then
-       local pmastery = (rawmastery / masteryamt) * masterycf
-   else
-       local pmastery = 0
-   end
-
---As I have no idea on how to put the values into the tooltip, the lines below should output the converted stats to the chat frame, this obviously is not really how it should be handled
---Ideally they would be added to the existing tooltip, or maybe a little additional tooltip that is anchored to the main one
-if pcrit ~= 0
-   then
-      DEFAULT_CHAT_FRAME:AddMessage(pcrit .. "% Crit")
-   else
-   end
-if phaste ~= 0
-   then
-      DEFAULT_CHAT_FRAME:AddMessage(phaste .. "% Haste")
-   else
-   end
-if pversin ~= 0
-   then
-      DEFAULT_CHAT_FRAME:AddMessage(pversin .. "% Versatility Damage")
-   else
-   end
-if pversout ~= 0
-   then
-      DEFAULT_CHAT_FRAME:AddMessage(pversout .. "% Versatility Reduction")
-   else
-   end
-if pmastery ~= 0
-   then
-      DEFAULT_CHAT_FRAME:AddMessage(pmastery .. "% Mastery")
-   else
-   end
-]]--
-   
 --CHANGES:Lanrutcon:Create a start-up function - This is needed because some WoW API is only available after some events.
+--Gnor: I moved this up in the addon, because i need this data stored to run before the calculations
 local AddOn = CreateFrame("FRAME", "ConvertRatings");
 AddOn:SetScript("OnEvent", function(self, event, ...)
-	
-	if(event == "PLAYER_ENTERING_WORLD") then
-		--Getting Player Information
-	
-		--Get Current Player Spec
-		--These calls will have to be set to call upon login and when a spec change is detected
-		--This call pulls the spec number for that particular class will only return 1 2 3 or 4
-		local specn = GetSpecialization()
+    
+    if(event == "PLAYER_ENTERING_WORLD") then
+        --Getting Player Information
+    
+        --Get Current Player Spec
+        local specn = GetSpecialization()
 
-		--This call pulls the specific info from the spec number that the player currently is using, item 1 from the call is the unique spec number
-		local specid = select(1,GetSpecializationInfo(specn))
+        --This call pulls the specific info from the spec number that the player currently is using, item 1 from the call is the unique spec number
+        local specid = select(1,GetSpecializationInfo(specn))
 
-		--turn the integer that is returned from the last call to a string so that it can be properly concatenated with the class name
-		tostring(specn)
+        --turn the integer that is returned from the last call to a string so that it can be properly concatenated with the class name
+        tostring(specid)
 
-		--Get Current Player Class
-		--This should only need to be run on login, item 2 from the call is the english name for the spec, this should be used to avoid having localization issues in non english clients
-		local classn = select(2,UnitClass("player"))
+        --Get Current Player Class
+        local classn = select(2,UnitClass("player"))
 
-		--Concatenate class and specid for mastery coefficent lookup
-		local masterycs = classn .. specid
+        --Concatenate class and specid for mastery coefficent lookup
+        local masterycs = classn .. specid
 
-		--Pull the coeff from the mastery table using the class name and spec id
-		local masterycf = masterytab[masterycs]
-	end
+        --Pull the coeff from the mastery table using the class name and spec id
+        masterycf = masterytab[masterycs]
+    end
 
 end);
 
 AddOn:RegisterEvent("PLAYER_ENTERING_WORLD");
+
+
+--CHANGES:Lanrutcon:New function for GameTooltip's "OnTooltipSetItem"
+local function getItemIdFromTooltip(self)
+    local name, itemLink = self:GetItem();
+    
+    --Gets stats from item using itemLink - it's a table
+    stats = GetItemStats(itemLink);
+
+    --Gnor: pull individual stats from stats table since the way that it was being accomplished wouldn't allow for calculations to be done
+    local rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
+    local rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
+    local rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
+    local rawvers = stats["ITEM_MOD_VERSATILITY"]
+
+    --convert raw stats into percentages so long as they are not nil
+    --This seems to work, as I am not getting any error output
+if rawcrit ~= nil
+   then
+       local pcrit = rawcrit / critamt
+   else
+   end
+
+if rawhaste ~= nil
+   then
+       local phaste = rawhaste / hasteamt
+   else
+   end
+
+if rawvers ~= nil
+   then
+       local pversin = rawvers / versinamt
+       local pversout = rawvers / versoutamt
+   else
+   end
+
+if rawmastery ~= nil
+   then
+       local pmastery = (rawmastery / masteryamt) * masterycf
+   else
+   end
+
+--Convert percentages to strings
+tostring(pcrit)
+tostring(phaste)
+tostring(pversin)
+tostring(pversout)
+tostring(pmastery)
+
+--Send the converted stats to the tooltip if they are not nil
+--This does not work atm
+--temp see if they output to chat ... nope must be missing something
+
+if pcrit ~= nil
+   then
+      GameTooltip:AddLine(pcrit .. "% Crit")
+   else
+   end
+
+ if phaste ~= nil
+   then
+       GameTooltip:AddLine(phaste .. "% Haste")
+   else
+   end
+
+ if pmastery ~= nil
+   then
+       GameTooltip:AddLine(pmastery .. "% Mastery")
+   else
+   end
+
+if pversin ~= nil
+   then
+      GameTooltip:AddLine(pversin .. "%/" .. pversout .. "% Versatility")
+   else
+   end
+end
+GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
