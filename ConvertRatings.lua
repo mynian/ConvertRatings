@@ -85,6 +85,11 @@ local function getItemIdFromTooltip(self)
     
     --Gets stats from item using itemLink - it's a table
     stats = GetItemStats(itemLink);
+	
+	--CHANGES:Lanrutcon:This is a protection-condition. Items like "Recipes" don't have items, so 'stats' table will be nil and there's no need to go further
+	if(stats == nil) then
+		return;
+	end
 
     --Gnor: pull individual stats from stats table since the way that it was being accomplished wouldn't allow for calculations to be done
     local rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
@@ -92,66 +97,53 @@ local function getItemIdFromTooltip(self)
     local rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
     local rawvers = stats["ITEM_MOD_VERSATILITY"]
 
+	--CHANGES:Lanrutcon:Localing the variables here - we'll use them after...
+	local pcrit, phaste, pversin, pversout, pmastery;
+	
     --convert raw stats into percentages so long as they are not nil
     --This seems to work, as I am not getting any error output
-if rawcrit ~= nil
-   then
-       local pcrit = rawcrit / critamt
-   else
-   end
+	if rawcrit ~= nil then
+		pcrit = rawcrit / critamt
+	end
 
-if rawhaste ~= nil
-   then
-       local phaste = rawhaste / hasteamt
-   else
-   end
+	if rawhaste ~= nil then
+		phaste = rawhaste / hasteamt
+	end
 
-if rawvers ~= nil
-   then
-       local pversin = rawvers / versinamt
-       local pversout = rawvers / versoutamt
-   else
-   end
+	if rawvers ~= nil then
+		pversin = rawvers / versinamt
+		pversout = rawvers / versoutamt
+	end
 
-if rawmastery ~= nil
-   then
-       local pmastery = (rawmastery / masteryamt) * masterycf
-   else
-   end
+	if rawmastery ~= nil then
+		pmastery = (rawmastery / masteryamt) * masterycf
+	end
 
---Convert percentages to strings
-tostring(pcrit)
-tostring(phaste)
-tostring(pversin)
-tostring(pversout)
-tostring(pmastery)
+	--Convert percentages to strings
+	tostring(pcrit)
+	tostring(phaste)
+	tostring(pversin)
+	tostring(pversout)
+	tostring(pmastery)
 
---Send the converted stats to the tooltip if they are not nil
---This does not work atm
---temp see if they output to chat ... nope must be missing something
+	--Send the converted stats to the tooltip if they are not nil
+	--This does not work atm
+	--temp see if they output to chat ... nope must be missing something
 
-if pcrit ~= nil
-   then
-      GameTooltip:AddLine(pcrit .. "% Crit")
-   else
-   end
+	if pcrit ~= nil then
+		GameTooltip:AddLine(pcrit .. "% Crit")
+	end
 
- if phaste ~= nil
-   then
-       GameTooltip:AddLine(phaste .. "% Haste")
-   else
-   end
+	if phaste ~= nil then
+		GameTooltip:AddLine(phaste .. "% Haste")
+	end
 
- if pmastery ~= nil
-   then
-       GameTooltip:AddLine(pmastery .. "% Mastery")
-   else
-   end
+	if pmastery ~= nil then
+		GameTooltip:AddLine(pmastery .. "% Mastery")
+	end
 
-if pversin ~= nil
-   then
-      GameTooltip:AddLine(pversin .. "%/" .. pversout .. "% Versatility")
-   else
-   end
+	if pversin ~= nil then
+		GameTooltip:AddLine(pversin .. "%/" .. pversout .. "% Versatility")
+	end
 end
 GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
