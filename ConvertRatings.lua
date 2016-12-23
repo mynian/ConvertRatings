@@ -47,6 +47,56 @@ versinamt = 400
 versoutamt = 800
 masteryamt = 350
 
+--[[  7.1.5 values stored here so I don't lose them
+critamt = 400
+hasteamt = 375
+versinamt = 475
+versoutamt = 950
+masteryamt = 400
+]]--
+
+--Create Function to round the decimals
+math.round = function(number, precision)
+  precision = precision or 0
+
+  local decimal = string.find(tostring(number), ".", nil, true);
+  
+  if ( decimal ) then  
+    local power = 10 ^ precision;
+    
+    if ( number >= 0 ) then 
+      number = math.floor(number * power + 0.5) / power;
+    else 
+      number = math.ceil(number * power - 0.5) / power;    
+    end
+    
+    -- convert number to string for formatting
+    number = tostring(number);      
+    
+    -- set cutoff
+    local cutoff = number:sub(decimal + 1 + precision);
+      
+    -- delete everything after the cutoff
+    number = number:gsub(cutoff, "");
+  else
+    -- number is an integer
+    if ( precision > 0 ) then
+      number = tostring(number);
+      
+      number = number .. ".";
+      
+      for i = 1,precision
+      do
+        number = number .. "0";
+      end
+    end
+  end    
+  return number;
+end
+
+
+
+
 --CHANGES:Lanrutcon:Create a start-up function - This is needed because some WoW API is only available after some events.
 --Gnor: I moved this up in the addon, because i need this data stored to run before the calculations
 local AddOn = CreateFrame("FRAME", "ConvertRatings");
@@ -82,68 +132,97 @@ AddOn:RegisterEvent("PLAYER_ENTERING_WORLD");
 --CHANGES:Lanrutcon:New function for GameTooltip's "OnTooltipSetItem"
 local function getItemIdFromTooltip(self)
     local name, itemLink = self:GetItem();
+
+--[[  My first attempt to scan an artifact .... I get no errors, but then I also get no output, regardless of what I mouseover ....	
+	local rawcrit, rawhaste, rawmastery, rawvers, stats;
+	
+	local irare = select(3,GetItemInfo(itemLink))
+	if irare == 6 then
+		for i = 1, self:NumLines() do
+			local line = _G["GameTooltipTextLeft" .. i]
+			if line then
+				local text = line:GetText();
+				if string.match(text,"%a") == "Critical Strike" then
+					rawcrit = string.match(text,"%d") 
+				elseif string.match(text,"%a") == "Haste" then
+					rawhaste = string.match(text,"%d") 
+				elseif string.match(text,"%a") == "Mastery" then
+					rawmastery = string.match(text,"%d") 
+				elseif string.match(text,"%a") == "Versatility" then
+					rawvers = string.match(text,"%d") 
+				else end
+			else end
+		end
+	else
+]]--
     
     --Gets stats from item using itemLink - it's a table
     stats = GetItemStats(itemLink);
-	
-	--CHANGES:Lanrutcon:This is a protection-condition. Items like "Recipes" don't have items, so 'stats' table will be nil and there's no need to go further
-	if(stats == nil) then
-		return;
-	end
+    
+    --CHANGES:Lanrutcon:This is a protection-condition. Items like "Recipes" don't have items, so 'stats' table will be nil and there's no need to go further
+    if(stats == nil) then
+        return;
+    end
 
     --Gnor: pull individual stats from stats table since the way that it was being accomplished wouldn't allow for calculations to be done
     local rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
     local rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
     local rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
     local rawvers = stats["ITEM_MOD_VERSATILITY"]
-
-	--CHANGES:Lanrutcon:Localing the variables here - we'll use them after...
-	local pcrit, phaste, pversin, pversout, pmastery;
 	
+--	end	 This end is the actual end mark of the attempted artifact scan function ... left it here for reference
+
+    --CHANGES:Lanrutcon:Localing the variables here - we'll use them after...
+    local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery;
+    
     --convert raw stats into percentages so long as they are not nil
-    --This seems to work, as I am not getting any error output
-	if rawcrit ~= nil then
-		pcrit = rawcrit / critamt
-	end
+        if rawcrit ~= nil then
+        pcrit = rawcrit / critamt
+    end
 
-	if rawhaste ~= nil then
-		phaste = rawhaste / hasteamt
-	end
+    if rawhaste ~= nil then
+        phaste = rawhaste / hasteamt
+    end
 
-	if rawvers ~= nil then
-		pversin = rawvers / versinamt
-		pversout = rawvers / versoutamt
-	end
+    if rawvers ~= nil then
+        pversin = rawvers / versinamt
+        pversout = rawvers / versoutamt
+    end
 
-	if rawmastery ~= nil then
-		pmastery = (rawmastery / masteryamt) * masterycf
-	end
+    if rawmastery ~= nil then
+        pmastery = (rawmastery / masteryamt) * masterycf
+    end
 
-	--Convert percentages to strings
-	tostring(pcrit)
-	tostring(phaste)
-	tostring(pversin)
-	tostring(pversout)
-	tostring(pmastery)
+    --Round The outputs
+    prcrit = math.round(pcrit, 2)
+    prhaste = math.round(phaste, 2)
+    prversin = math.round(pversin, 2)
+    prversout = math.round(pversout, 2)
+    prmastery = math.round(pmastery, 2)
 
-	--Send the converted stats to the tooltip if they are not nil
-	--This does not work atm
-	--temp see if they output to chat ... nope must be missing something
 
-	if pcrit ~= nil then
-		GameTooltip:AddLine(pcrit .. "% Crit")
-	end
+    --Convert percentages to strings
+    tostring(prcrit)
+    tostring(prhaste)
+    tostring(prversin)
+    tostring(prversout)
+    tostring(prmastery)
 
-	if phaste ~= nil then
-		GameTooltip:AddLine(phaste .. "% Haste")
-	end
+    --Send the converted stats to the tooltip if they are not nil
+    if pcrit ~= nil then
+        GameTooltip:AddLine(prcrit .. "% " .. _G["ITEM_MOD_CRIT_RATING_SHORT"], .3, 1, 0)
+    end
 
-	if pmastery ~= nil then
-		GameTooltip:AddLine(pmastery .. "% Mastery")
-	end
+    if phaste ~= nil then
+        GameTooltip:AddLine(prhaste .. "% " .. _G["ITEM_MOD_HASTE_RATING_SHORT"], .3, 1, 0)
+    end
 
-	if pversin ~= nil then
-		GameTooltip:AddLine(pversin .. "%/" .. pversout .. "% Versatility")
-	end
+    if pmastery ~= nil then
+        GameTooltip:AddLine(prmastery .. "% " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"], .3, 1, 0)
+    end
+
+    if pversin ~= nil then
+        GameTooltip:AddLine(prversin .. "%/" .. prversout .. "% " .. _G["ITEM_MOD_VERSATILITY"], .3, 1, 0)
+    end
 end
 GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
