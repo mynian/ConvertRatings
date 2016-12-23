@@ -47,8 +47,15 @@ versinamt = 400
 versoutamt = 800
 masteryamt = 350
 
---Create Function to round the decimals
+--[[  7.1.5 values stored here so I don't lose them
+critamt = 400
+hasteamt = 375
+versinamt = 475
+versoutamt = 950
+masteryamt = 400
+]]--
 
+--Create Function to round the decimals
 math.round = function(number, precision)
   precision = precision or 0
 
@@ -125,6 +132,29 @@ AddOn:RegisterEvent("PLAYER_ENTERING_WORLD");
 --CHANGES:Lanrutcon:New function for GameTooltip's "OnTooltipSetItem"
 local function getItemIdFromTooltip(self)
     local name, itemLink = self:GetItem();
+
+--[[  My first attempt to scan an artifact .... I get no errors, but then I also get no output, regardless of what I mouseover ....	
+	local rawcrit, rawhaste, rawmastery, rawvers, stats;
+	
+	local irare = select(3,GetItemInfo(itemLink))
+	if irare == 6 then
+		for i = 1, self:NumLines() do
+			local line = _G["GameTooltipTextLeft" .. i]
+			if line then
+				local text = line:GetText();
+				if string.match(text,"%a") == "Critical Strike" then
+					rawcrit = string.match(text,"%d") 
+				elseif string.match(text,"%a") == "Haste" then
+					rawhaste = string.match(text,"%d") 
+				elseif string.match(text,"%a") == "Mastery" then
+					rawmastery = string.match(text,"%d") 
+				elseif string.match(text,"%a") == "Versatility" then
+					rawvers = string.match(text,"%d") 
+				else end
+			else end
+		end
+	else
+]]--
     
     --Gets stats from item using itemLink - it's a table
     stats = GetItemStats(itemLink);
@@ -139,13 +169,14 @@ local function getItemIdFromTooltip(self)
     local rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
     local rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
     local rawvers = stats["ITEM_MOD_VERSATILITY"]
+	
+--	end	 This end is the actual end mark of the attempted artifact scan function ... left it here for reference
 
     --CHANGES:Lanrutcon:Localing the variables here - we'll use them after...
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery;
     
     --convert raw stats into percentages so long as they are not nil
-    --This seems to work, as I am not getting any error output
-    if rawcrit ~= nil then
+        if rawcrit ~= nil then
         pcrit = rawcrit / critamt
     end
 
@@ -178,23 +209,20 @@ local function getItemIdFromTooltip(self)
     tostring(prmastery)
 
     --Send the converted stats to the tooltip if they are not nil
-    --This does not work atm
-    --temp see if they output to chat ... nope must be missing something
-
     if pcrit ~= nil then
-        GameTooltip:AddLine(prcrit .. "% Crit")
+        GameTooltip:AddLine(prcrit .. "% " .. _G["ITEM_MOD_CRIT_RATING_SHORT"], .3, 1, 0)
     end
 
     if phaste ~= nil then
-        GameTooltip:AddLine(prhaste .. "% Haste")
+        GameTooltip:AddLine(prhaste .. "% " .. _G["ITEM_MOD_HASTE_RATING_SHORT"], .3, 1, 0)
     end
 
     if pmastery ~= nil then
-        GameTooltip:AddLine(prmastery .. "% Mastery")
+        GameTooltip:AddLine(prmastery .. "% " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"], .3, 1, 0)
     end
 
     if pversin ~= nil then
-        GameTooltip:AddLine(prversin .. "%/" .. prversout .. "% Versatility")
+        GameTooltip:AddLine(prversin .. "%/" .. prversout .. "% " .. _G["ITEM_MOD_VERSATILITY"], .3, 1, 0)
     end
 end
 GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
