@@ -1,6 +1,6 @@
 ## Interface: 70100
 ## Title: ConvertRatings
-## Notes: Shows Combat Rating Perrcentages in tooltips
+## Notes: Shows Combat Rating Percentages in tooltips
 ## Version: 1.1
 
 ConvertRatings.lua
