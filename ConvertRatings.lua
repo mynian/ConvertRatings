@@ -1,3 +1,60 @@
+--set color variables default values to avoid first load errors
+cvred = .3
+cvgreen = 1
+cvblue = 0
+
+--Slash Command to change the color of the output
+SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
+function SlashCmdList.CONVERTRATINGS(msg, editBox)
+	if msg == 'blue' or msg == 'Blue' then
+		cvred = 0
+		cvgreen = 0
+		cvblue = 1
+	elseif msg == 'green' or msg == 'Green' then
+		cvred = 0
+		cvgreen = 1
+		cvblue = 0
+	elseif msg == 'red' or msg == 'Red' then
+		cvred = 1
+		cvgreen = 0
+		cvblue = 0
+	elseif msg == 'black' or msg == 'Black' then
+		cvred = 0
+		cvblue = 0
+		cvgreen = 0
+	elseif msg == 'white' or msg == 'White' then
+		cvred = 1
+		cvblue = 1
+		cvgreen = 1
+	elseif msg == 'lightblue' or msg == 'LightBlue' or msg == 'Lightblue' then
+		cvred = 0
+		cvblue = 1
+		cvgreen = 1
+	elseif msg == 'lightred' or msg == 'LightRed' or msg == 'Lightred' then
+		cvred = 1
+		cvgreen = .5
+		cvblue = .5
+	elseif msg == 'pink' or msg == 'Pink' then
+		cvred = 1
+		cvgreen = .5
+		cvblue = 1
+	elseif msg == 'purple' or msg == 'Purple' then
+		cvred = .7
+		cvgreen = 0
+		cvblue = 1
+	elseif msg == 'orange' or msg == 'Orange' then
+		cvred = 1
+		cvgreen = .5
+		cvblue = 0	
+	elseif msg == 'default' or msg == 'Default' then
+		cvred = .3
+		cvgreen = 1
+		cvblue = 0
+	else
+		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange and default")
+	end
+end
+
 -- Define a table to list all the different spec mastery coefficents
 masterytab = {}
 
@@ -210,19 +267,19 @@ local function getItemIdFromTooltip(self)
 
     --Send the converted stats to the tooltip if they are not nil
     if pcrit ~= nil then
-        GameTooltip:AddLine(prcrit .. "% " .. _G["ITEM_MOD_CRIT_RATING_SHORT"], .3, 1, 0)
+        GameTooltip:AddLine(prcrit .. "% " .. _G["ITEM_MOD_CRIT_RATING_SHORT"], cvred, cvgreen, cvblue)
     end
 
     if phaste ~= nil then
-        GameTooltip:AddLine(prhaste .. "% " .. _G["ITEM_MOD_HASTE_RATING_SHORT"], .3, 1, 0)
+        GameTooltip:AddLine(prhaste .. "% " .. _G["ITEM_MOD_HASTE_RATING_SHORT"], cvred, cvgreen, cvblue)
     end
 
     if pmastery ~= nil then
-        GameTooltip:AddLine(prmastery .. "% " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"], .3, 1, 0)
+        GameTooltip:AddLine(prmastery .. "% " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"], cvred, cvgreen, cvblue)
     end
 
     if pversin ~= nil then
-        GameTooltip:AddLine(prversin .. "%/" .. prversout .. "% " .. _G["ITEM_MOD_VERSATILITY"], .3, 1, 0)
+        GameTooltip:AddLine(prversin .. "%/" .. prversout .. "% " .. _G["ITEM_MOD_VERSATILITY"], cvred, cvgreen, cvblue)
     end
 end
 GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
