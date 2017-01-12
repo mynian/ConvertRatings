@@ -98,19 +98,12 @@ masterytab.WARRIOR73 = 1.5
 
 --These are the amounts of each rating for 1 percent for each rating
 --The mastery amount is the base rating amount before the coefficent is applied
-critamt = 350
-hasteamt = 325
-versinamt = 400
-versoutamt = 800
-masteryamt = 350
-
---[[  7.1.5 values stored here so I don't lose them
 critamt = 400
 hasteamt = 375
 versinamt = 475
 versoutamt = 950
 masteryamt = 400
-]]--
+
 
 --Create Function to round the decimals
 math.round = function(number, precision)
