@@ -3,53 +3,47 @@ cvred = .3
 cvgreen = 1
 cvblue = 0
 
+--CHANGES:Lanrutcon: Here we gonna store all colors 
+local colorTable = {
+	["blue"] = {0, 0, 1},
+	["green"] = {0, 1, 0},
+	["red"] = {1, 0, 0},
+	["black"] = {0, 0, 0},
+	["white"] = {1, 1, 1},
+	["lightblue"] = {0, 1, 1},
+	["lightred"] = {1, .5, .5},
+	["pink"] = {1, .5, 1},
+	["purple"] = {.7, 0, 1},
+	["orange"] = {1, 0.5, 1},
+	["default"] = {.3, 1, 0}
+}
+
 --Slash Command to change the color of the output
 SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
 function SlashCmdList.CONVERTRATINGS(msg, editBox)
-	if msg == 'blue' or msg == 'Blue' then
-		cvred = 0
-		cvgreen = 0
-		cvblue = 1
-	elseif msg == 'green' or msg == 'Green' then
-		cvred = 0
-		cvgreen = 1
-		cvblue = 0
-	elseif msg == 'red' or msg == 'Red' then
-		cvred = 1
-		cvgreen = 0
-		cvblue = 0
-	elseif msg == 'black' or msg == 'Black' then
-		cvred = 0
-		cvblue = 0
-		cvgreen = 0
-	elseif msg == 'white' or msg == 'White' then
-		cvred = 1
-		cvblue = 1
-		cvgreen = 1
-	elseif msg == 'lightblue' or msg == 'LightBlue' or msg == 'Lightblue' then
-		cvred = 0
-		cvblue = 1
-		cvgreen = 1
-	elseif msg == 'lightred' or msg == 'LightRed' or msg == 'Lightred' then
-		cvred = 1
-		cvgreen = .5
-		cvblue = .5
-	elseif msg == 'pink' or msg == 'Pink' then
-		cvred = 1
-		cvgreen = .5
-		cvblue = 1
-	elseif msg == 'purple' or msg == 'Purple' then
-		cvred = .7
-		cvgreen = 0
-		cvblue = 1
-	elseif msg == 'orange' or msg == 'Orange' then
-		cvred = 1
-		cvgreen = .5
-		cvblue = 0	
-	elseif msg == 'default' or msg == 'Default' then
-		cvred = .3
-		cvgreen = 1
-		cvblue = 0
+	--CHANGES:Lanrutcon: Instead of testing all cases (e.g. Blue and blue), we will lower the 'msg' first and then compare
+	if string.lower(msg) == 'blue' then
+		cvred, cvgreen, cvblue = unpack(colorTable["blue"])
+	elseif string.lower(msg) == 'green' then
+		cvred, cvgreen, cvblue = unpack(colorTable["green"])
+	elseif string.lower(msg) == 'red' then
+		cvred, cvgreen, cvblue = unpack(colorTable["red"])
+	elseif string.lower(msg) == 'black' then
+		cvred, cvgreen, cvblue = unpack(colorTable["black"])
+	elseif string.lower(msg) == 'white' then
+		cvred, cvgreen, cvblue = unpack(colorTable["white"])
+	elseif string.lower(msg) == 'lightblue' then
+		cvred, cvgreen, cvblue = unpack(colorTable["lightblue"])
+	elseif string.lower(msg) == 'lightred' then
+		cvred, cvgreen, cvblue = unpack(colorTable["lightred"])
+	elseif string.lower(msg) == 'pink' then
+		cvred, cvgreen, cvblue = unpack(colorTable["pink"])
+	elseif string.lower(msg) == 'purple' then
+		cvred, cvgreen, cvblue = unpack(colorTable["purple"])
+	elseif string.lower(msg) == 'orange' then
+		cvred, cvgreen, cvblue = unpack(colorTable["orange"])
+	elseif string.lower(msg) == 'default' then
+		cvred, cvgreen, cvblue = unpack(colorTable["default"])
 	else
 		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange and default")
 	end
@@ -274,5 +268,17 @@ local function getItemIdFromTooltip(self)
     if pversin ~= nil then
         GameTooltip:AddLine(prversin .. "%/" .. prversout .. "% " .. _G["ITEM_MOD_VERSATILITY"], cvred, cvgreen, cvblue)
     end
+	
+	--CHANGES:Lanrutcon: Let's try to set numbers after the stat
+	for i=1, GameTooltip:NumLines() do
+	
+		--If line contains "Critical Strike", then sets show a 'fontString' and set its text
+		if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
+			_G["GameTooltipTextRight"..i]:SetText("(" .. prcrit .. "%)");
+			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
+			_G["GameTooltipTextRight"..i]:Show();
+		end		
+	
+	end
 end
 GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
