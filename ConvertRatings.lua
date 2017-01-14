@@ -188,38 +188,16 @@ AddOn:RegisterEvent("PLAYER_ENTERING_WORLD");
 local function getItemIdFromTooltip(self)
     local name, itemLink = self:GetItem();
 
---[[  My first attempt to scan an artifact .... I get no errors, but then I also get no output, regardless of what I mouseover ....	
+--[[  More attempts to scan an artifact .... still not working ...	
 	local rawcrit, rawhaste, rawmastery, rawvers, stats;
 	
 	local irare = select(3,GetItemInfo(itemLink))
 	if irare == 6 then
-		
-		for i=1, GameTooltip:NumLines() do		
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
-			rawcrit = "ITEM_MOD_CRIT_RATING_SHORT"
-			break
-		end
-
-		for i=1, GameTooltip:NumLines() do		
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) then
-			rawhaste = "ITEM_MOD_HASTE_RATING_SHORT"
-			break
-		end
 	
-		for i=1, GameTooltip:NumLines() do		
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) then
-			rawmastery = "ITEM_MOD_MASTERY_RATING_SHORT"
-			break
-		end
-		
-		for i=1, GameTooltip:NumLines() do		
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) then
-			rawvers = "ITEM_MOD_VERSATILITY"
-			break
-		end
-	end
+	(put fancy artifact scan code here)
+	
 	else
-]]
+]]-- end of artifact specific scanning
     
     --Gets stats from item using itemLink - it's a table
     stats = GetItemStats(itemLink);
@@ -235,8 +213,8 @@ local function getItemIdFromTooltip(self)
     local rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
     local rawvers = stats["ITEM_MOD_VERSATILITY"]
 	
---	end	   --      This end is the actual end mark of the attempted artifact scan function ... left it here for reference
-
+--end -- end point for artifact determination function
+	
     --CHANGES:Lanrutcon:Localing the variables here - we'll use them after...
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery;
     
@@ -273,24 +251,9 @@ local function getItemIdFromTooltip(self)
     tostring(prversout)
     tostring(prmastery)
 
-    --[[Send the converted stats to the tooltip if they are not nil
-    if pcrit ~= nil then
-        GameTooltip:AddLine(prcrit .. "% " .. _G["ITEM_MOD_CRIT_RATING_SHORT"], cvred, cvgreen, cvblue)
-    end
-
-    if phaste ~= nil then
-        GameTooltip:AddLine(prhaste .. "% " .. _G["ITEM_MOD_HASTE_RATING_SHORT"], cvred, cvgreen, cvblue)
-    end
-
-    if pmastery ~= nil then
-        GameTooltip:AddLine(prmastery .. "% " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"], cvred, cvgreen, cvblue)
-    end
-
-    if pversin ~= nil then
-        GameTooltip:AddLine(prversin .. "%/" .. prversout .. "% " .. _G["ITEM_MOD_VERSATILITY"], cvred, cvgreen, cvblue)
-    end
-]]	
+    
 	--CHANGES:Lanrutcon: Let's try to set numbers after the stat
+	--added the breaks to stop on first find since it was outputting the value on enchant lines in addition to the correct spot
 	for i=1, GameTooltip:NumLines() do
 	
 		--If line contains "Critical Strike", then sets show a 'fontString' and set its text
