@@ -21,42 +21,61 @@ local colorTable = {
 --Slash Command to change the color of the output
 SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
 function SlashCmdList.CONVERTRATINGS(msg, editBox)
-	--CHANGES:Lanrutcon: Instead of testing all cases (e.g. Blue and blue), we will lower the 'msg' first and then compare
-	if string.lower(msg) == 'blue' then
+	local command, rest = msg:match("^(%S*)%s*(.-)$");	
+	if string.lower(command) == 'blue' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["blue"])
 		print("Convert Ratings output color set to blue")
-	elseif string.lower(msg) == 'green' then
+	elseif string.lower(command) == 'green' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["green"])
 		print("Convert Ratings output color set to green")
-	elseif string.lower(msg) == 'red' then
+	elseif string.lower(command) == 'red' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["red"])
 		print("Convert Ratings output color set to red")
-	elseif string.lower(msg) == 'black' then
+	elseif string.lower(command) == 'black' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["black"])
 		print("Convert Ratings output color set to black")
-	elseif string.lower(msg) == 'white' then
+	elseif string.lower(command) == 'white' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["white"])
 		print("Convert Ratings output color set to white")
-	elseif string.lower(msg) == 'lightblue' then
+	elseif string.lower(command) == 'lightblue' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["lightblue"])
 		print("Convert Ratings output color set to light blue")
-	elseif string.lower(msg) == 'lightred' then
+	elseif string.lower(command) == 'lightred' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["lightred"])
 		print("Convert Ratings output color set to light red")
-	elseif string.lower(msg) == 'pink' then
+	elseif string.lower(command) == 'pink' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["pink"])
 		print("Convert Ratings output color set to pink")
-	elseif string.lower(msg) == 'purple' then
+	elseif string.lower(command) == 'purple' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["purple"])
 		print("Convert Ratings output color set to purple")
-	elseif string.lower(msg) == 'orange' then
+	elseif string.lower(command) == 'orange' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["orange"])
 		print("Convert Ratings output color set to orange")
-	elseif string.lower(msg) == 'default' then
+	elseif string.lower(command) == 'default' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["default"])
 		print("Convert Ratings output color reset to default")
+	elseif string.lower(command) == "redv" and rest ~= "" then
+		if string.match(rest, "%p") == "." and string.match(rest, "%d%p%d") ~= nil then
+		cvred = string.match(rest, "%d%p%d")
+		print("Convert Ratings output Red value set to" .. " " .. string.match(rest, "%d%p%d"))
+		else print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
+		end
+	elseif string.lower(command) == "greenv" and rest ~= "" then
+		if string.match(rest, "%p") == "." and string.match(rest, "%d%p%d") ~= nil then
+		cvgreen = string.match(rest, "%d%p%d")
+		print("Convert Ratings output Green value set to" .. " " .. string.match(rest, "%d%p%d"))
+		else print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
+		end
+	elseif string.lower(command) == "bluev" and rest ~= "" then
+		if string.match(rest, "%p") == "." and string.match(rest, "%d%p%d") ~= nil then
+		cvblue = string.match(rest, "%d%p%d")
+		print("Convert Ratings output Blue value set to" .. " " .. string.match(rest, "%d%p%d"))
+		else print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
+		end
 	else
-		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange and default")
+		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange default or set custom RGB values")
+		print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
 	end
 end
 
