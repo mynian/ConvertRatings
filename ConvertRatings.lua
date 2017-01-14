@@ -257,7 +257,7 @@ local function getItemIdFromTooltip(self)
 	for i=1, GameTooltip:NumLines() do
 	
 		--If line contains "Critical Strike", then sets show a 'fontString' and set its text
-		if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
+		if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
 			_G["GameTooltipTextRight"..i]:SetText("(" .. prcrit .. "%)");
 			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
 			_G["GameTooltipTextRight"..i]:Show();
@@ -268,7 +268,7 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, GameTooltip:NumLines() do
 	
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) then
+			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
 			_G["GameTooltipTextRight"..i]:SetText("(" .. prhaste .. "%)");
 			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
 			_G["GameTooltipTextRight"..i]:Show();
@@ -279,7 +279,7 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, GameTooltip:NumLines() do
 	
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) then
+			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
 			_G["GameTooltipTextRight"..i]:SetText("(" .. prmastery .. "%)");
 			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
 			_G["GameTooltipTextRight"..i]:Show();
@@ -290,7 +290,7 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, GameTooltip:NumLines() do
 	
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) then
+			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
 			_G["GameTooltipTextRight"..i]:SetText("(" .. prversin .. "%/" .. prversout .. "%)");
 			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
 			_G["GameTooltipTextRight"..i]:Show();
