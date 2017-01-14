@@ -24,26 +24,37 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	--CHANGES:Lanrutcon: Instead of testing all cases (e.g. Blue and blue), we will lower the 'msg' first and then compare
 	if string.lower(msg) == 'blue' then
 		cvred, cvgreen, cvblue = unpack(colorTable["blue"])
+		print("Convert Ratings output color set to blue")
 	elseif string.lower(msg) == 'green' then
 		cvred, cvgreen, cvblue = unpack(colorTable["green"])
+		print("Convert Ratings output color set to green")
 	elseif string.lower(msg) == 'red' then
 		cvred, cvgreen, cvblue = unpack(colorTable["red"])
+		print("Convert Ratings output color set to red")
 	elseif string.lower(msg) == 'black' then
 		cvred, cvgreen, cvblue = unpack(colorTable["black"])
+		print("Convert Ratings output color set to black")
 	elseif string.lower(msg) == 'white' then
 		cvred, cvgreen, cvblue = unpack(colorTable["white"])
+		print("Convert Ratings output color set to white")
 	elseif string.lower(msg) == 'lightblue' then
 		cvred, cvgreen, cvblue = unpack(colorTable["lightblue"])
+		print("Convert Ratings output color set to light blue")
 	elseif string.lower(msg) == 'lightred' then
 		cvred, cvgreen, cvblue = unpack(colorTable["lightred"])
+		print("Convert Ratings output color set to light red")
 	elseif string.lower(msg) == 'pink' then
 		cvred, cvgreen, cvblue = unpack(colorTable["pink"])
+		print("Convert Ratings output color set to pink")
 	elseif string.lower(msg) == 'purple' then
 		cvred, cvgreen, cvblue = unpack(colorTable["purple"])
+		print("Convert Ratings output color set to purple")
 	elseif string.lower(msg) == 'orange' then
 		cvred, cvgreen, cvblue = unpack(colorTable["orange"])
+		print("Convert Ratings output color set to orange")
 	elseif string.lower(msg) == 'default' then
 		cvred, cvgreen, cvblue = unpack(colorTable["default"])
+		print("Convert Ratings output color reset to default")
 	else
 		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange and default")
 	end
@@ -177,28 +188,16 @@ AddOn:RegisterEvent("PLAYER_ENTERING_WORLD");
 local function getItemIdFromTooltip(self)
     local name, itemLink = self:GetItem();
 
---[[  My first attempt to scan an artifact .... I get no errors, but then I also get no output, regardless of what I mouseover ....	
+--[[  More attempts to scan an artifact .... still not working ...	
 	local rawcrit, rawhaste, rawmastery, rawvers, stats;
 	
 	local irare = select(3,GetItemInfo(itemLink))
 	if irare == 6 then
-		for i = 1, self:NumLines() do
-			local line = _G["GameTooltipTextLeft" .. i]
-			if line then
-				local text = line:GetText();
-				if string.match(text,"%a") == "Critical Strike" then
-					rawcrit = string.match(text,"%d") 
-				elseif string.match(text,"%a") == "Haste" then
-					rawhaste = string.match(text,"%d") 
-				elseif string.match(text,"%a") == "Mastery" then
-					rawmastery = string.match(text,"%d") 
-				elseif string.match(text,"%a") == "Versatility" then
-					rawvers = string.match(text,"%d") 
-				else end
-			else end
-		end
+	
+	(put fancy artifact scan code here)
+	
 	else
-]]--
+]]-- end of artifact specific scanning
     
     --Gets stats from item using itemLink - it's a table
     stats = GetItemStats(itemLink);
@@ -214,8 +213,8 @@ local function getItemIdFromTooltip(self)
     local rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
     local rawvers = stats["ITEM_MOD_VERSATILITY"]
 	
---	end	 This end is the actual end mark of the attempted artifact scan function ... left it here for reference
-
+--end -- end point for artifact determination function
+	
     --CHANGES:Lanrutcon:Localing the variables here - we'll use them after...
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery;
     
@@ -252,31 +251,50 @@ local function getItemIdFromTooltip(self)
     tostring(prversout)
     tostring(prmastery)
 
-    --Send the converted stats to the tooltip if they are not nil
-    if pcrit ~= nil then
-        GameTooltip:AddLine(prcrit .. "% " .. _G["ITEM_MOD_CRIT_RATING_SHORT"], cvred, cvgreen, cvblue)
-    end
-
-    if phaste ~= nil then
-        GameTooltip:AddLine(prhaste .. "% " .. _G["ITEM_MOD_HASTE_RATING_SHORT"], cvred, cvgreen, cvblue)
-    end
-
-    if pmastery ~= nil then
-        GameTooltip:AddLine(prmastery .. "% " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"], cvred, cvgreen, cvblue)
-    end
-
-    if pversin ~= nil then
-        GameTooltip:AddLine(prversin .. "%/" .. prversout .. "% " .. _G["ITEM_MOD_VERSATILITY"], cvred, cvgreen, cvblue)
-    end
-	
+    
 	--CHANGES:Lanrutcon: Let's try to set numbers after the stat
+	--added the breaks to stop on first find since it was outputting the value on enchant lines in addition to the correct spot
 	for i=1, GameTooltip:NumLines() do
 	
 		--If line contains "Critical Strike", then sets show a 'fontString' and set its text
-		if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
+		if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
 			_G["GameTooltipTextRight"..i]:SetText("(" .. prcrit .. "%)");
 			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
 			_G["GameTooltipTextRight"..i]:Show();
+			break
+		end		
+	
+	end
+	
+	for i=1, GameTooltip:NumLines() do
+	
+			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
+			_G["GameTooltipTextRight"..i]:SetText("(" .. prhaste .. "%)");
+			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
+			_G["GameTooltipTextRight"..i]:Show();
+			break
+		end		
+	
+	end
+	
+	for i=1, GameTooltip:NumLines() do
+	
+			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
+			_G["GameTooltipTextRight"..i]:SetText("(" .. prmastery .. "%)");
+			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
+			_G["GameTooltipTextRight"..i]:Show();
+			break
+		end		
+	
+	end
+	
+	for i=1, GameTooltip:NumLines() do
+	
+			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
+			_G["GameTooltipTextRight"..i]:SetText("(" .. prversin .. "%/" .. prversout .. "%)");
+			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
+			_G["GameTooltipTextRight"..i]:Show();
+			break
 		end		
 	
 	end
