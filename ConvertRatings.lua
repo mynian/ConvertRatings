@@ -188,32 +188,41 @@ AddOn:RegisterEvent("PLAYER_ENTERING_WORLD");
 local function getItemIdFromTooltip(self)
     local name, itemLink = self:GetItem();
 
---[[  More attempts to scan an artifact .... still not working ...	
+	--  More attempts to scan an artifact .... still not working ...
+	--CHANGES:Lanrutcon: 'Updgraded' Artifacts should now have their % corrected
 	local rawcrit, rawhaste, rawmastery, rawvers, stats;
 	
 	local irare = select(3,GetItemInfo(itemLink))
 	if irare == 6 then
+		for i=1, self:NumLines() do
+			--Checks if the line contains a statname in its text - then gets the number of that text
+			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
+				rawcrit = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) then
+				rawhaste = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+			elseif(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) then
+				rawmastery = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) then
+				rawvers = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+			end		
+		end
+	else -- end of artifact specific scanning
 	
-	(put fancy artifact scan code here)
-	
-	else
-]]-- end of artifact specific scanning
-    
-    --Gets stats from item using itemLink - it's a table
-    stats = GetItemStats(itemLink);
-    
-    --CHANGES:Lanrutcon:This is a protection-condition. Items like "Recipes" don't have items, so 'stats' table will be nil and there's no need to go further
-    if(stats == nil) then
-        return;
-    end
+		--Gets stats from item using itemLink - it's a table
+		stats = GetItemStats(itemLink);
+		
+		--CHANGES:Lanrutcon:This is a protection-condition. Items like "Recipes" don't have items, so 'stats' table will be nil and there's no need to go further
+		if(stats == nil) then
+			return;
+		end
 
-    --Gnor: pull individual stats from stats table since the way that it was being accomplished wouldn't allow for calculations to be done
-    local rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
-    local rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
-    local rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
-    local rawvers = stats["ITEM_MOD_VERSATILITY"]
-	
---end -- end point for artifact determination function
+		--Gnor: pull individual stats from stats table since the way that it was being accomplished wouldn't allow for calculations to be done
+		rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
+		rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
+		rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
+		rawvers = stats["ITEM_MOD_VERSATILITY"]
+		
+	end -- end point for artifact determination function
 	
     --CHANGES:Lanrutcon:Localing the variables here - we'll use them after...
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery;
@@ -254,49 +263,53 @@ local function getItemIdFromTooltip(self)
     
 	--CHANGES:Lanrutcon: Let's try to set numbers after the stat
 	--added the breaks to stop on first find since it was outputting the value on enchant lines in addition to the correct spot
-	for i=1, GameTooltip:NumLines() do
+	for i=1, self:NumLines() do
 	
 		--If line contains "Critical Strike", then sets show a 'fontString' and set its text
-		if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
-			_G["GameTooltipTextRight"..i]:SetText("(" .. prcrit .. "%)");
-			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G["GameTooltipTextRight"..i]:Show();
+		if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
+			_G[self:GetName().."TextRight"..i]:SetText("(" .. prcrit .. "%)");
+			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
+			_G[self:GetName().."TextRight"..i]:Show();
 			break
 		end		
 	
 	end
 	
-	for i=1, GameTooltip:NumLines() do
+	for i=1, self:NumLines() do
 	
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
-			_G["GameTooltipTextRight"..i]:SetText("(" .. prhaste .. "%)");
-			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G["GameTooltipTextRight"..i]:Show();
+			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
+			_G[self:GetName().."TextRight"..i]:SetText("(" .. prhaste .. "%)");
+			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
+			_G[self:GetName().."TextRight"..i]:Show();
 			break
 		end		
 	
 	end
 	
-	for i=1, GameTooltip:NumLines() do
+	for i=1, self:NumLines() do
 	
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
-			_G["GameTooltipTextRight"..i]:SetText("(" .. prmastery .. "%)");
-			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G["GameTooltipTextRight"..i]:Show();
+			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
+			_G[self:GetName().."TextRight"..i]:SetText("(" .. prmastery .. "%)");
+			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
+			_G[self:GetName().."TextRight"..i]:Show();
 			break
 		end		
 	
 	end
 	
-	for i=1, GameTooltip:NumLines() do
+	for i=1, self:NumLines() do
 	
-			if(string.find(_G["GameTooltipTextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
-			_G["GameTooltipTextRight"..i]:SetText("(" .. prversin .. "%/" .. prversout .. "%)");
-			_G["GameTooltipTextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G["GameTooltipTextRight"..i]:Show();
+			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
+			_G[self:GetName().."TextRight"..i]:SetText("(" .. prversin .. "%/" .. prversout .. "%)");
+			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
+			_G[self:GetName().."TextRight"..i]:Show();
 			break
 		end		
 	
 	end
 end
+
 GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
+ItemRefTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
+ShoppingTooltip1:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
+ShoppingTooltip2:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
