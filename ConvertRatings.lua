@@ -1,9 +1,9 @@
---set color variables default values to avoid first load errors
+--Set color variables default values to avoid first load errors :M
 cvred = .3
 cvgreen = 1
 cvblue = 0
 
---CHANGES:Lanrutcon: Here we gonna store all colors 
+--Hard coded color options table :L
 local colorTable = {
 	["blue"] = {0, 0, 1},
 	["green"] = {0, 1, 0},
@@ -18,10 +18,12 @@ local colorTable = {
 	["default"] = {.3, 1, 0}
 }
 
---Slash Command to change the color of the output
+--Slash Command to change the color of the output :M
 SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
 function SlashCmdList.CONVERTRATINGS(msg, editBox)
-	local command, rest = msg:match("^(%S*)%s*(.-)$");	
+	--Grab the first input word as the command and the rest of the input as a user variable :M
+	local command, rest = msg:match("^(%S*)%s*(.-)$");
+	--Hard coded color options parsing :M&L
 	if string.lower(command) == 'blue' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["blue"])
 		print("Convert Ratings output color set to blue")
@@ -55,6 +57,7 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	elseif string.lower(command) == 'default' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["default"])
 		print("Convert Ratings output color reset to default")
+	--Custom RGB value parsing :M	
 	elseif string.lower(command) == "redv" and rest ~= "" then
 		if string.match(rest, "%p") == "." and string.match(rest, "%d%p%d") ~= nil then
 		cvred = string.match(rest, "%d%p%d")
@@ -74,15 +77,16 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 		else print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
 		end
 	else
+		--when no valid args entered, output this stuff :M
 		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange default or set custom RGB values")
 		print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
 	end
 end
 
--- Define a table to list all the different spec mastery coefficents
+-- Define a table to list all the different spec mastery coefficents :M
 masterytab = {}
 
--- Populate the table with mastery coefficents
+-- Populate the table with mastery coefficents :M
 masterytab.DEATHKNIGHT250 = 1.5
 masterytab.DEATHKNIGHT251 = 1.5
 masterytab.DEATHKNIGHT252 = 2.25
@@ -120,8 +124,8 @@ masterytab.WARRIOR71 = 2
 masterytab.WARRIOR72 = 1.4
 masterytab.WARRIOR73 = 1.5
 
---These are the amounts of each rating for 1 percent for each rating
---The mastery amount is the base rating amount before the coefficent is applied
+--These are the amounts of each rating for 1 percent for each rating :M
+--The mastery amount is the base rating amount before the coefficent is applied :M
 critamt = 400
 hasteamt = 375
 versinamt = 475
@@ -129,7 +133,7 @@ versoutamt = 950
 masteryamt = 400
 
 
---Create Function to round the decimals
+--Create Function to round the decimals :M
 math.round = function(number, precision)
   precision = precision or 0
 
@@ -144,16 +148,16 @@ math.round = function(number, precision)
       number = math.ceil(number * power - 0.5) / power;    
     end
     
-    -- convert number to string for formatting
+    -- convert number to string for formatting :M
     number = tostring(number);      
     
-    -- set cutoff
+    -- set cutoff :G
     local cutoff = number:sub(decimal + 1 + precision);
       
-    -- delete everything after the cutoff
+    -- delete everything after the cutoff :M
     number = number:gsub(cutoff, "");
   else
-    -- number is an integer
+    -- number is an integer :M
     if ( precision > 0 ) then
       number = tostring(number);
       
@@ -171,30 +175,30 @@ end
 
 
 
---CHANGES:Lanrutcon:Create a start-up function - This is needed because some WoW API is only available after some events.
---Gnor: I moved this up in the addon, because i need this data stored to run before the calculations
+--Create a start-up function :L
 local AddOn = CreateFrame("FRAME", "ConvertRatings");
 AddOn:SetScript("OnEvent", function(self, event, ...)
-    
+
+    --Getting Player Information :L	
     if(event == "PLAYER_ENTERING_WORLD") then
-        --Getting Player Information
+
     
-        --Get Current Player Spec
+        --Get Current Player Spec :M
         local specn = GetSpecialization()
 
-        --This call pulls the specific info from the spec number that the player currently is using, item 1 from the call is the unique spec number
+        --Pull specifc spec id :M
         local specid = select(1,GetSpecializationInfo(specn))
 
-        --turn the integer that is returned from the last call to a string so that it can be properly concatenated with the class name
+        --turn the integer that is returned from the last call to a string so that it can be properly concatenated with the class name :M
         tostring(specid)
 
-        --Get Current Player Class
+        --Get Current Player Class :M
         local classn = select(2,UnitClass("player"))
 
-        --Concatenate class and specid for mastery coefficent lookup
+        --Concatenate class and specid for mastery coefficent lookup :M
         local masterycs = classn .. specid
 
-        --Pull the coeff from the mastery table using the class name and spec id
+        --Pull the coeff from the mastery table using the class name and spec id :M
         masterycf = masterytab[masterycs]
     end
 
@@ -203,18 +207,19 @@ end);
 AddOn:RegisterEvent("PLAYER_ENTERING_WORLD");
 
 
---CHANGES:Lanrutcon:New function for GameTooltip's "OnTooltipSetItem"
+--Here is the function where the stats are pulled from the item that is currently moused over :M&L
 local function getItemIdFromTooltip(self)
     local name, itemLink = self:GetItem();
 
-	--  More attempts to scan an artifact .... still not working ...
-	--CHANGES:Lanrutcon: 'Updgraded' Artifacts should now have their % corrected
+	--Declare variables for future use :M
 	local rawcrit, rawhaste, rawmastery, rawvers, stats;
 	
+	--Get Item rarity :M
 	local irare = select(3,GetItemInfo(itemLink))
+	--Artifact specific processing :L
 	if irare == 6 then
 		for i=1, self:NumLines() do
-			--Checks if the line contains a statname in its text - then gets the number of that text
+			--Checks if the line contains a statname in its text - then gets the number of that text :L
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
 				rawcrit = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) then
@@ -225,29 +230,29 @@ local function getItemIdFromTooltip(self)
 				rawvers = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
 			end		
 		end
-	else -- end of artifact specific scanning
+	else 
 	
-		--Gets stats from item using itemLink - it's a table
+		--Gets stats from non Artifact items :M
 		stats = GetItemStats(itemLink);
 		
-		--CHANGES:Lanrutcon:This is a protection-condition. Items like "Recipes" don't have items, so 'stats' table will be nil and there's no need to go further
+		--If not an item with stats, don't do anything :L
 		if(stats == nil) then
 			return;
 		end
 
-		--Gnor: pull individual stats from stats table since the way that it was being accomplished wouldn't allow for calculations to be done
+		--Pull individual stats from stats table :M
 		rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
 		rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
 		rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
 		rawvers = stats["ITEM_MOD_VERSATILITY"]
 		
-	end -- end point for artifact determination function
+	end 
 	
-    --CHANGES:Lanrutcon:Localing the variables here - we'll use them after...
+    --Localing the variables here - we'll use them after... :L
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery;
     
-    --convert raw stats into percentages so long as they are not nil
-        if rawcrit ~= nil then
+    --convert raw stats into percentages so long as they are not nil :M
+    if rawcrit ~= nil then
         pcrit = rawcrit / critamt
     end
 
@@ -264,7 +269,7 @@ local function getItemIdFromTooltip(self)
         pmastery = (rawmastery / masteryamt) * masterycf
     end
 
-    --Round The outputs
+    --Round The outputs :M
     prcrit = math.round(pcrit, 2)
     prhaste = math.round(phaste, 2)
     prversin = math.round(pversin, 2)
@@ -272,7 +277,7 @@ local function getItemIdFromTooltip(self)
     prmastery = math.round(pmastery, 2)
 
 
-    --Convert percentages to strings
+    --Convert percentages to strings :M
     tostring(prcrit)
     tostring(prhaste)
     tostring(prversin)
@@ -280,11 +285,10 @@ local function getItemIdFromTooltip(self)
     tostring(prmastery)
 
     
-	--CHANGES:Lanrutcon: Let's try to set numbers after the stat
-	--added the breaks to stop on first find since it was outputting the value on enchant lines in addition to the correct spot
+	--Set output values in the same line as the rating in tooltip :L
 	for i=1, self:NumLines() do
 	
-		--If line contains "Critical Strike", then sets show a 'fontString' and set its text
+		--If line contains "Critical Strike", then sets show a 'fontString' and set its text :L
 		if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
 			_G[self:GetName().."TextRight"..i]:SetText("(" .. prcrit .. "%)");
 			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
@@ -328,6 +332,7 @@ local function getItemIdFromTooltip(self)
 	end
 end
 
+--Hooks to make the addon function :L
 GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ItemRefTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip1:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
