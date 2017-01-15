@@ -151,7 +151,7 @@ math.round = function(number, precision)
     -- convert number to string for formatting :M
     number = tostring(number);      
     
-    -- set cutoff :G
+    -- set cutoff :M
     local cutoff = number:sub(decimal + 1 + precision);
       
     -- delete everything after the cutoff :M
