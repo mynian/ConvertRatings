@@ -214,6 +214,13 @@ local function getItemIdFromTooltip(self)
 	--Declare variables for future use :M
 	local rawcrit, rawhaste, rawmastery, rawvers, stats;
 	
+	--Check to see if trainer window is open to skip it
+	
+	local numServices = GetNumTrainerServices()
+		if numServices ~= 0 then
+			return;
+		else
+	
 	--Get Item rarity :M
 	local irare = select(3,GetItemInfo(itemLink))
 	--Artifact specific processing :L
@@ -246,7 +253,8 @@ local function getItemIdFromTooltip(self)
 		rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
 		rawvers = stats["ITEM_MOD_VERSATILITY"]
 		
-	end 
+	end
+		end
 	
     --Localing the variables here - we'll use them after... :L
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery;
