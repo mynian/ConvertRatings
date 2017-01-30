@@ -2,6 +2,7 @@
 cvred = .3
 cvgreen = 1
 cvblue = 0
+cvalpha = 1
 
 --Hard coded color options table :L
 local colorTable = {
@@ -76,6 +77,8 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 		print("Convert Ratings output Blue value set to" .. " " .. string.match(rest, "%d%p%d"))
 		else print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
 		end
+	elseif string.lower(command) == 'custom' and rest == "" then --Color Picker Call
+		ShowColorPicker(r, g, b, a, myColorCallback);
 	else
 		--when no valid args entered, output this stuff :M
 		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange default or set custom RGB values")
@@ -345,3 +348,25 @@ GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ItemRefTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip1:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip2:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
+
+
+--Color Picker (currently not working)
+function ShowColorPicker(cvred, cvgreen, cvblue, a, changedCallback)
+ ColorPickerFrame:SetColorRGB(cvred,cvgreen,cvblue);
+ ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (cvalpha ~= nil), cvalpha;
+ ColorPickerFrame.previousValues = {cvrev,cvgreen,cvbue,cvalpha};
+ ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = 
+  changedCallback, changedCallback, changedCallback;
+ ColorPickerFrame:Hide();
+ ColorPickerFrame:Show();
+ end
+
+local function myColorCallback(restore)
+ local newR, newG, newB, newA;
+ if restore then
+  newR, newG, newB, newA = unpack(restore);
+ else
+  newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
+ end 
+  cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;
+end
