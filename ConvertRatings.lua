@@ -23,7 +23,7 @@ function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
  ColorPickerFrame:SetColorRGB(cvred, cvgreen, cvblue);
  ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (cvalpha ~= nil), cvalpha;
  ColorPickerFrame.previousValues = {cvred, cvgreen, cvbue, cvalpha};
- ColorPickerFrame.func, ColorPickerFrame.opacityFunc =  changedCallback, changedCallback, changedCallback;
+ ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc =  changedCallback, changedCallback, changedCallback;
  ColorPickerFrame:Hide();
  ColorPickerFrame:Show();
  end
