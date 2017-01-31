@@ -18,6 +18,25 @@ local colorTable = {
 	["orange"] = {1, 0.5, 1},
 	["default"] = {.3, 1, 0}
 }
+--Color Picker
+function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
+ ColorPickerFrame:SetColorRGB(cvred, cvgreen, cvblue);
+ ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (cvalpha ~= nil), cvalpha;
+ ColorPickerFrame.previousValues = {cvred, cvgreen, cvbue, cvalpha};
+ ColorPickerFrame.func, ColorPickerFrame.opacityFunc =  changedCallback, changedCallback, changedCallback;
+ ColorPickerFrame:Hide();
+ ColorPickerFrame:Show();
+ end
+
+local function myColorCallback(restore)
+ local newR, newG, newB, newA;
+ if restore then
+  newR, newG, newB, newA = unpack(restore);  
+ else
+  newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
+ end 
+  cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;  
+end
 
 --Slash Command to change the color of the output :M
 SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
@@ -58,31 +77,13 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	elseif string.lower(command) == 'default' and rest == "" then
 		cvred, cvgreen, cvblue = unpack(colorTable["default"])
 		print("Convert Ratings output color reset to default")
-	--Custom RGB value parsing :M	
-	elseif string.lower(command) == "redv" and rest ~= "" then
-		if string.match(rest, "%p") == "." and string.match(rest, "%d%p%d") ~= nil then
-		cvred = string.match(rest, "%d%p%d")
-		print("Convert Ratings output Red value set to" .. " " .. string.match(rest, "%d%p%d"))
-		else print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
-		end
-	elseif string.lower(command) == "greenv" and rest ~= "" then
-		if string.match(rest, "%p") == "." and string.match(rest, "%d%p%d") ~= nil then
-		cvgreen = string.match(rest, "%d%p%d")
-		print("Convert Ratings output Green value set to" .. " " .. string.match(rest, "%d%p%d"))
-		else print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
-		end
-	elseif string.lower(command) == "bluev" and rest ~= "" then
-		if string.match(rest, "%p") == "." and string.match(rest, "%d%p%d") ~= nil then
-		cvblue = string.match(rest, "%d%p%d")
-		print("Convert Ratings output Blue value set to" .. " " .. string.match(rest, "%d%p%d"))
-		else print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
-		end
-	elseif string.lower(command) == 'custom' and rest == "" then --Color Picker Call
+	elseif string.lower(command) == 'custom' and rest == "" then
 		ShowColorPicker(r, g, b, a, myColorCallback);
 	else
 		--when no valid args entered, output this stuff :M
-		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange default or set custom RGB values")
-		print("Convert Ratings: To set custom RGB values use syntax /convertratings (redv|bluev|greenv) and a value between 0.0 and 1.0 in the format of X.X")
+		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange or custom")
+		print("Convert Ratings: The custom option will bring up the Color Picker for you to choose a color.")
+		print("Convert Ratings: To reset to the default color, use /convertratings default")
 	end
 end
 
@@ -348,25 +349,3 @@ GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ItemRefTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip1:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip2:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
-
-
---Color Picker (currently not working)
-function ShowColorPicker(cvred, cvgreen, cvblue, a, changedCallback)
- ColorPickerFrame:SetColorRGB(cvred,cvgreen,cvblue);
- ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (cvalpha ~= nil), cvalpha;
- ColorPickerFrame.previousValues = {cvrev,cvgreen,cvbue,cvalpha};
- ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc = 
-  changedCallback, changedCallback, changedCallback;
- ColorPickerFrame:Hide();
- ColorPickerFrame:Show();
- end
-
-local function myColorCallback(restore)
- local newR, newG, newB, newA;
- if restore then
-  newR, newG, newB, newA = unpack(restore);
- else
-  newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
- end 
-  cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;
-end
