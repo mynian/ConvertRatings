@@ -22,7 +22,7 @@ local colorTable = {
 function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
  ColorPickerFrame:SetColorRGB(cvred, cvgreen, cvblue);
  ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (cvalpha ~= nil), cvalpha;
- ColorPickerFrame.previousValues = {cvred, cvgreen, cvbue, cvalpha};
+ ColorPickerFrame.previousValues = {cvred, cvgreen, cvblue, cvalpha};
  ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc =  changedCallback, changedCallback, changedCallback;
  ColorPickerFrame:Hide();
  ColorPickerFrame:Show();
@@ -44,41 +44,12 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	--Grab the first input word as the command and the rest of the input as a user variable :M
 	local command, rest = msg:match("^(%S*)%s*(.-)$");
 	--Hard coded color options parsing :M&L
-	if string.lower(command) == 'blue' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["blue"])
-		print("Convert Ratings output color set to blue")
-	elseif string.lower(command) == 'green' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["green"])
-		print("Convert Ratings output color set to green")
-	elseif string.lower(command) == 'red' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["red"])
-		print("Convert Ratings output color set to red")
-	elseif string.lower(command) == 'black' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["black"])
-		print("Convert Ratings output color set to black")
-	elseif string.lower(command) == 'white' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["white"])
-		print("Convert Ratings output color set to white")
-	elseif string.lower(command) == 'lightblue' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["lightblue"])
-		print("Convert Ratings output color set to light blue")
-	elseif string.lower(command) == 'lightred' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["lightred"])
-		print("Convert Ratings output color set to light red")
-	elseif string.lower(command) == 'pink' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["pink"])
-		print("Convert Ratings output color set to pink")
-	elseif string.lower(command) == 'purple' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["purple"])
-		print("Convert Ratings output color set to purple")
-	elseif string.lower(command) == 'orange' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["orange"])
-		print("Convert Ratings output color set to orange")
-	elseif string.lower(command) == 'default' and rest == "" then
-		cvred, cvgreen, cvblue = unpack(colorTable["default"])
-		print("Convert Ratings output color reset to default")
+	
+	if (colorTable[string.lower(command)]) then
+		cvred, cvgreen, cvblue = unpack(colorTable[string.lower(command)]);
+		print("Convert Ratings output color set to "..string.lower(command));
 	elseif string.lower(command) == 'custom' and rest == "" then
-		ShowColorPicker(r, g, b, a, myColorCallback);
+		ShowColorPicker(cvred, cvgreen, cvblue, nil, myColorCallback);
 	else
 		--when no valid args entered, output this stuff :M
 		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange or custom")
