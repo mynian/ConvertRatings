@@ -58,46 +58,6 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	end
 end
 
--- Define a table to list all the different spec mastery coefficents :M
-masteryctab = {}
-
--- Populate the table with mastery coefficents :M
-masteryctab.DEATHKNIGHT250 = 1.5
-masteryctab.DEATHKNIGHT251 = 1.5
-masteryctab.DEATHKNIGHT252 = 2.25
-masteryctab.DEMONHUNTER577 = 1
-masteryctab.DEMONHUNTER581 = 0.75
-masteryctab.DRUID102 = 2
-masteryctab.DRUID103 = 2
-masteryctab.DRUID104 = 0.5
-masteryctab.DRUID105 = 0.6
-masteryctab.HUNTER253 = 2.25
-masteryctab.HUNTER254 = 0.625
-masteryctab.HUNTER255 = 0.5
-masteryctab.MAGE62 = 1.2
-masteryctab.MAGE63 = 0.75
-masteryctab.MAGE64 = 2.25
-masteryctab.MONK268 = 1
-masteryctab.MONK269 = 10
-masteryctab.MONK270 = 1.25
-masteryctab.PALADIN65 = 1.5
-masteryctab.PALADIN66 = 1
-masteryctab.PALADIN70 = 1.5
-masteryctab.PRIEST256 = 1.5
-masteryctab.PRIEST257 = 1.25
-masteryctab.PRIEST258 = 2.5
-masteryctab.ROGUE259 = 4
-masteryctab.ROGUE260 = 2.2
-masteryctab.ROGUE261 = 2.76
-masteryctab.SHAMAN262 = 2.25
-masteryctab.SHAMAN263 = 2
-masteryctab.SHAMAN264 = 3
-masteryctab.WARLOCK265 = 3.125
-masteryctab.WARLOCK266 = 1.8
-masteryctab.WARLOCK267 = 3
-masteryctab.WARRIOR71 = 2
-masteryctab.WARRIOR72 = 1.4
-masteryctab.WARRIOR73 = 1.5
 
 --rating tables to allow addon to work at all levels :M
 
@@ -152,27 +112,9 @@ local masteryamt, critamt, hasteamt, versinamt, versoutamt;
 
 --Here is the function where the stats are pulled from the item that is currently moused over :M&L
 local function getItemIdFromTooltip(self)
-
---Moved the mastery determination function inside the mouseover call to allow it to show the correct mastery coef after a spec change without having to reload ui :M
-local specn, specid, classn, masterycs;    	
-    
-        --Get Current Player Spec :M
-        specn = GetSpecialization()
-
-        --Pull specifc spec id :M
-        specid = select(1,GetSpecializationInfo(specn))
-
-        --turn the integer that is returned from the last call to a string so that it can be properly concatenated with the class name :M
-        tostring(specid)
-
-        --Get Current Player Class :M
-        classn = select(2,UnitClass("player"))
-
-        --Concatenate class and specid for mastery coefficent lookup :M
-        masterycs = classn .. specid
-
-        --Pull the coeff from the mastery table using the class name and spec id :M
-        masterycf = masteryctab[masterycs]
+	
+	--Determine Mastery Coefficient
+    	masterycf = select(2,GetMasteryEffect())
 		
 	--Set Player level :M
 	cvlevel = UnitLevel("player")
