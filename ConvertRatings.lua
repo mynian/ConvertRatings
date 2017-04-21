@@ -1,7 +1,7 @@
 --Set color variables default values to avoid first load errors :M
-cvred = .3
-cvgreen = 1
-cvblue = 0
+cvred = .95
+cvgreen = .90
+cvblue = .60
 cvalpha = 1
 
 --Hard coded color options table :L
@@ -16,7 +16,7 @@ local colorTable = {
 	["pink"] = {1, .5, 1},
 	["purple"] = {.7, 0, 1},
 	["orange"] = {1, 0.5, 1},
-	["default"] = {.3, 1, 0}
+	["default"] = {.95, .90, .60}
 }
 --Color Picker
 function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
@@ -135,7 +135,7 @@ local function getItemIdFromTooltip(self)
     	local name, itemLink = self:GetItem();
 
 	--Declare variables for future use :M
-	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed;
+	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor;
 	
 	--Check to see if trainer window is open to prevent errors :M
 		local numServices = GetNumTrainerServices()
@@ -240,6 +240,9 @@ local function getItemIdFromTooltip(self)
 	tostring(prleech)
 	tostring(pravoid)
 	tostring(prspeed)
+	
+	--Convert text color from decimal to hex
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
 
     
 	--Set output values in the same line as the rating in tooltip :L
@@ -247,9 +250,7 @@ local function getItemIdFromTooltip(self)
 	
 		--If line contains "Critical Strike", then sets show a 'fontString' and set its text :L
 		if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
-			_G[self:GetName().."TextRight"..i]:SetText("(" .. prcrit .. "%)");
-			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G[self:GetName().."TextRight"..i]:Show();
+			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prcrit .. "%)");
 			break
 		end		
 	
@@ -258,9 +259,7 @@ local function getItemIdFromTooltip(self)
 	for i=1, self:NumLines() do
 	
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
-			_G[self:GetName().."TextRight"..i]:SetText("(" .. prhaste .. "%)");
-			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G[self:GetName().."TextRight"..i]:Show();
+			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prhaste .. "%)");
 			break
 		end		
 	
@@ -269,9 +268,7 @@ local function getItemIdFromTooltip(self)
 	for i=1, self:NumLines() do
 	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
-			_G[self:GetName().."TextRight"..i]:SetText("(" .. prmastery .. "%)");
-			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G[self:GetName().."TextRight"..i]:Show();
+			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prmastery .. "%)");
 			break
 		end		
 	
@@ -280,9 +277,7 @@ local function getItemIdFromTooltip(self)
 	for i=1, self:NumLines() do
 	
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
-			_G[self:GetName().."TextRight"..i]:SetText("(" .. prversin .. "%/" .. prversout .. "%)");
-			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G[self:GetName().."TextRight"..i]:Show();
+			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prversin .. "%/" .. prversout .. "%)");
 			break
 		end		
 	
@@ -291,9 +286,7 @@ local function getItemIdFromTooltip(self)
 	for i=1, self:NumLines() do
 	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) and rawspeed ~= nil then
-			_G[self:GetName().."TextRight"..i]:SetText("(" .. prspeed .. "%)");
-			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G[self:GetName().."TextRight"..i]:Show();
+			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prspeed .. "%)");
 			break
 		end		
 	
@@ -302,9 +295,7 @@ local function getItemIdFromTooltip(self)
 	for i=1, self:NumLines() do
 	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) and rawleech ~= nil then
-			_G[self:GetName().."TextRight"..i]:SetText("(" .. prleech .. "%)");
-			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G[self:GetName().."TextRight"..i]:Show();
+			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prleech .. "%)");
 			break
 		end		
 	
@@ -313,9 +304,7 @@ local function getItemIdFromTooltip(self)
 	for i=1, self:NumLines() do
 	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) and rawavoid ~= nil then
-			_G[self:GetName().."TextRight"..i]:SetText("(" .. pravoid .. "%)");
-			_G[self:GetName().."TextRight"..i]:SetTextColor(cvred,cvgreen,cvblue);
-			_G[self:GetName().."TextRight"..i]:Show();
+			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. pravoid .. "%)");
 			break
 		end		
 	
