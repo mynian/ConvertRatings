@@ -1,7 +1,7 @@
 --Set color variables default values to avoid first load errors :M
-cvred = .95
-cvgreen = .90
-cvblue = .60
+cvred = 1
+cvgreen = .996
+cvblue = .545
 cvalpha = 1
 
 --Hard coded color options table :L
@@ -16,7 +16,7 @@ local colorTable = {
 	["pink"] = {1, .5, 1},
 	["purple"] = {.7, 0, 1},
 	["orange"] = {1, 0.5, 1},
-	["default"] = {.95, .90, .60}
+	["default"] = {1, .996, .545}
 }
 --Color Picker
 function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
