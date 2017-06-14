@@ -1,4 +1,4 @@
-## Interface: 70200
+## Interface: 70205
 ## Title: ConvertRatings
 ## Notes: Shows Combat Rating Percentages in tooltips
 ## Version: 1.10
