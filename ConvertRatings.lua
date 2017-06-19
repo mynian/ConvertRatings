@@ -133,6 +133,11 @@ local function getItemIdFromTooltip(self)
 
    	--Get itemLink of mouseover :L
     	local name, itemLink = self:GetItem();
+	
+	--Check to make sure an itemLink is actually returned
+	if(itemLink == nil) then
+     		return;
+	end
 
 	--Declare variables for future use :M
 	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor;
