@@ -155,19 +155,26 @@ local function getItemIdFromTooltip(self)
 		for i=1, self:NumLines() do
 			--Checks if the line contains a statname in its text - then gets the number of that text :L
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
-				rawcrit = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+				rawcrit = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
+				rawcrit = rawcrit:gsub("%p", '')
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) then
-				rawhaste = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+				rawhaste = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
+				rawhaste = rawhaste:gsub("%p", '')
 			elseif(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) then
-				rawmastery = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+				rawmastery = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
+				rawmastery = rawmastery:gsub("%p", '')
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) then
-				rawvers = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+				rawvers = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");	
+				rawvers = rawvers:gsub("%p", '')
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) then
-				rawleech = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+				rawleech = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
+				rawleech = rawleech:gsub("%p", '')
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) then
-				rawavoid = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+				rawavoid = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
+				rawavoid = rawavoid:gsub("%p", '')
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) then
-				rawspeed = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+");
+				rawspeed = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
+				rawspeed = rawspeed:gsub("%p", '')
 			end		
 		end
 	else 
@@ -196,32 +203,32 @@ local function getItemIdFromTooltip(self)
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery, pleech, pavoid, pspeed, prleech, pravoid, prspeed;
     
     --convert raw stats into percentages so long as they are not nil :M
-    if rawcrit ~= nil then
+    if rawcrit ~= nil then		
         pcrit = rawcrit / critamt
     end
 
-    if rawhaste ~= nil then
+    if rawhaste ~= nil then		
         phaste = rawhaste / hasteamt
     end
 
-    if rawvers ~= nil then
+    if rawvers ~= nil then		
         pversin = rawvers / versinamt
         pversout = rawvers / versoutamt
     end
 
-    if rawmastery ~= nil then
+    if rawmastery ~= nil then		
         pmastery = (rawmastery / masteryamt) * masterycf
     end
 	
-	if rawavoid ~= nil then
+	if rawavoid ~= nil then		
 		pavoid = rawavoid / avoidamt
 	end
 	
-	if rawspeed ~= nil then
+	if rawspeed ~= nil then		
 		pspeed = rawspeed / speedamt
 	end
 	
-	if rawleech ~= nil then
+	if rawleech ~= nil then		
 		pleech = rawleech / leechamt
 	end
 
