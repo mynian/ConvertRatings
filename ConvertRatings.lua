@@ -156,25 +156,53 @@ local function getItemIdFromTooltip(self)
 			--Checks if the line contains a statname in its text - then gets the number of that text :L
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
 				rawcrit = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				rawcrit = rawcrit:gsub("%p", '')
+				if rawcrit == nil then
+					break;
+				else
+					rawcrit = rawcrit:gsub("%p", '')
+				end
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) then
 				rawhaste = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				rawhaste = rawhaste:gsub("%p", '')
+				if rawhaste == nil then
+					break;
+				else
+					rawhaste = rawhaste:gsub("%p", '')
+				end
 			elseif(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) then
 				rawmastery = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				rawmastery = rawmastery:gsub("%p", '')
+				if rawmastery == nil then
+					break;
+				else
+					rawmastery = rawmastery:gsub("%p", '')
+				end
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) then
-				rawvers = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");	
-				rawvers = rawvers:gsub("%p", '')
+				rawvers = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
+				if rawvers == nil then
+					break;
+				else
+					rawvers = rawvers:gsub("%p", '')
+				end
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) then
 				rawleech = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				rawleech = rawleech:gsub("%p", '')
+				if rawleech == nil then
+					break;
+				else
+					rawleech = rawleech:gsub("%p", '')
+				end
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) then
 				rawavoid = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				rawavoid = rawavoid:gsub("%p", '')
+				if rawavoid == nil then
+					break;
+				else
+					rawavoid = rawavoid:gsub("%p", '')
+				end
 			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) then
 				rawspeed = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				rawspeed = rawspeed:gsub("%p", '')
+				if rawspeed == nil then
+					break;
+				else
+					rawspeed = rawspeed:gsub("%p", '')
+				end
 			end		
 		end
 	else 
