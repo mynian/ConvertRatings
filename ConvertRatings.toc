@@ -1,4 +1,4 @@
-## Interface: 80001
+## Interface: 80000
 ## Title: ConvertRatings
 ## Notes: Shows Combat Rating Percentages in tooltips
 ## Version: 1.14
