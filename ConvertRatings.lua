@@ -286,71 +286,83 @@ local function getItemIdFromTooltip(self)
 
     
 	--Set output values in the same line as the rating in tooltip :L
-	for i=1, self:NumLines() do
-	
+	for i=1, self:NumLines() do		
+		local line = _G[self:GetName().."TextLeft"..i]
+		local text = line:GetText()
+		if text then
 		--If line contains "Critical Strike", then sets show a 'fontString' and set its text :L
-		if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
-			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prcrit .. "%)");
-			break
-		end		
-	
+			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
+				_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prcrit .. "%)");
+				break
+			end
+		end	
 	end
 	
 	for i=1, self:NumLines() do
-	
+		local line = _G[self:GetName().."TextLeft"..i]
+		local text = line:GetText()
+		if text then	
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
 			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prhaste .. "%)");
 			break
-		end		
-	
+			end
+		end	
 	end
 	
 	for i=1, self:NumLines() do
-	
+		local line = _G[self:GetName().."TextLeft"..i]
+		local text = line:GetText()
+		if text then	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
 			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prmastery .. "%)");
 			break
-		end		
-	
+			end
+		end	
 	end
 	
 	for i=1, self:NumLines() do
-	
+		local line = _G[self:GetName().."TextLeft"..i]
+		local text = line:GetText()
+		if text then
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
 			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prversin .. "%/" .. prversout .. "%)");
 			break
+			end
 		end		
-	
 	end
 	
 	for i=1, self:NumLines() do
-	
+		local line = _G[self:GetName().."TextLeft"..i]
+		local text = line:GetText()
+		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) and rawspeed ~= nil then
 			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prspeed .. "%)");
 			break
+			end
 		end		
-	
 	end
 	
 	for i=1, self:NumLines() do
-	
+		local line = _G[self:GetName().."TextLeft"..i]
+		local text = line:GetText()
+		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) and rawleech ~= nil then
 			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prleech .. "%)");
 			break
+			end
 		end		
-	
 	end
 	
 	for i=1, self:NumLines() do
-	
+		local line = _G[self:GetName().."TextLeft"..i]
+		local text = line:GetText()
+		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) and rawavoid ~= nil then
 			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. pravoid .. "%)");
 			break
-		end		
-	
-	end
-	
-	
+			end
+		end	
+	end	
 end
 
 --Hooks to make the addon function :L
@@ -359,4 +371,3 @@ ItemRefTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip1:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip2:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 WorldMapTooltip.ItemTooltip.Tooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
-
