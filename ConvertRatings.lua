@@ -370,4 +370,4 @@ GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ItemRefTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip1:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip2:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
-WorldMapTooltip.ItemTooltip.Tooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
+GameTooltip.ItemTooltip.Tooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
