@@ -239,64 +239,18 @@ local function getItemIdFromTooltip(self)
 			return;
 		else
 	
+	--Get Gem Info
+	--local gem1name, gem1Link = GetItemGem(itemLink, 1)
+	--local gem1stats = GetItemStats(gem1Link)		  
+	--local gem2name, gem2Link = GetItemGem(itemLink, 2)
+	--local gem3name, gem3Link = GetItemGem(itemLink, 3)
+	
+	
+	
 	--Get Item rarity :M
 	local irare = select(3,GetItemInfo(itemLink))
 	--Artifact specific processing :L
-	if irare == 6 then
-		for i=1, self:NumLines() do
-			--Checks if the line contains a statname in its text - then gets the number of that text :L
-			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) then
-				rawcrit = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				if rawcrit == nil then
-					break;
-				else
-					rawcrit = rawcrit:gsub("%p", '')
-				end
-			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) then
-				rawhaste = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				if rawhaste == nil then
-					break;
-				else
-					rawhaste = rawhaste:gsub("%p", '')
-				end
-			elseif(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) then
-				rawmastery = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				if rawmastery == nil then
-					break;
-				else
-					rawmastery = rawmastery:gsub("%p", '')
-				end
-			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) then
-				rawvers = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				if rawvers == nil then
-					break;
-				else
-					rawvers = rawvers:gsub("%p", '')
-				end
-			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) then
-				rawleech = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				if rawleech == nil then
-					break;
-				else
-					rawleech = rawleech:gsub("%p", '')
-				end
-			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) then
-				rawavoid = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				if rawavoid == nil then
-					break;
-				else
-					rawavoid = rawavoid:gsub("%p", '')
-				end
-			elseif(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) then
-				rawspeed = string.match(_G[self:GetName().."TextLeft"..i]:GetText(), "%d+%,?%.?%s?%d*");
-				if rawspeed == nil then
-					break;
-				else
-					rawspeed = rawspeed:gsub("%p", '')
-				end
-			end		
-		end
-	else 
+
 	
 		--Gets stats from non Artifact items :M
 		stats = GetItemStats(itemLink);
@@ -308,6 +262,7 @@ local function getItemIdFromTooltip(self)
 
 		--Pull individual stats from stats table :M
 		rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
+			print(rawmastery)
 		rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
 		rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
 		rawvers = stats["ITEM_MOD_VERSATILITY"]
@@ -316,7 +271,7 @@ local function getItemIdFromTooltip(self)
 		rawleech = stats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
 		
 	end
-		end
+	
 	
     --Localing the variables here - we'll use them after... :L
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery, pleech, pavoid, pspeed, prleech, pravoid, prspeed;
