@@ -234,25 +234,19 @@ local function getItemIdFromTooltip(self)
 	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor;
 	
 	--Check to see if trainer window is open to prevent errors :M
-		local numServices = GetNumTrainerServices()
-		if numServices ~= 0 then
-			return;
-		else
+	local numServices = GetNumTrainerServices()
+	if numServices ~= 0 then
+		return;
+	else
 	
-	--Get Gem Info
-	--local gem1name, gem1Link = GetItemGem(itemLink, 1)
-	--local gem1stats = GetItemStats(gem1Link)		  
-	--local gem2name, gem2Link = GetItemGem(itemLink, 2)
-	--local gem3name, gem3Link = GetItemGem(itemLink, 3)
+		--Get Gem Info
+		--local gem1name, gem1Link = GetItemGem(itemLink, 1)
+		--local gem1stats = GetItemStats(gem1Link)		  
+		--local gem2name, gem2Link = GetItemGem(itemLink, 2)
+		--local gem3name, gem3Link = GetItemGem(itemLink, 3)
 	
-	
-	
-	--Get Item rarity :M
-	local irare = select(3,GetItemInfo(itemLink))
-	--Artifact specific processing :L
-
-	
-		--Gets stats from non Artifact items :M
+		
+		--Gets stats items :M
 		stats = GetItemStats(itemLink);
 		
 		--If not an item with stats, don't do anything :L
@@ -260,15 +254,14 @@ local function getItemIdFromTooltip(self)
 			return;
 		end
 
-		--Pull individual stats from stats table :M
-		rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]
-			print(rawmastery)
-		rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
-		rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
-		rawvers = stats["ITEM_MOD_VERSATILITY"]
-		rawavoid = stats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
-		rawspeed = stats["ITEM_MOD_CR_SPEED_SHORT"]
-		rawleech = stats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
+	--Pull individual stats from stats table :M
+	rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]			
+	rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
+	rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
+	rawvers = stats["ITEM_MOD_VERSATILITY"]
+	rawavoid = stats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
+	rawspeed = stats["ITEM_MOD_CR_SPEED_SHORT"]
+	rawleech = stats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
 		
 	end
 	
