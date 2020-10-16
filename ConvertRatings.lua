@@ -1,10 +1,10 @@
---Set color variables default values to avoid first load errors :M
+--Set color variables default values to avoid first load errors 
 cvred = 1
 cvgreen = .996
 cvblue = .545
 cvalpha = 1
 
---Hard coded color options table :L
+--Hard coded color options table 
 local colorTable = {
 	["blue"] = {0, 0, 1},
 	["green"] = {0, 1, 0},
@@ -25,7 +25,7 @@ function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
  ColorPickerFrame.previousValues = {cvred, cvgreen, cvblue, cvalpha};
  ColorPickerFrame.func, ColorPickerFrame.opacityFunc, ColorPickerFrame.cancelFunc =  changedCallback, changedCallback, changedCallback;
  ColorPickerFrame:Hide();
- ColorPickerFrame:Show();
+ ColorPickerFrame:Show(); 
  end
 
 local function myColorCallback(restore)
@@ -33,17 +33,17 @@ local function myColorCallback(restore)
  if restore then
   newR, newG, newB, newA = unpack(restore);  
  else
-  newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();
+  newA, newR, newG, newB = OpacitySliderFrame:GetValue(), ColorPickerFrame:GetColorRGB();  
  end 
-  cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;  
+  cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;
 end
 
---Slash Command to change the color of the output :M
+--Slash Command to change the color of the output 
 SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
 function SlashCmdList.CONVERTRATINGS(msg, editBox)
-	--Grab the first input word as the command and the rest of the input as a user variable :M
+	--Grab the first input word as the command and the rest of the input as a user variable 
 	local command, rest = msg:match("^(%S*)%s*(.-)$");
-	--Hard coded color options parsing :M&L
+	--Hard coded color options parsing 
 	
 	if (colorTable[string.lower(command)]) then
 		cvred, cvgreen, cvblue = unpack(colorTable[string.lower(command)]);
@@ -51,7 +51,7 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	elseif string.lower(command) == 'custom' and rest == "" then
 		ShowColorPicker(cvred, cvgreen, cvblue, nil, myColorCallback);
 	else
-		--when no valid args entered, output this stuff :M
+		--when no valid args entered, output this stuff 
 		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange or custom")
 		print("Convert Ratings: The custom option will bring up the Color Picker for you to choose a color.")
 		print("Convert Ratings: To reset to the default color, use /convertratings default")
@@ -59,7 +59,7 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 end
 
 
---rating tables to allow addon to work at all levels :M
+--rating tables to allow addon to work at all levels 
 
 masterytab = {
 				2.704760381,	2.704760381,	2.704760381,	2.704760381,	2.704760381, --5
@@ -160,7 +160,7 @@ speedtab = {
 			5.521603794,	6.096132069,	6.730440573,	7.430749497,	10.00000003, --60
 			}
 
---Create Function to round the decimals :M
+--Create Function to round the decimals 
 local function mathround(number, precision)
   precision = precision or 0
 
@@ -175,16 +175,16 @@ local function mathround(number, precision)
       number = math.ceil(number * power - 0.5) / power;    
     end
     
-    -- convert number to string for formatting :M
+    -- convert number to string for formatting 
     number = tostring(number);      
     
     -- set cutoff :M
     local cutoff = number:sub(decimal + 1 + precision);
       
-    -- delete everything after the cutoff :M
+    -- delete everything after the cutoff 
     number = number:gsub(cutoff, "");
   else
-    -- number is an integer :M
+    -- number is an integer 
     if ( precision > 0 ) then
       number = tostring(number);
       
@@ -203,7 +203,7 @@ end
 local masteryamt, critamt, hasteamt, versinamt, versoutamt, leechamt, avoidamt, speedamt;
 
 
---Here is the function where the stats are pulled from the item that is currently moused over :M&L
+--Here is the function where the stats are pulled from the item that is currently moused over
 local function getItemIdFromTooltip(self)
 	
 	--Determine Mastery Coefficient
@@ -212,7 +212,7 @@ local function getItemIdFromTooltip(self)
 	--Set Player level :M
 	cvlevel = UnitLevel("player")
 		
-	--Select the level based rating amounts :M
+	--Select the level based rating amounts 
 	masteryamt = masterytab[cvlevel]
 	hasteamt = hastetab[cvlevel]
 	critamt = crittab[cvlevel]
@@ -222,8 +222,9 @@ local function getItemIdFromTooltip(self)
 	avoidamt = avoidtab[cvlevel]
 	speedamt = speedtab[cvlevel]
 
-   	--Get itemLink of mouseover :L
-    	local name, itemLink = self:GetItem();
+   	--Get itemLink of mouseover 
+    	local name, itemLink = self:GetItem();	
+		
 	
 	--Check to make sure an itemLink is actually returned
 	if(itemLink == nil) then
@@ -231,9 +232,10 @@ local function getItemIdFromTooltip(self)
 	end
 
 	--Declare variables for future use :M
-	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor;
+	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newmastery, oldcrit, newcrit, oldhaste, newhaste, oldvers, newvers, oldavoid, newavoid, oldspeed, newspeed, oldleech, newleech, olditemslot, olditemlink, oldstats, oimastery, oicrit, oihaste, oivers, oileech, oiavoid, oispeed;
 	
-	--Check to see if trainer window is open to prevent errors :M
+	
+	--Check to see if trainer window is open to prevent errors 
 	local numServices = GetNumTrainerServices()
 	if numServices ~= 0 then
 		return;
@@ -254,7 +256,7 @@ local function getItemIdFromTooltip(self)
 			return;
 		end
 
-	--Pull individual stats from stats table :M
+	--Pull individual stats from stats table
 	rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]			
 	rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
 	rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
@@ -262,14 +264,44 @@ local function getItemIdFromTooltip(self)
 	rawavoid = stats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
 	rawspeed = stats["ITEM_MOD_CR_SPEED_SHORT"]
 	rawleech = stats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
+	
+	--Get the item's equip slot
+	olditemslot = C_Item.GetItemInventoryTypeByID(itemLink)
+		
+	--Get Equipped item's itemlink for that slot
+		--still needs a comparison table to properly grab weapons, trinkets and rings
+	olditemlink = GetInventoryItemLink("player", olditemslot)
+	
+	--Equipped item's stat table
+	oldstats = GetItemStats(olditemlink)
+	
+	--Equipped item's stats
+		--will probably need to rework this for weapons, trinkets and rings
+	oimastery = oldstats["ITEM_MOD_MASTERY_RATING_SHORT"]			
+	oicrit = oldstats["ITEM_MOD_CRIT_RATING_SHORT"]	
+	oihaste = oldstats["ITEM_MOD_HASTE_RATING_SHORT"]
+	oivers = oldstats["ITEM_MOD_VERSATILITY"]
+	oiavoid = oldstats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
+	oispeed = oldstats["ITEM_MOD_CR_SPEED_SHORT"]
+	oileech = oldstats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
 		
 	end
 	
+	--Pulling Current Combat Rating Bonuses for a baseline	
+	oldmastery = GetCombatRating(26)
+	oldcrit = GetCombatRating(9)
+	oldhaste = GetCombatRating(18)
+	oldvers = GetCombatRating(29)
+	oldadoid = GetCombatRating(21)
+	oldspeed = GetCombatRating(14)
+	oldleech = GetCombatRating(17)
 	
-    --Localing the variables here - we'll use them after... :L
+	
+    --Localing the variables here
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery, pleech, pavoid, pspeed, prleech, pravoid, prspeed;
     
-    --convert raw stats into percentages so long as they are not nil :M
+    --convert raw stats into percentages so long as they are not nil
+		--will need to be reworked for stat DRs
     if rawcrit ~= nil then		
         pcrit = rawcrit / critamt
     end
@@ -299,7 +331,7 @@ local function getItemIdFromTooltip(self)
 		pleech = rawleech / leechamt
 	end
 
-    --Round The outputs :M
+    --Round The outputs 
     prcrit = mathround(pcrit, 2)
     prhaste = mathround(phaste, 2)
     prversin = mathround(pversin, 2)
@@ -310,7 +342,7 @@ local function getItemIdFromTooltip(self)
 	pravoid = mathround(pavoid, 2)
 
 
-    --Convert percentages to strings :M
+    --Convert percentages to strings 
     tostring(prcrit)
     tostring(prhaste)
     tostring(prversin)
@@ -324,12 +356,12 @@ local function getItemIdFromTooltip(self)
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
 
     
-	--Set output values in the same line as the rating in tooltip :L
+	--Set output values in the same line as the rating in tooltip 
 	for i=1, self:NumLines() do		
 		local line = _G[self:GetName().."TextLeft"..i]
 		local text = line:GetText()
 		if text then
-		--If line contains "Critical Strike", then sets show a 'fontString' and set its text :L
+		--If line contains "Critical Strike", then sets show a 'fontString' and set its text 
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
 				_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prcrit .. "%)");
 				break
@@ -404,7 +436,7 @@ local function getItemIdFromTooltip(self)
 	end	
 end
 
---Hooks to make the addon function :L
+--Hooks to make the addon function
 GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ItemRefTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip1:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
