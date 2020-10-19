@@ -167,17 +167,59 @@ speedtab = {
 			3.366042588, 3.716282611, 4.102965451, 4.529883019, 5.001221777, --55
 			5.521603794, 6.096132069, 6.730440573, 7.430749497, 10.00000003, --60
 			}
---Fuck you Prickle for making me do that.
+--Fuck you Prickle for making me make those look pretty.
 
 --Calculate the DR start spots
-local mastcrit10p, mastcrit20p, mastcrit30p, mastcrit40p, mastcrit50p, mastcritcap;
-mastcrit10p = masterytab[cvlevel] * 30
-mastcrit20p = mastcrit10p + ((masterytab[cvlevel] * 9) * 1.1)
-mastcrit30p = mastcrit20p + ((masterytab[cvlevel] * 8) * 1.2)
-mastcrit40p = mastcrit30p + ((masterytab[cvlevel] * 7) * 1.3)
-mastcrit50p = mastcrit40p + ((masterytab[cvlevel] * 12) * 1.4)
-mastcritcap = mastcrit50p + ((masterytab[cvlevel] * 60) * 1.5)
+local masterytenperc, masterytwentyperc, masterythirtyperc, masteryfourtyperc, masteryfiftyperc, masterycap, crittenperc, crittwentyperc, critthirtyperc, critfourtyperc, critfiftyperc, critcap, hastetenperc, hastetwentyperc, hastethirtyperc, hastefourtyperc, hastefiftyperc, hastecap, verstenperc, verstwentyperc, versthirtyperc, versfourtyperc, versfiftyperc, verscap, leechtenperc, leechtwentyperc, leechthirtyperc, leechfourtyperc, leechfiftyperc, leechcap, avoidtenperc, avoidtwentyperc, avoidthirtyperc, avoidfourtyperc, avoidfiftyperc, avoidcap, speedtenperc, speedtwentyperc, speedthirtyperc, speedfourtyperc, speedfiftyperc, speedcap;
 
+masterytenperc = masterytab[cvlevel] * 30
+masterytwentyperc = masterytenperc + ((masterytab[cvlevel] * 9) * 1.1)
+masterythirtyperc = masterytwentyperc + ((masterytab[cvlevel] * 8) * 1.2)
+masteryfourtyperc = masterythirtyperc + ((masterytab[cvlevel] * 7) * 1.3)
+masteryfiftyperc = masteryfourtyperc + ((masterytab[cvlevel] * 12) * 1.4)
+masterycap = masteryfiftyperc + ((masterytab[cvlevel] * 60) * 1.5)
+
+crittenperc = crittab[cvlevel] * 30
+crittwentyperc = crittenperc + ((crittab[cvlevel] * 9) * 1.1)
+critthirtyperc = crittwentyperc + ((crittab[cvlevel] * 8) * 1.2)
+critfourtyperc = critthirtyperc + ((crittab[cvlevel] * 7) * 1.3)
+critfiftyperc = critfourtyperc + ((crittab[cvlevel] * 12) * 1.4)
+critcap = critfiftyperc + ((crittab[cvlevel] * 60) * 1.5)
+
+hastetenperc = hastetab[cvlevel] * 30
+hastetwentyperc = hastetenperc + ((hastetab[cvlevel] * 9) * 1.1)
+hastethirtyperc = hastetwentyperc + ((hastetab[cvlevel] * 8) * 1.2)
+hastefourtyperc = hastethirtyperc + ((hastetab[cvlevel] * 7) * 1.3)
+hastefiftyperc = hastefourtyperc + ((hastetab[cvlevel] * 12) * 1.4)
+hastecap = hastefiftyperc + ((hastetab[cvlevel] * 60) * 1.5)
+
+verstenperc = verstab[cvlevel] * 30
+verstwentyperc = verstenperc + ((verstab[cvlevel] * 9) * 1.1)
+versthirtyperc = verstwentyperc + ((verstab[cvlevel] * 8) * 1.2)
+versfourtyperc = versthirtyperc + ((verstab[cvlevel] * 7) * 1.3)
+versfiftyperc = versfourtyperc + ((verstab[cvlevel] * 12) * 1.4)
+verscap = versfiftyperc + ((verstab[cvlevel] * 60) * 1.5)
+
+leechtenperc = leechtab[cvlevel] * 30
+leechtwentyperc = leechtenperc + ((leechtab[cvlevel] * 9) * 1.1)
+leechthirtyperc = leechtwentyperc + ((leechtab[cvlevel] * 8) * 1.2)
+leechfourtyperc = leechthirtyperc + ((leechtab[cvlevel] * 7) * 1.3)
+leechfiftyperc = leechfourtyperc + ((leechtab[cvlevel] * 12) * 1.4)
+leechcap = leechfiftyperc + ((leechtab[cvlevel] * 60) * 1.5)
+
+avoidtenperc = avoidtab[cvlevel] * 30
+avoidtwentyperc = avoidtenperc + ((avoidtab[cvlevel] * 9) * 1.1)
+avoidthirtyperc = avoidtwentyperc + ((avoidtab[cvlevel] * 8) * 1.2)
+avoidfourtyperc = avoidthirtyperc + ((avoidtab[cvlevel] * 7) * 1.3)
+avoidfiftyperc = avoidfourtyperc + ((avoidtab[cvlevel] * 12) * 1.4)
+avoidcap = avoidfiftyperc + ((avoidtab[cvlevel] * 60) * 1.5)
+
+speedtenperc = speedtab[cvlevel] * 30
+speedtwentyperc = speedtenperc + ((speedtab[cvlevel] * 9) * 1.1)
+speedthirtyperc = speedtwentyperc + ((speedtab[cvlevel] * 8) * 1.2)
+speedfourtyperc = speedthirtyperc + ((speedtab[cvlevel] * 7) * 1.3)
+speedfiftyperc = speedfourtyperc + ((speedtab[cvlevel] * 12) * 1.4)
+speedcap = speedfiftyperc + ((speedtab[cvlevel] * 60) * 1.5)
 
 --Create Function to round the decimals 
 local function mathround(number, precision)
@@ -350,7 +392,7 @@ local function getItemIdFromTooltip(self)
 		pleech = rawleech / leechamt
 	end
 
-    --Round The outputs 
+	--Round The outputs 
 	prcrit = mathround(pcrit, 2)
 	prhaste = mathround(phaste, 2)
 	prversin = mathround(pversin, 2)
@@ -361,7 +403,7 @@ local function getItemIdFromTooltip(self)
 	pravoid = mathround(pavoid, 2)
 
 
-    --Convert percentages to strings 
+	--Convert percentages to strings 
 	tostring(prcrit)
 	tostring(prhaste)
 	tostring(prversin)
