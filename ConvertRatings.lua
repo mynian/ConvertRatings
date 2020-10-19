@@ -278,7 +278,7 @@ local function getItemIdFromTooltip(self)
 	
 	--Get the item's equip slot
 	olditemtype = C_Item.GetItemInventoryTypeByID(itemLink)
-	olditemslot = invtable[olditemtype]bb	
+	olditemslot = invtable[olditemtype]	
 		
 	--Get Equipped item's itemlink for that slot
 		--still needs a comparison table to properly grab weapons, trinkets and rings
