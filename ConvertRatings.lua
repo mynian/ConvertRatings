@@ -172,7 +172,6 @@ mastcrit40p = mastcrit30p + ((masterytab[cvlevel] * 7) * 1.3)
 mastcrit50p = mastcrit40p + ((masterytab[cvlevel] * 12) * 1.4)
 mastcritcap = mastcrit50p + ((masterytab[cvlevel] * 60) * 1.5)
 
-]]--
 
 --Create Function to round the decimals 
 local function mathround(number, precision)
