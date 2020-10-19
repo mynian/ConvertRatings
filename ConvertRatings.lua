@@ -18,6 +18,10 @@ local colorTable = {
 	["orange"] = {1, 0.5, 1},
 	["default"] = {1, .996, .545}
 }
+
+--Inventory table
+local invtable = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 16, 17, 16, 15, 16, 0, 0, 5, 16, 17, 17, 0, 0, 16, 0, 0}
+
 --Color Picker
 function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
  ColorPickerFrame:SetColorRGB(cvred, cvgreen, cvblue);
@@ -232,7 +236,7 @@ local function getItemIdFromTooltip(self)
 	end
 
 	--Declare variables for future use :M
-	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newmastery, oldcrit, newcrit, oldhaste, newhaste, oldvers, newvers, oldavoid, newavoid, oldspeed, newspeed, oldleech, newleech, olditemslot, olditemlink, oldstats, oimastery, oicrit, oihaste, oivers, oileech, oiavoid, oispeed;
+	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newmastery, oldcrit, newcrit, oldhaste, newhaste, oldvers, newvers, oldavoid, newavoid, oldspeed, newspeed, oldleech, newleech, olditemslot, olditemslotname, olditemtype, olditemlink, oldstats, oimastery, oicrit, oihaste, oivers, oileech, oiavoid, oispeed;
 	
 	
 	--Check to see if trainer window is open to prevent errors 
@@ -266,17 +270,19 @@ local function getItemIdFromTooltip(self)
 	rawleech = stats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
 	
 	--Get the item's equip slot
-	olditemslot = C_Item.GetItemInventoryTypeByID(itemLink)
+	olditemtype = C_Item.GetItemInventoryTypeByID(itemLink)
+	olditemslot = invtable[olditemtype]bb	
 		
 	--Get Equipped item's itemlink for that slot
 		--still needs a comparison table to properly grab weapons, trinkets and rings
 	olditemlink = GetInventoryItemLink("player", olditemslot)
 	
 	--Equipped item's stat table
+		--needs rework for weapons, trinkets and rings
 	oldstats = GetItemStats(olditemlink)
 	
 	--Equipped item's stats
-		--will probably need to rework this for weapons, trinkets and rings
+		--need to rework this for weapons, trinkets and rings
 	oimastery = oldstats["ITEM_MOD_MASTERY_RATING_SHORT"]			
 	oicrit = oldstats["ITEM_MOD_CRIT_RATING_SHORT"]	
 	oihaste = oldstats["ITEM_MOD_HASTE_RATING_SHORT"]
@@ -301,7 +307,7 @@ local function getItemIdFromTooltip(self)
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery, pleech, pavoid, pspeed, prleech, pravoid, prspeed;
     
     --convert raw stats into percentages so long as they are not nil
-		--will need to be reworked for stat DRs
+		--will need to be reworked for stat DRs and multiple slots
     if rawcrit ~= nil then		
         pcrit = rawcrit / critamt
     end
