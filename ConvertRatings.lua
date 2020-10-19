@@ -62,7 +62,6 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	end
 end
 
-
 --rating tables to allow addon to work at all levels 
 
 masterytab = {
@@ -164,6 +163,17 @@ speedtab = {
 			5.521603794,	6.096132069,	6.730440573,	7.430749497,	10.00000003, --60
 			}
 
+-- Calculate the DR start spots
+local mastcrit10p, mastcrit20p, mastcrit30p, mastcrit40p, mastcrit50p, mastcritcap;
+mastcrit10p = masterytab[cvlevel] * 30
+mastcrit20p = mastcrit10p + ((masterytab[cvlevel] * 9) * 1.1)
+mastcrit30p = mastcrit20p + ((masterytab[cvlevel] * 8) * 1.2)
+mastcrit40p = mastcrit30p + ((masterytab[cvlevel] * 7) * 1.3)
+mastcrit50p = mastcrit40p + ((masterytab[cvlevel] * 12) * 1.4)
+mastcritcap = mastcrit50p + ((masterytab[cvlevel] * 60) * 1.5)
+
+]]--
+
 --Create Function to round the decimals 
 local function mathround(number, precision)
   precision = precision or 0
@@ -203,9 +213,7 @@ local function mathround(number, precision)
   return number;
 end
 
-
 local masteryamt, critamt, hasteamt, versinamt, versoutamt, leechamt, avoidamt, speedamt;
-
 
 --Here is the function where the stats are pulled from the item that is currently moused over
 local function getItemIdFromTooltip(self)
