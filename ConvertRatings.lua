@@ -41,7 +41,7 @@ local function myColorCallback(restore)
  end 
   cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;
 end
- 
+
 --Slash Command to change the color of the output 
 SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
 function SlashCmdList.CONVERTRATINGS(msg, editBox)
@@ -351,22 +351,22 @@ local function getItemIdFromTooltip(self)
 	end
 
     --Round The outputs 
-    prcrit = mathround(pcrit, 2)
-    prhaste = mathround(phaste, 2)
-    prversin = mathround(pversin, 2)
-    prversout = mathround(pversout, 2)
-    prmastery = mathround(pmastery, 2)
+	prcrit = mathround(pcrit, 2)
+	prhaste = mathround(phaste, 2)
+	prversin = mathround(pversin, 2)
+	prversout = mathround(pversout, 2)
+	prmastery = mathround(pmastery, 2)
 	prspeed = mathround(pspeed, 2)
 	prleech = mathround(pleech, 2)
 	pravoid = mathround(pavoid, 2)
 
 
     --Convert percentages to strings 
-    tostring(prcrit)
-    tostring(prhaste)
-    tostring(prversin)
-    tostring(prversout)
-    tostring(prmastery)
+	tostring(prcrit)
+	tostring(prhaste)
+	tostring(prversin)
+	tostring(prversout)
+	tostring(prmastery)
 	tostring(prleech)
 	tostring(pravoid)
 	tostring(prspeed)
