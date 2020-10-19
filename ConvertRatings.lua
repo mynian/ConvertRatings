@@ -41,7 +41,7 @@ local function myColorCallback(restore)
  end 
   cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;
 end
-
+ 
 --Slash Command to change the color of the output 
 SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
 function SlashCmdList.CONVERTRATINGS(msg, editBox)
