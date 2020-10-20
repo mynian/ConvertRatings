@@ -280,8 +280,7 @@ local function getItemIdFromTooltip(self)
 	speedcap = speedfiftyperc + ((speedamt * 60) * 1.5)
 
    	--Get itemLink of mouseover 
-	local name, itemLink = self:GetItem();	
-		
+	local name, itemLink = self:GetItem();		
 	
 	--Check to make sure an itemLink is actually returned
 	if(itemLink == nil) then
@@ -289,7 +288,8 @@ local function getItemIdFromTooltip(self)
 	end
 
 	--Declare variables for future use :M
-	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newmastery, oldcrit, newcrit, oldhaste, newhaste, oldvers, newvers, oldavoid, newavoid, oldspeed, newspeed, oldleech, newleech, olditemslot, olditemslotname, olditemtype, olditemlink, oldstats, oimastery, oicrit, oihaste, oivers, oileech, oiavoid, oispeed;
+	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newmastery, oldcrit, newcrit, oldhaste, newhaste, oldvers, newvers, oldavoid, newavoid, oldspeed, newspeed, oldleech, newleech;
+	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats eqsomastery, eqstmastery, eqsocrit, eqstcrit eqsohaste, eqsthaste eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed;
 	
 	
 	--Check to see if trainer window is open to prevent errors 
@@ -316,12 +316,12 @@ local function getItemIdFromTooltip(self)
 	rawleech = stats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
 	
 	--Get the item's equip slot
-	olditemtype = C_Item.GetItemInventoryTypeByID(itemLink)
-	olditemslot = invtable[olditemtype]	
+	eqitemtype = C_Item.GetItemInventoryTypeByID(itemLink)
+	eqitemslot = invtable[eqitemtype]	
 		
 	--Get Equipped item's itemlink for that slot
 		--still needs a comparison table to properly grab weapons, trinkets and rings
-	olditemlink = GetInventoryItemLink("player", olditemslot)
+	olditemlink = GetInventoryItemLink("player", eqitemslot)
 	
 	--Equipped item's stat table
 		--needs rework for weapons, trinkets and rings
