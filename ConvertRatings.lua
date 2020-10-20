@@ -260,13 +260,13 @@ local function mathround(number, precision)
   return number;
 end
 
-local masteryamt, critamt, hasteamt, versinamt, versoutamt, leechamt, avoidamt, speedamt;
+local masteryamt, critamt, hasteamt, versinamt, versoutamt, leechamt, avoidamt, speedamt, cvlevel;
 
 --Here is the function where the stats are pulled from the item that is currently moused over
 local function getItemIdFromTooltip(self)
 	
 	--Determine Mastery Coefficient
-    	masterycf = select(2,GetMasteryEffect())
+	masterycf = select(2,GetMasteryEffect())
 		
 	--Set Player level :M
 	cvlevel = UnitLevel("player")
@@ -281,8 +281,58 @@ local function getItemIdFromTooltip(self)
 	avoidamt = avoidtab[cvlevel]
 	speedamt = speedtab[cvlevel]
 
+	--Calculate the DR breakpoints
+	masterytenperc = masteryamt * 30
+	masterytwentyperc = masterytenperc + ((masteryamt * 9) * 1.1)
+	masterythirtyperc = masterytwentyperc + ((masteryamt * 8) * 1.2)
+	masteryfourtyperc = masterythirtyperc + ((masteryamt * 7) * 1.3)
+	masteryfiftyperc = masteryfourtyperc + ((masteryamt * 12) * 1.4)
+	masterycap = masteryfiftyperc + ((masteryamt * 60) * 1.5)
+
+	crittenperc = critamt * 30
+	crittwentyperc = crittenperc + ((critamt * 9) * 1.1)
+	critthirtyperc = crittwentyperc + ((critamt * 8) * 1.2)
+	critfourtyperc = critthirtyperc + ((critamt * 7) * 1.3)
+	critfiftyperc = critfourtyperc + ((critamt * 12) * 1.4)
+	critcap = critfiftyperc + ((critamt * 60) * 1.5)
+
+	hastetenperc = hasteamt * 30
+	hastetwentyperc = hastetenperc + ((hasteamt * 9) * 1.1)
+	hastethirtyperc = hastetwentyperc + ((hasteamt * 8) * 1.2)
+	hastefourtyperc = hastethirtyperc + ((hasteamt * 7) * 1.3)
+	hastefiftyperc = hastefourtyperc + ((hasteamt * 12) * 1.4)
+	hastecap = hastefiftyperc + ((hasteamt * 60) * 1.5)
+
+	verstenperc = versamt * 30
+	verstwentyperc = verstenperc + ((versamt * 9) * 1.1)
+	versthirtyperc = verstwentyperc + ((versamt * 8) * 1.2)
+	versfourtyperc = versthirtyperc + ((versamt * 7) * 1.3)
+	versfiftyperc = versfourtyperc + ((versamt * 12) * 1.4)
+	verscap = versfiftyperc + ((versamt * 60) * 1.5)
+
+	leechtenperc = leechamt * 30
+	leechtwentyperc = leechtenperc + ((leechamt * 9) * 1.1)
+	leechthirtyperc = leechtwentyperc + ((leechamt* 8) * 1.2)
+	leechfourtyperc = leechthirtyperc + ((leechamt * 7) * 1.3)
+	leechfiftyperc = leechfourtyperc + ((leechamt * 12) * 1.4)
+	leechcap = leechfiftyperc + ((leechamt * 60) * 1.5)
+
+	avoidtenperc = avoidamt * 30
+	avoidtwentyperc = avoidtenperc + ((avoidamt * 9) * 1.1)
+	avoidthirtyperc = avoidtwentyperc + ((avoidamt * 8) * 1.2)
+	avoidfourtyperc = avoidthirtyperc + ((avoidamt	 * 7) * 1.3)
+	avoidfiftyperc = avoidfourtyperc + ((avoidamt * 12) * 1.4)
+	avoidcap = avoidfiftyperc + ((avoidamt * 60) * 1.5)
+
+	speedtenperc = speedamt * 30
+	speedtwentyperc = speedtenperc + ((speedamt * 9) * 1.1)
+	speedthirtyperc = speedtwentyperc + ((speedamt * 8) * 1.2)
+	speedfourtyperc = speedthirtyperc + ((speedamt * 7) * 1.3)
+	speedfiftyperc = speedfourtyperc + ((speedamt * 12) * 1.4)
+	speedcap = speedfiftyperc + ((speedamt * 60) * 1.5)
+
    	--Get itemLink of mouseover 
-    	local name, itemLink = self:GetItem();	
+	local name, itemLink = self:GetItem();	
 		
 	
 	--Check to make sure an itemLink is actually returned
@@ -300,17 +350,10 @@ local function getItemIdFromTooltip(self)
 		return;
 	else
 	
-		--Get Gem Info
-		--local gem1name, gem1Link = GetItemGem(itemLink, 1)
-		--local gem1stats = GetItemStats(gem1Link)		  
-		--local gem2name, gem2Link = GetItemGem(itemLink, 2)
-		--local gem3name, gem3Link = GetItemGem(itemLink, 3)
-	
+	--Gets stats items :M
+	stats = GetItemStats(itemLink);
 		
-		--Gets stats items :M
-		stats = GetItemStats(itemLink);
-		
-		--If not an item with stats, don't do anything :L
+		--If not an item with stats, don't do anything
 		if(stats == nil) then
 			return;
 		end
