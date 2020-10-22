@@ -287,7 +287,7 @@ local function getItemIdFromTooltip(self)
      		return;
 	end
 
-	--Declare variables for future use :M
+	--Declare variables for future use
 	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newmastery, oldcrit, newcrit, oldhaste, newhaste, oldvers, newvers, oldavoid, newavoid, oldspeed, newspeed, oldleech, newleech;
 	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats eqsomastery, eqstmastery, eqsocrit, eqstcrit eqsohaste, eqsthaste eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed;
 	
@@ -298,45 +298,81 @@ local function getItemIdFromTooltip(self)
 		return;
 	else
 	
-	--Gets stats items :M
-	stats = GetItemStats(itemLink);
+		--Gets stats items
+		stats = GetItemStats(itemLink);
 		
 		--If not an item with stats, don't do anything
 		if(stats == nil) then
 			return;
 		end
 
-	--Pull individual stats from stats table
-	rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]			
-	rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
-	rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
-	rawvers = stats["ITEM_MOD_VERSATILITY"]
-	rawavoid = stats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
-	rawspeed = stats["ITEM_MOD_CR_SPEED_SHORT"]
-	rawleech = stats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
+		--Pull individual stats from stats table
+		rawmastery = stats["ITEM_MOD_MASTERY_RATING_SHORT"]			
+		rawcrit = stats["ITEM_MOD_CRIT_RATING_SHORT"]
+		rawhaste = stats["ITEM_MOD_HASTE_RATING_SHORT"]
+		rawvers = stats["ITEM_MOD_VERSATILITY"]
+		rawavoid = stats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
+		rawspeed = stats["ITEM_MOD_CR_SPEED_SHORT"]
+		rawleech = stats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
 	
-	--Get the item's equip slot
-	eqitemtype = C_Item.GetItemInventoryTypeByID(itemLink)
-	eqitemslot = invtable[eqitemtype]	
+		--Get the item's equip slot
+		eqitemtype = C_Item.GetItemInventoryTypeByID(itemLink)
+		eqitemslot = invtable[eqitemtype]	
 		
-	--Get Equipped item's itemlink for that slot
-		--still needs a comparison table to properly grab weapons, trinkets and rings
-	olditemlink = GetInventoryItemLink("player", eqitemslot)
+		--Get Equipped item's itemlink for that slot		
+		if eqitemslot == 11 then
+			eqsoitemlink = GetInventoryItemLink("player", 11)
+			eqstitemlink = GetInventoryItemLink("player", 12)
+		elseif eqitemslot == 13 then
+			eqsoitemlink = GetInventoryItemLink("player", 13)
+			eqstitemlink = GetInventoryItemLink("player", 14)
+		elseif eqitemslot == 16 and GetInventoryItemLink("player", 17) ~= nil then
+			eqsoitemlink = GetInventoryItemLink("player", 16)
+			eqstitemlink = GetInventoryItemLink("player", 17)
+		else
+			eqsoitemlink = GetInventoryItemLink("player", eqitemslot)
+		end		
 	
-	--Equipped item's stat table
-		--needs rework for weapons, trinkets and rings
-	oldstats = GetItemStats(olditemlink)
+		--Slot one stats table
+		if eqsoitemlink ~= nil then
+			eqsostats = GetItemStats(eqsoitemlink)
+		else
+			return;
+		end
+
+		--Slot two stats table
+		if eqstitemlink ~= nil then
+			eqststats = GetItemStats(eqstitemlink)
+		else
+			return;
+		end
+
 	
-	--Equipped item's stats
-		--need to rework this for weapons, trinkets and rings
-	oimastery = oldstats["ITEM_MOD_MASTERY_RATING_SHORT"]			
-	oicrit = oldstats["ITEM_MOD_CRIT_RATING_SHORT"]	
-	oihaste = oldstats["ITEM_MOD_HASTE_RATING_SHORT"]
-	oivers = oldstats["ITEM_MOD_VERSATILITY"]
-	oiavoid = oldstats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
-	oispeed = oldstats["ITEM_MOD_CR_SPEED_SHORT"]
-	oileech = oldstats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
-		
+		--Slot one stat pulls
+		if eqsostats ~= nil then
+			eqsomastery = eqsostats["ITEM_MOD_MASTERY_RATING_SHORT"]			
+			eqsocrit = eqsostats["ITEM_MOD_CRIT_RATING_SHORT"]	
+			eqsohaste = eqsostats["ITEM_MOD_HASTE_RATING_SHORT"]
+			eqsovers = eqsostats["ITEM_MOD_VERSATILITY"]
+			eqsoavoid = eqsostats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
+			eqsospeed = eqsostats["ITEM_MOD_CR_SPEED_SHORT"]
+			eqsoleech = eqsostats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
+		else
+			return;
+		end
+
+		--Slot two stat pulls
+		if eqststats ~= nil then
+			eqstmastery = eqststats["ITEM_MOD_MASTERY_RATING_SHORT"]			
+			eqstcrit = eqststats["ITEM_MOD_CRIT_RATING_SHORT"]	
+			eqsthaste = eqststats["ITEM_MOD_HASTE_RATING_SHORT"]
+			eqstvers = eqststats["ITEM_MOD_VERSATILITY"]
+			eqstavoid = eqststats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
+			eqstspeed = eqststats["ITEM_MOD_CR_SPEED_SHORT"]
+			eqstleech = eqststats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
+		else
+			return;
+		end
 	end
 	
 	--Pulling Current Combat Rating Bonuses for a baseline	
