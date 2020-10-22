@@ -288,7 +288,7 @@ local function getItemIdFromTooltip(self)
 	end
 
 	--Declare variables for future use
-	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newmastery, oldcrit, newcrit, oldhaste, newhaste, oldvers, newvers, oldavoid, newavoid, oldspeed, newspeed, oldleech, newleech;
+	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newsomastery, newstmastery, oldcrit, newsocrit, newstcrit, oldhaste, newsohaste, newsthaste, oldvers, newsovers, newstvers, oldavoid, newsoavoid, newstavoid, oldspeed, newsospeed, newstspeed oldleech, newsoleech, newstleech;
 	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats eqsomastery, eqstmastery, eqsocrit, eqstcrit eqsohaste, eqsthaste eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed;
 	
 	
@@ -319,7 +319,7 @@ local function getItemIdFromTooltip(self)
 		eqitemtype = C_Item.GetItemInventoryTypeByID(itemLink)
 		eqitemslot = invtable[eqitemtype]	
 		
-		--Get Equipped item's itemlink for that slot		
+		--Get the itemlinks for the slots that the new item can be equipped into		
 		if eqitemslot == 11 then
 			eqsoitemlink = GetInventoryItemLink("player", 11)
 			eqstitemlink = GetInventoryItemLink("player", 12)
@@ -336,19 +336,14 @@ local function getItemIdFromTooltip(self)
 		--Slot one stats table
 		if eqsoitemlink ~= nil then
 			eqsostats = GetItemStats(eqsoitemlink)
-		else
-			return;
 		end
 
 		--Slot two stats table
 		if eqstitemlink ~= nil then
-			eqststats = GetItemStats(eqstitemlink)
-		else
-			return;
+			eqststats = GetItemStats(eqstitemlink)			
 		end
-
 	
-		--Slot one stat pulls
+		--Slot one individual stat pulls
 		if eqsostats ~= nil then
 			eqsomastery = eqsostats["ITEM_MOD_MASTERY_RATING_SHORT"]			
 			eqsocrit = eqsostats["ITEM_MOD_CRIT_RATING_SHORT"]	
@@ -356,12 +351,10 @@ local function getItemIdFromTooltip(self)
 			eqsovers = eqsostats["ITEM_MOD_VERSATILITY"]
 			eqsoavoid = eqsostats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
 			eqsospeed = eqsostats["ITEM_MOD_CR_SPEED_SHORT"]
-			eqsoleech = eqsostats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
-		else
-			return;
+			eqsoleech = eqsostats["ITEM_MOD_CR_LIFESTEAL_SHORT"]					
 		end
 
-		--Slot two stat pulls
+		--Slot two individual stat pulls
 		if eqststats ~= nil then
 			eqstmastery = eqststats["ITEM_MOD_MASTERY_RATING_SHORT"]			
 			eqstcrit = eqststats["ITEM_MOD_CRIT_RATING_SHORT"]	
@@ -369,9 +362,7 @@ local function getItemIdFromTooltip(self)
 			eqstvers = eqststats["ITEM_MOD_VERSATILITY"]
 			eqstavoid = eqststats["ITEM_MOD_CR_AVOIDANCE_SHORT"]
 			eqstspeed = eqststats["ITEM_MOD_CR_SPEED_SHORT"]
-			eqstleech = eqststats["ITEM_MOD_CR_LIFESTEAL_SHORT"]
-		else
-			return;
+			eqstleech = eqststats["ITEM_MOD_CR_LIFESTEAL_SHORT"]					
 		end
 	end
 	
@@ -380,10 +371,58 @@ local function getItemIdFromTooltip(self)
 	oldcrit = GetCombatRating(9)
 	oldhaste = GetCombatRating(18)
 	oldvers = GetCombatRating(29)
-	oldadoid = GetCombatRating(21)
+	oldavoid = GetCombatRating(21)
 	oldspeed = GetCombatRating(14)
 	oldleech = GetCombatRating(17)
-	
+
+	--Remove the rating amount from the baseline if the slot has an item already equipped to avoid double dipping the stats possibly causing an erroneous DR tier reach
+	if eqsostats ~= nil then
+		if eqsomastery ~= nil then
+			newsomastery = oldmastery - eqsomastery
+		end
+		if eqsocrit ~= nil then
+			newsocrit = oldcrit - eqsocrit
+		end
+		if eqsohaste ~= nil then
+			newsohaste = oldhaste - eqsohaste
+		end
+		if eqsovers ~= nil then
+			newsovers = oldvers - eqsovers
+		end
+		if eqsoavoid ~= nil then
+			newsoavoid = oldavoid - eqsoavoid
+		end
+		if eqsospeed ~= nil then
+			newsospeed = oldspeed - eqsospeed
+		end
+		if eqsoleech ~= nil then
+			newsoleech = oldleech - eqsoleech
+		end
+	end
+
+	if eqststats ~= nil then
+		if eqstmastery ~= nil then
+			newstmastery = oldmastery - eqstmastery
+		end
+		if eqstcrit ~= nil then
+			newstcrit = oldcrit - eqstcrit
+		end
+		if eqsthaste ~= nil then
+			newsthaste = oldhaste - eqsthaste
+		end
+		if eqstvers ~= nil then
+			newstvers = oldvers - eqstvers
+		end
+		if eqstavoid ~= nil then
+			newstvers = oldvers - eqstvers
+		end
+		if eqstspeed ~= nil then
+			newstspeed = oldspeed - eqstspeed
+		end
+		if eqstleech ~= nil then
+			newstleech = oldleech - eqstleech
+		end
+	end
 	
     --Localing the variables here
     local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery, pleech, pavoid, pspeed, prleech, pravoid, prspeed;
