@@ -424,11 +424,68 @@ local function getItemIdFromTooltip(self)
 		end
 	end
 	
-    --Localing the variables here
-    local pcrit, phaste, pversin, pversout, pmastery, prcrit, prhaste, prversin, prversout, prmastery, pleech, pavoid, pspeed, prleech, pravoid, prspeed;
+    --Localing the variables here   
+	local psocrit, pstcrit, psohaste, psthaste, psoversin, psoversout, pstversin, pstversout, psomastery, pstmastery, psoavoid, pstavoid, psospeed, pstspeed, psoleech, pstleech;
+	local prsocrit, prstcrit, prsohaste, prsthaste, prsoversin, prstversin, prsoversout, prstversout, prsomastery, prstmastery, prsoavoid, prstavoid, prsospeed, prstspeed, prsoleech, prstleech;
+	local socritdiff, socritremain,
     
     --convert raw stats into percentages so long as they are not nil
 		--will need to be reworked for stat DRs and multiple slots
+
+	if rawcrit ~= nil then
+		if newsocrit >= critcap then
+			psocrit = 0
+		elseif newsocrit < critcap and newsocrit >= critfiftyperc then
+			if (newsocrit + rawcrit) <= critcap then
+				psocrit = rawcrit / (critamt * 1.5)
+			else 
+				socritdiff = critcap - newsocrit				
+				psocrit = socritdiff / (critamt * 1.5)
+			end
+		elseif newsocrit < critfiftyperc and newsocrit >= critfourtyperc then
+			if (newsocrit + rawcrit) <= critfiftyperc then
+				psocrit = rawcrit / (critamt * 1.4)
+			else 
+				socritdiff = critfiftyperc - newsocrit
+				socritremain = rawcrit - socritdiff
+				psocrit = (socritdiff / (critamt * 1.4)) + (socritremain / (critamt * 1.5))
+			end
+		elseif newsocrit < critfourtyperc and newsocrit >= critthirtyperc then
+			if (newsocrit + rawcrit) <= critfourtyperc then
+				psocrit = rawcrit / (critamt * 1.3)
+			else
+				socritdiff = critfourtyperc - newsocrit
+				socritremain = rawcrit - socritdiff
+				psocrit = (socritdiff / (critamt * 1.3)) + (socritremain / (critamt * 1.4))
+			end
+		elseif newsocrit < critthirtyperc and newsocrit >= crittwentyperc then
+			if (newsocrit + rawcrit) <= critthirtyperc then
+				psocrit = rawcrit / (critamt * 1.2)
+			else
+				socritdiff = critthirtyperc - newsocrit
+				socritremain = rawcrit - socritdiff
+				psocrit = (socritdiff / (critamt * 1.2)) + (socritremain / (critamt * 1.3))
+			end
+		elseif newsocrit < crittwentyperc and newsocrit >= crittenperc then
+			if (newsocrit + rawcrit) <= crittwentyperc then
+				psocrit = rawcrit / (critamt * 1.1)
+			else
+				socritdiff = crittwentyperc - newsocrit
+				socritremain = rawcrit - socritdiff
+				psocrit = (socritdiff / (critamt * 1.1)) + (socritremain / (critamt * 1.2))
+			end
+		else
+			if (newsocrit + rawcrit) < crittenperc then
+				psocrit = rawcrit / critamt
+			else
+				socritdiff = crittenperc - newsocrit
+				socritremain = rawcrit - socritdiff
+				psocrit = (socritdiff / critamt) + (socritremain / (critamt * 1.1))
+			end
+		end
+			
+			
+
     if rawcrit ~= nil then		
         pcrit = rawcrit / critamt
     end
@@ -481,7 +538,6 @@ local function getItemIdFromTooltip(self)
 	
 	--Convert text color from decimal to hex
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
-
     
 	--Set output values in the same line as the rating in tooltip 
 	for i=1, self:NumLines() do		
