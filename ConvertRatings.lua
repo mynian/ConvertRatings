@@ -483,6 +483,9 @@ local function getItemIdFromTooltip(self)
 				psocrit = (socritdiff / critamt) + (socritremain / (critamt * 1.1))
 			end
 		end
+
+
+	end
 			
 			
 
