@@ -427,7 +427,7 @@ local function getItemIdFromTooltip(self)
     --Localing the variables here   
 	local psocrit, pstcrit, psohaste, psthaste, psoversin, psoversout, pstversin, pstversout, psomastery, pstmastery, psoavoid, pstavoid, psospeed, pstspeed, psoleech, pstleech;
 	local prsocrit, prstcrit, prsohaste, prsthaste, prsoversin, prstversin, prsoversout, prstversout, prsomastery, prstmastery, prsoavoid, prstavoid, prsospeed, prstspeed, prsoleech, prstleech;
-	local socritdiff, socritremain,
+	local socritdiff, socritremain, stcritdiff, stcritremain;
     
     --convert raw stats into percentages so long as they are not nil
 		--will need to be reworked for stat DRs and multiple slots
@@ -483,15 +483,58 @@ local function getItemIdFromTooltip(self)
 				psocrit = (socritdiff / critamt) + (socritremain / (critamt * 1.1))
 			end
 		end
-
-
-	end
-			
-			
-
-    if rawcrit ~= nil then		
-        pcrit = rawcrit / critamt
-    end
+	
+		if newstcrit >= critcap then
+			pstcrit = 0
+		elseif newstcrit < critcap and newstcrit >= critfiftyperc then
+			if (newstcrit + rawcrit) <= critcap then
+				pstcrit = rawcrit / (critamt * 1.5)
+			else 
+				stcritdiff = critcap - newstcrit				
+				pstcrit = stcritdiff / (critamt * 1.5)
+			end
+		elseif newstcrit < critfiftyperc and newstcrit >= critfourtyperc then
+			if (newstcrit + rawcrit) <= critfiftyperc then
+				pstcrit = rawcrit / (critamt * 1.4)
+			else 
+				stcritdiff = critfiftyperc - newstcrit
+				stcritremain = rawcrit - stcritdiff
+				pstcrit = (stcritdiff / (critamt * 1.4)) + (stcritremain / (critamt * 1.5))
+			end
+		elseif newstcrit < critfourtyperc and newstcrit >= critthirtyperc then
+			if (newstcrit + rawcrit) <= critfourtyperc then
+				pstcrit = rawcrit / (critamt * 1.3)
+			else
+				stcritdiff = critfourtyperc - newstcrit
+				stcritremain = rawcrit - stcritdiff
+				pstcrit = (stcritdiff / (critamt * 1.3)) + (stcritremain / (critamt * 1.4))
+			end
+		elseif newstcrit < critthirtyperc and newstcrit >= crittwentyperc then
+			if (newstcrit + rawcrit) <= critthirtyperc then
+				pstcrit = rawcrit / (critamt * 1.2)
+			else
+				stcritdiff = critthirtyperc - newstcrit
+				stcritremain = rawcrit - stcritdiff
+				pstcrit = (stcritdiff / (critamt * 1.2)) + (stcritremain / (critamt * 1.3))
+			end
+		elseif newstcrit < crittwentyperc and newstcrit >= crittenperc then
+			if (newstcrit + rawcrit) <= crittwentyperc then
+				pstcrit = rawcrit / (critamt * 1.1)
+			else
+				stcritdiff = crittwentyperc - newstcrit
+				stcritremain = rawcrit - stcritdiff
+				pstcrit = (stcritdiff / (critamt * 1.1)) + (stcritremain / (critamt * 1.2))
+			end
+		else
+			if (newstcrit + rawcrit) < crittenperc then
+				pstcrit = rawcrit / critamt
+			else
+				stcritdiff = crittenperc - newstcrit
+				stcritremain = rawcrit - stcritdiff
+				pstcrit = (stcritdiff / critamt) + (stcritremain / (critamt * 1.1))
+			end
+		end
+	end	
 
     if rawhaste ~= nil then		
         phaste = rawhaste / hasteamt
