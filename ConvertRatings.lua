@@ -20,7 +20,7 @@ local colorTable = {
 }
 
 --equipment slot table
-local eqslottable = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 16, 17, 16, 15, 16, 0, 0, 5, 16, 17, 17, 0, 0, 16, 0, 0}
+local invtable = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 16, 17, 16, 15, 16, 0, 0, 5, 16, 17, 17, 0, 0, 16, 0, 0}
 
 --Color Picker
 function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
@@ -287,8 +287,8 @@ local function getItemIdFromTooltip(self)
 	end
 
 	--Declare variables for future use
-	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newsomastery, newstmastery, oldcrit, newsocrit, newstcrit, oldhaste, newsohaste, newsthaste, oldvers, newsovers, newstvers, oldavoid, newsoavoid, newstavoid, oldspeed, newsospeed, newstspeed oldleech, newsoleech, newstleech;
-	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats eqsomastery, eqstmastery, eqsocrit, eqstcrit eqsohaste, eqsthaste eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed, stitemtype, stitemslot, stitemlink;
+	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newsomastery, newstmastery, oldcrit, newsocrit, newstcrit, oldhaste, newsohaste, newsthaste, oldvers, newsovers, newstvers, oldavoid, newsoavoid, newstavoid, oldspeed, newsospeed, newstspeed, oldleech, newsoleech, newstleech;
+	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats, eqsomastery, eqstmastery, eqsocrit, eqstcrit, eqsohaste, eqsthaste, eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed, stitemtype, stitemslot, stitemlink;
 	
 	
 	--Check to see if trainer window is open to prevent errors 
@@ -2007,8 +2007,8 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then		
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
-				if prstcrit ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%) (" .. prstcrit .. "%)";
+				if eqststats ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%) (" .. prstcrit .. "%)");
 					break
 				else
 					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%)");
@@ -2023,8 +2023,8 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then			
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
-				if prsthaste ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%) (" .. prsthaste .. "%)";
+				if eqststats ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%) (" .. prsthaste .. "%)");
 					break
 				else
 					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%)");
@@ -2039,8 +2039,8 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
-				if prstmastery ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%) (" .. prstmastery .. "%)";
+				if eqststats ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%) (" .. prstmastery .. "%)");
 					break
 				else
 					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%)");
@@ -2055,7 +2055,7 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
-				if prstversin ~= nil then
+				if eqststats ~= nil then
 					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prsoversin .. "%/" .. prsoversout .. "%) (" .. prstversin .. "%/" .. prstversout .. "%)");
 					break
 				else
@@ -2071,8 +2071,8 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) and rawspeed ~= nil then
-				if prstspeed ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%) (" .. prstspeed .. "%)";
+				if eqststats ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%) (" .. prstspeed .. "%)");
 					break
 				else
 					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%)");
@@ -2087,8 +2087,8 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) and rawleech ~= nil then
-				if prstleech ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%) (" .. prstleech .. "%)";
+				if eqststats ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%) (" .. prstleech .. "%)");
 					break
 				else
 					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%)");
@@ -2103,8 +2103,8 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) and rawavoid ~= nil then
-				if prstavoid ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%) (" .. prstavoid .. "%)";
+				if eqststats ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%) (" .. prstavoid .. "%)");
 					break
 				else
 					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%)");
