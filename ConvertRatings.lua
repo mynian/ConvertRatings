@@ -546,7 +546,7 @@ local function getItemIdFromTooltip(self)
 		end
 			
 	
-		if newstcrit ~= nil then
+		if eqststats ~= nil and newstcrit ~= nil then
 			if newstcrit >= critcap then
 				pstcrit = 0
 			elseif newstcrit < critcap and newstcrit >= critfiftyperc then
@@ -597,7 +597,7 @@ local function getItemIdFromTooltip(self)
 					pstcrit = (stcritdiff / critamt) + (stcritremain / (critamt * 1.1))
 				end
 			end
-		else
+		elseif eqststats ~= nil then
 			if oldcrit >= critcap then
 				pstcrit = 0
 			elseif oldcrit < critcap and oldcrit >= critfiftyperc then
@@ -756,7 +756,7 @@ local function getItemIdFromTooltip(self)
 			end
 		end
 	
-		if newsthaste ~= nil then
+		if eqststats ~= nil and newsthaste ~= nil then
 			if newsthaste >= hastecap then
 				psthaste = 0
 			elseif newsthaste < hastecap and newsthaste >= hastefiftyperc then
@@ -807,7 +807,7 @@ local function getItemIdFromTooltip(self)
 					psthaste = (sthastediff / hasteamt) + (sthasteremain / (hasteamt * 1.1))
 				end
 			end
-		else
+		elseif eqststats ~=nil then
 			if oldhaste >= hastecap then
 				psthaste = 0
 			elseif oldhaste < hastecap and oldhaste >= hastefiftyperc then
