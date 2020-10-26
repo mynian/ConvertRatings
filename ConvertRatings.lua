@@ -289,7 +289,7 @@ local function getItemIdFromTooltip(self)
 
 	--Declare variables for future use
 	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newsomastery, newstmastery, oldcrit, newsocrit, newstcrit, oldhaste, newsohaste, newsthaste, oldvers, newsovers, newstvers, oldavoid, newsoavoid, newstavoid, oldspeed, newsospeed, newstspeed oldleech, newsoleech, newstleech;
-	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats eqsomastery, eqstmastery, eqsocrit, eqstcrit eqsohaste, eqsthaste eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed;
+	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats eqsomastery, eqstmastery, eqsocrit, eqstcrit eqsohaste, eqsthaste eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed, stitemtype, stitemslot, stitemlink;
 	
 	
 	--Check to see if trainer window is open to prevent errors 
@@ -326,9 +326,19 @@ local function getItemIdFromTooltip(self)
 		elseif eqitemslot == 13 then
 			eqsoitemlink = GetInventoryItemLink("player", 13)
 			eqstitemlink = GetInventoryItemLink("player", 14)
-		elseif eqitemslot == 16 and GetInventoryItemLink("player", 17) ~= nil then
-			eqsoitemlink = GetInventoryItemLink("player", 16)
-			eqstitemlink = GetInventoryItemLink("player", 17)
+		elseif eqitemslot == 16 then
+			stitemlink = GetInventoryItemLink("player", 17)
+			if stitemlink ~= nil then
+				stitemtype = C_Item.GetItemInventoryTypeByID(stitemlink)
+				if (stitemtype == 14) or (stitemtype == 22) or (stitemtype == 23) then
+					eqsoitemlink = GetInventoryItemLink("player", 16)
+				else
+					eqsoitemlink = GetInventoryItemLink("player", 16)
+					eqstitemlink = GetInventoryItemLink("player", 17)
+				end
+			else
+				eqsoitemlink = GetInventoryItemLink("player", 16)
+			end					
 		else
 			eqsoitemlink = GetInventoryItemLink("player", eqitemslot)
 		end		
@@ -427,118 +437,429 @@ local function getItemIdFromTooltip(self)
     --Localing the variables here   
 	local psocrit, pstcrit, psohaste, psthaste, psoversin, psoversout, pstversin, pstversout, psomastery, pstmastery, psoavoid, pstavoid, psospeed, pstspeed, psoleech, pstleech;
 	local prsocrit, prstcrit, prsohaste, prsthaste, prsoversin, prstversin, prsoversout, prstversout, prsomastery, prstmastery, prsoavoid, prstavoid, prsospeed, prstspeed, prsoleech, prstleech;
-	local socritdiff, socritremain, stcritdiff, stcritremain;
+	local socritdiff, socritremain, stcritdiff, stcritremain, somasterydiff, somasteryremain, stmasterydiff, stmasteryremain, sohastediff, sohasteremain,sthastediff, sthasteremain, soversdiff, soversremain, stversdiff, stversremain, soavoiddiff, soavoidremain, stavoiddiff, stavoidremain, sospeeddiff, sospeedremain, stspeeddiff, stspeedremain, soleechdiff, soleechremain, stleechdiff, stleechremain;
     
     --convert raw stats into percentages so long as they are not nil
-		--will need to be reworked for stat DRs and multiple slots
-
 	if rawcrit ~= nil then
-		if newsocrit >= critcap then
-			psocrit = 0
-		elseif newsocrit < critcap and newsocrit >= critfiftyperc then
-			if (newsocrit + rawcrit) <= critcap then
-				psocrit = rawcrit / (critamt * 1.5)
-			else 
-				socritdiff = critcap - newsocrit				
-				psocrit = socritdiff / (critamt * 1.5)
-			end
-		elseif newsocrit < critfiftyperc and newsocrit >= critfourtyperc then
-			if (newsocrit + rawcrit) <= critfiftyperc then
-				psocrit = rawcrit / (critamt * 1.4)
-			else 
-				socritdiff = critfiftyperc - newsocrit
-				socritremain = rawcrit - socritdiff
-				psocrit = (socritdiff / (critamt * 1.4)) + (socritremain / (critamt * 1.5))
-			end
-		elseif newsocrit < critfourtyperc and newsocrit >= critthirtyperc then
-			if (newsocrit + rawcrit) <= critfourtyperc then
-				psocrit = rawcrit / (critamt * 1.3)
+		if newsocrit ~= nil then
+			if newsocrit >= critcap then
+				psocrit = 0
+			elseif newsocrit < critcap and newsocrit >= critfiftyperc then
+				if (newsocrit + rawcrit) <= critcap then
+					psocrit = rawcrit / (critamt * 1.5)
+				else 
+					socritdiff = critcap - newsocrit				
+					psocrit = socritdiff / (critamt * 1.5)
+				end
+			elseif newsocrit < critfiftyperc and newsocrit >= critfourtyperc then
+				if (newsocrit + rawcrit) <= critfiftyperc then
+					psocrit = rawcrit / (critamt * 1.4)
+				else 
+					socritdiff = critfiftyperc - newsocrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / (critamt * 1.4)) + (socritremain / (critamt * 1.5))
+				end
+			elseif newsocrit < critfourtyperc and newsocrit >= critthirtyperc then
+				if (newsocrit + rawcrit) <= critfourtyperc then
+					psocrit = rawcrit / (critamt * 1.3)
+				else
+					socritdiff = critfourtyperc - newsocrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / (critamt * 1.3)) + (socritremain / (critamt * 1.4))
+				end
+			elseif newsocrit < critthirtyperc and newsocrit >= crittwentyperc then
+				if (newsocrit + rawcrit) <= critthirtyperc then
+					psocrit = rawcrit / (critamt * 1.2)
+				else
+					socritdiff = critthirtyperc - newsocrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / (critamt * 1.2)) + (socritremain / (critamt * 1.3))
+				end
+			elseif newsocrit < crittwentyperc and newsocrit >= crittenperc then
+				if (newsocrit + rawcrit) <= crittwentyperc then
+					psocrit = rawcrit / (critamt * 1.1)
+				else
+					socritdiff = crittwentyperc - newsocrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / (critamt * 1.1)) + (socritremain / (critamt * 1.2))
+				end
 			else
-				socritdiff = critfourtyperc - newsocrit
-				socritremain = rawcrit - socritdiff
-				psocrit = (socritdiff / (critamt * 1.3)) + (socritremain / (critamt * 1.4))
-			end
-		elseif newsocrit < critthirtyperc and newsocrit >= crittwentyperc then
-			if (newsocrit + rawcrit) <= critthirtyperc then
-				psocrit = rawcrit / (critamt * 1.2)
-			else
-				socritdiff = critthirtyperc - newsocrit
-				socritremain = rawcrit - socritdiff
-				psocrit = (socritdiff / (critamt * 1.2)) + (socritremain / (critamt * 1.3))
-			end
-		elseif newsocrit < crittwentyperc and newsocrit >= crittenperc then
-			if (newsocrit + rawcrit) <= crittwentyperc then
-				psocrit = rawcrit / (critamt * 1.1)
-			else
-				socritdiff = crittwentyperc - newsocrit
-				socritremain = rawcrit - socritdiff
-				psocrit = (socritdiff / (critamt * 1.1)) + (socritremain / (critamt * 1.2))
+				if (newsocrit + rawcrit) < crittenperc then
+					psocrit = rawcrit / critamt
+				else
+					socritdiff = crittenperc - newsocrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / critamt) + (socritremain / (critamt * 1.1))
+				end
 			end
 		else
-			if (newsocrit + rawcrit) < crittenperc then
-				psocrit = rawcrit / critamt
+			if oldcrit >= critcap then
+				psocrit = 0
+			elseif oldcrit < critcap and oldcrit >= critfiftyperc then
+				if (oldcrit + rawcrit) <= critcap then
+					psocrit = rawcrit / (critamt * 1.5)
+				else 
+					socritdiff = critcap - oldcrit				
+					psocrit = socritdiff / (critamt * 1.5)
+				end
+			elseif oldcrit < critfiftyperc and oldcrit >= critfourtyperc then
+				if (oldcrit + rawcrit) <= critfiftyperc then
+					psocrit = rawcrit / (critamt * 1.4)
+				else 
+					socritdiff = critfiftyperc - oldcrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / (critamt * 1.4)) + (socritremain / (critamt * 1.5))
+				end
+			elseif oldcrit < critfourtyperc and oldcrit >= critthirtyperc then
+				if (oldcrit + rawcrit) <= critfourtyperc then
+					psocrit = rawcrit / (critamt * 1.3)
+				else
+					socritdiff = critfourtyperc - oldcrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / (critamt * 1.3)) + (socritremain / (critamt * 1.4))
+				end
+			elseif oldcrit < critthirtyperc and oldcrit >= crittwentyperc then
+				if (oldcrit + rawcrit) <= critthirtyperc then
+					psocrit = rawcrit / (critamt * 1.2)
+				else
+					socritdiff = critthirtyperc - oldcrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / (critamt * 1.2)) + (socritremain / (critamt * 1.3))
+				end
+			elseif oldcrit < crittwentyperc and oldcrit >= crittenperc then
+				if (oldcrit + rawcrit) <= crittwentyperc then
+					psocrit = rawcrit / (critamt * 1.1)
+				else
+					socritdiff = crittwentyperc - oldcrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / (critamt * 1.1)) + (socritremain / (critamt * 1.2))
+				end
 			else
-				socritdiff = crittenperc - newsocrit
-				socritremain = rawcrit - socritdiff
-				psocrit = (socritdiff / critamt) + (socritremain / (critamt * 1.1))
+				if (oldcrit + rawcrit) < crittenperc then
+					psocrit = rawcrit / critamt
+				else
+					socritdiff = crittenperc - oldcrit
+					socritremain = rawcrit - socritdiff
+					psocrit = (socritdiff / critamt) + (socritremain / (critamt * 1.1))
+				end
 			end
 		end
+			
 	
-		if newstcrit >= critcap then
-			pstcrit = 0
-		elseif newstcrit < critcap and newstcrit >= critfiftyperc then
-			if (newstcrit + rawcrit) <= critcap then
-				pstcrit = rawcrit / (critamt * 1.5)
-			else 
-				stcritdiff = critcap - newstcrit				
-				pstcrit = stcritdiff / (critamt * 1.5)
-			end
-		elseif newstcrit < critfiftyperc and newstcrit >= critfourtyperc then
-			if (newstcrit + rawcrit) <= critfiftyperc then
-				pstcrit = rawcrit / (critamt * 1.4)
-			else 
-				stcritdiff = critfiftyperc - newstcrit
-				stcritremain = rawcrit - stcritdiff
-				pstcrit = (stcritdiff / (critamt * 1.4)) + (stcritremain / (critamt * 1.5))
-			end
-		elseif newstcrit < critfourtyperc and newstcrit >= critthirtyperc then
-			if (newstcrit + rawcrit) <= critfourtyperc then
-				pstcrit = rawcrit / (critamt * 1.3)
+		if newstcrit ~= nil then
+			if newstcrit >= critcap then
+				pstcrit = 0
+			elseif newstcrit < critcap and newstcrit >= critfiftyperc then
+				if (newstcrit + rawcrit) <= critcap then
+					pstcrit = rawcrit / (critamt * 1.5)
+				else 
+					stcritdiff = critcap - newstcrit				
+					pstcrit = stcritdiff / (critamt * 1.5)
+				end
+			elseif newstcrit < critfiftyperc and newstcrit >= critfourtyperc then
+				if (newstcrit + rawcrit) <= critfiftyperc then
+					pstcrit = rawcrit / (critamt * 1.4)
+				else 
+					stcritdiff = critfiftyperc - newstcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / (critamt * 1.4)) + (stcritremain / (critamt * 1.5))
+				end
+			elseif newstcrit < critfourtyperc and newstcrit >= critthirtyperc then
+				if (newstcrit + rawcrit) <= critfourtyperc then
+					pstcrit = rawcrit / (critamt * 1.3)
+				else
+					stcritdiff = critfourtyperc - newstcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / (critamt * 1.3)) + (stcritremain / (critamt * 1.4))
+				end
+			elseif newstcrit < critthirtyperc and newstcrit >= crittwentyperc then
+				if (newstcrit + rawcrit) <= critthirtyperc then
+					pstcrit = rawcrit / (critamt * 1.2)
+				else
+					stcritdiff = critthirtyperc - newstcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / (critamt * 1.2)) + (stcritremain / (critamt * 1.3))
+				end
+			elseif newstcrit < crittwentyperc and newstcrit >= crittenperc then
+				if (newstcrit + rawcrit) <= crittwentyperc then
+					pstcrit = rawcrit / (critamt * 1.1)
+				else
+					stcritdiff = crittwentyperc - newstcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / (critamt * 1.1)) + (stcritremain / (critamt * 1.2))
+				end
 			else
-				stcritdiff = critfourtyperc - newstcrit
-				stcritremain = rawcrit - stcritdiff
-				pstcrit = (stcritdiff / (critamt * 1.3)) + (stcritremain / (critamt * 1.4))
-			end
-		elseif newstcrit < critthirtyperc and newstcrit >= crittwentyperc then
-			if (newstcrit + rawcrit) <= critthirtyperc then
-				pstcrit = rawcrit / (critamt * 1.2)
-			else
-				stcritdiff = critthirtyperc - newstcrit
-				stcritremain = rawcrit - stcritdiff
-				pstcrit = (stcritdiff / (critamt * 1.2)) + (stcritremain / (critamt * 1.3))
-			end
-		elseif newstcrit < crittwentyperc and newstcrit >= crittenperc then
-			if (newstcrit + rawcrit) <= crittwentyperc then
-				pstcrit = rawcrit / (critamt * 1.1)
-			else
-				stcritdiff = crittwentyperc - newstcrit
-				stcritremain = rawcrit - stcritdiff
-				pstcrit = (stcritdiff / (critamt * 1.1)) + (stcritremain / (critamt * 1.2))
+				if (newstcrit + rawcrit) < crittenperc then
+					pstcrit = rawcrit / critamt
+				else
+					stcritdiff = crittenperc - newstcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / critamt) + (stcritremain / (critamt * 1.1))
+				end
 			end
 		else
-			if (newstcrit + rawcrit) < crittenperc then
-				pstcrit = rawcrit / critamt
+			if oldcrit >= critcap then
+				pstcrit = 0
+			elseif oldcrit < critcap and oldcrit >= critfiftyperc then
+				if (oldcrit + rawcrit) <= critcap then
+					pstcrit = rawcrit / (critamt * 1.5)
+				else 
+					stcritdiff = critcap - oldcrit				
+					pstcrit = stcritdiff / (critamt * 1.5)
+				end
+			elseif oldcrit < critfiftyperc and oldcrit >= critfourtyperc then
+				if (oldcrit + rawcrit) <= critfiftyperc then
+					pstcrit = rawcrit / (critamt * 1.4)
+				else 
+					stcritdiff = critfiftyperc - oldcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / (critamt * 1.4)) + (stcritremain / (critamt * 1.5))
+				end
+			elseif oldcrit < critfourtyperc and oldcrit >= critthirtyperc then
+				if (oldcrit + rawcrit) <= critfourtyperc then
+					pstcrit = rawcrit / (critamt * 1.3)
+				else
+					stcritdiff = critfourtyperc - oldcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / (critamt * 1.3)) + (stcritremain / (critamt * 1.4))
+				end
+			elseif oldcrit < critthirtyperc and oldcrit >= crittwentyperc then
+				if (oldcrit + rawcrit) <= critthirtyperc then
+					pstcrit = rawcrit / (critamt * 1.2)
+				else
+					stcritdiff = critthirtyperc - oldcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / (critamt * 1.2)) + (stcritremain / (critamt * 1.3))
+				end
+			elseif oldcrit < crittwentyperc and oldcrit >= crittenperc then
+				if (oldcrit + rawcrit) <= crittwentyperc then
+					pstcrit = rawcrit / (critamt * 1.1)
+				else
+					stcritdiff = crittwentyperc - oldcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / (critamt * 1.1)) + (stcritremain / (critamt * 1.2))
+				end
 			else
-				stcritdiff = crittenperc - newstcrit
-				stcritremain = rawcrit - stcritdiff
-				pstcrit = (stcritdiff / critamt) + (stcritremain / (critamt * 1.1))
+				if (oldcrit + rawcrit) < crittenperc then
+					pstcrit = rawcrit / critamt
+				else
+					stcritdiff = crittenperc - oldcrit
+					stcritremain = rawcrit - stcritdiff
+					pstcrit = (stcritdiff / critamt) + (stcritremain / (critamt * 1.1))
+				end
 			end
 		end
 	end	
 
-    if rawhaste ~= nil then		
-        phaste = rawhaste / hasteamt
-    end
+	if rawhaste ~= nil then
+		if newsohaste ~= nil then
+			if newsohaste >= hastecap then
+				psohaste = 0
+			elseif newsohaste < hastecap and newsohaste >= hastefiftyperc then
+				if (newsohaste + rawhaste) <= hastecap then
+					psohaste = rawhaste / (hasteamt * 1.5)
+				else 
+					sohastediff = hastecap - newsohaste				
+					psohaste = sohastediff / (hasteamt * 1.5)
+				end
+			elseif newsohaste < hastefiftyperc and newsohaste >= hastefourtyperc then
+				if (newsohaste + rawhaste) <= hastefiftyperc then
+					psohaste = rawhaste / (hasteamt * 1.4)
+				else 
+					sohastediff = hastefiftyperc - newsohaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / (hasteamt * 1.4)) + (sohasteremain / (hasteamt * 1.5))
+				end
+			elseif newsohaste < hastefourtyperc and newsohaste >= hastethirtyperc then
+				if (newsohaste + rawhaste) <= hastefourtyperc then
+					psohaste = rawhaste / (hasteamt * 1.3)
+				else
+					sohastediff = hastefourtyperc - newsohaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / (hasteamt * 1.3)) + (sohasteremain / (hasteamt * 1.4))
+				end
+			elseif newsohaste < hastethirtyperc and newsohaste >= hastetwentyperc then
+				if (newsohaste + rawhaste) <= hastethirtyperc then
+					psohaste = rawhaste / (hasteamt * 1.2)
+				else
+					sohastediff = hastethirtyperc - newsohaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / (hasteamt * 1.2)) + (sohasteremain / (hasteamt * 1.3))
+				end
+			elseif newsohaste < hastetwentyperc and newsohaste >= hastetenperc then
+				if (newsohaste + rawhaste) <= hastetwentyperc then
+					psohaste = rawhaste / (hasteamt * 1.1)
+				else
+					sohastediff = hastetwentyperc - newsohaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / (hasteamt * 1.1)) + (sohasteremain / (hasteamt * 1.2))
+				end
+			else
+				if (newsohaste + rawhaste) < hastetenperc then
+					psohaste = rawhaste / hasteamt
+				else
+					sohastediff = hastetenperc - newsohaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / hasteamt) + (sohasteremain / (hasteamt * 1.1))
+				end
+			end
+		else
+			if oldhaste >= hastecap then
+				psohaste = 0
+			elseif oldhaste < hastecap and oldhaste >= hastefiftyperc then
+				if (oldhaste + rawhaste) <= hastecap then
+					psohaste = rawhaste / (hasteamt * 1.5)
+				else 
+					sohastediff = hastecap - oldhaste				
+					psohaste = sohastediff / (hasteamt * 1.5)
+				end
+			elseif oldhaste < hastefiftyperc and oldhaste >= hastefourtyperc then
+				if (oldhaste + rawhaste) <= hastefiftyperc then
+					psohaste = rawhaste / (hasteamt * 1.4)
+				else 
+					sohastediff = hastefiftyperc - oldhaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / (hasteamt * 1.4)) + (sohasteremain / (hasteamt * 1.5))
+				end
+			elseif oldhaste < hastefourtyperc and oldhaste >= hastethirtyperc then
+				if (oldhaste + rawhaste) <= hastefourtyperc then
+					psohaste = rawhaste / (hasteamt * 1.3)
+				else
+					sohastediff = hastefourtyperc - oldhaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / (hasteamt * 1.3)) + (sohasteremain / (hasteamt * 1.4))
+				end
+			elseif oldhaste < hastethirtyperc and oldhaste >= hastetwentyperc then
+				if (oldhaste + rawhaste) <= hastethirtyperc then
+					psohaste = rawhaste / (hasteamt * 1.2)
+				else
+					sohastediff = hastethirtyperc - oldhaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / (hasteamt * 1.2)) + (sohasteremain / (hasteamt * 1.3))
+				end
+			elseif oldhaste < hastetwentyperc and oldhaste >= hastetenperc then
+				if (oldhaste + rawhaste) <= hastetwentyperc then
+					psohaste = rawhaste / (hasteamt * 1.1)
+				else
+					sohastediff = hastetwentyperc - oldhaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / (hasteamt * 1.1)) + (sohasteremain / (hasteamt * 1.2))
+				end
+			else
+				if (oldhaste + rawhaste) < hastetenperc then
+					psohaste = rawhaste / hasteamt
+				else
+					sohastediff = hastetenperc - oldhaste
+					sohasteremain = rawhaste - sohastediff
+					psohaste = (sohastediff / hasteamt) + (sohasteremain / (hasteamt * 1.1))
+				end
+			end
+		end
+	
+		if newsthaste ~= nil then
+			if newsthaste >= hastecap then
+				psthaste = 0
+			elseif newsthaste < hastecap and newsthaste >= hastefiftyperc then
+				if (newsthaste + rawhaste) <= hastecap then
+					psthaste = rawhaste / (hasteamt * 1.5)
+				else 
+					sthastediff = hastecap - newsthaste				
+					psthaste = sthastediff / (hasteamt * 1.5)
+				end
+			elseif newsthaste < hastefiftyperc and newsthaste >= hastefourtyperc then
+				if (newsthaste + rawhaste) <= hastefiftyperc then
+					psthaste = rawhaste / (hasteamt * 1.4)
+				else 
+					sthastediff = hastefiftyperc - newsthaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / (hasteamt * 1.4)) + (sthasteremain / (hasteamt * 1.5))
+				end
+			elseif newsthaste < hastefourtyperc and newsthaste >= hastethirtyperc then
+				if (newsthaste + rawhaste) <= hastefourtyperc then
+					psthaste = rawhaste / (hasteamt * 1.3)
+				else
+					sthastediff = hastefourtyperc - newsthaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / (hasteamt * 1.3)) + (sthasteremain / (hasteamt * 1.4))
+				end
+			elseif newsthaste < hastethirtyperc and newsthaste >= hastetwentyperc then
+				if (newsthaste + rawhaste) <= hastethirtyperc then
+					psthaste = rawhaste / (hasteamt * 1.2)
+				else
+					sthastediff = hastethirtyperc - newsthaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / (hasteamt * 1.2)) + (sthasteremain / (hasteamt * 1.3))
+				end
+			elseif newsthaste < hastetwentyperc and newsthaste >= hastetenperc then
+				if (newsthaste + rawhaste) <= hastetwentyperc then
+					psthaste = rawhaste / (hasteamt * 1.1)
+				else
+					sthastediff = hastetwentyperc - newsthaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / (hasteamt * 1.1)) + (sthasteremain / (hasteamt * 1.2))
+				end
+			else
+				if (newsthaste + rawhaste) < hastetenperc then
+					psthaste = rawhaste / hasteamt
+				else
+					sthastediff = hastetenperc - newsthaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / hasteamt) + (sthasteremain / (hasteamt * 1.1))
+				end
+			end
+		else
+			if oldhaste >= hastecap then
+				psthaste = 0
+			elseif oldhaste < hastecap and oldhaste >= hastefiftyperc then
+				if (oldhaste + rawhaste) <= hastecap then
+					psthaste = rawhaste / (hasteamt * 1.5)
+				else 
+					sthastediff = hastecap - oldhaste				
+					psthaste = sthastediff / (hasteamt * 1.5)
+				end
+			elseif oldhaste < hastefiftyperc and oldhaste >= hastefourtyperc then
+				if (oldhaste + rawhaste) <= hastefiftyperc then
+					psthaste = rawhaste / (hasteamt * 1.4)
+				else 
+					sthastediff = hastefiftyperc - oldhaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / (hasteamt * 1.4)) + (sthasteremain / (hasteamt * 1.5))
+				end
+			elseif oldhaste < hastefourtyperc and oldhaste >= hastethirtyperc then
+				if (oldhaste + rawhaste) <= hastefourtyperc then
+					psthaste = rawhaste / (hasteamt * 1.3)
+				else
+					sthastediff = hastefourtyperc - oldhaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / (hasteamt * 1.3)) + (sthasteremain / (hasteamt * 1.4))
+				end
+			elseif oldhaste < hastethirtyperc and oldhaste >= hastetwentyperc then
+				if (oldhaste + rawhaste) <= hastethirtyperc then
+					psthaste = rawhaste / (hasteamt * 1.2)
+				else
+					sthastediff = hastethirtyperc - oldhaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / (hasteamt * 1.2)) + (sthasteremain / (hasteamt * 1.3))
+				end
+			elseif oldhaste < hastetwentyperc and oldhaste >= hastetenperc then
+				if (oldhaste + rawhaste) <= hastetwentyperc then
+					psthaste = rawhaste / (hasteamt * 1.1)
+				else
+					sthastediff = hastetwentyperc - oldhaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / (hasteamt * 1.1)) + (sthasteremain / (hasteamt * 1.2))
+				end
+			else
+				if (oldhaste + rawhaste) < hastetenperc then
+					psthaste = rawhaste / hasteamt
+				else
+					sthastediff = hastetenperc - oldhaste
+					sthasteremain = rawhaste - sthastediff
+					psthaste = (sthastediff / hasteamt) + (sthasteremain / (hasteamt * 1.1))
+				end
+			end
+		end
+	end  
 
     if rawvers ~= nil then		
         pversin = rawvers / versinamt
