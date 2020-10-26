@@ -223,8 +223,7 @@ local function getItemIdFromTooltip(self)
 	masteryamt = masterytab[cvlevel]
 	hasteamt = hastetab[cvlevel]
 	critamt = crittab[cvlevel]
-	versinamt = verstab[cvlevel]
-	versoutamt = verstab[cvlevel] * 2
+	versamt = verstab[cvlevel]	
 	leechamt = leechtab[cvlevel]
 	avoidamt = avoidtab[cvlevel]
 	speedamt = speedtab[cvlevel]
@@ -862,46 +861,1142 @@ local function getItemIdFromTooltip(self)
 	end  
 
     if rawvers ~= nil then		
-        pversin = rawvers / versinamt
-        pversout = rawvers / versoutamt
+		if newsovers ~= nil then
+			if newsovers >= verscap then
+				psoversin = 0
+				psoversout = 0
+			elseif newsovers < verscap and newsovers >= versfiftyperc then
+				if (newsovers + rawvers) <= verscap then
+					psoversin = rawvers / (versamt * 1.5)
+					psoversout = psoversin / 2
+				else 
+					soversdiff = verscap - newsovers				
+					psoversin = soversdiff / (versamt * 1.5)
+					psoversout = psoversin / 2
+				end
+			elseif newsovers < versfiftyperc and newsovers >= versfourtyperc then
+				if (newsovers + rawvers) <= versfiftyperc then
+					psoversin = rawvers / (versamt * 1.4)
+					psoversout = psoversin / 2
+				else 
+					soversdiff = versfiftyperc - newsovers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / (versamt * 1.4)) + (soversremain / (versamt * 1.5))
+					psoversout = psoversin / 2
+				end
+			elseif newsovers < versfourtyperc and newsovers >= versthirtyperc then
+				if (newsovers + rawvers) <= versfourtyperc then
+					psoversin = rawvers / (versamt * 1.3)
+					psoversout = psoversin / 2
+				else
+					soversdiff = versfourtyperc - newsovers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / (versamt * 1.3)) + (soversremain / (versamt * 1.4))
+					psoversout = psoversin / 2
+				end
+			elseif newsovers < versthirtyperc and newsovers >= verstwentyperc then
+				if (newsovers + rawvers) <= versthirtyperc then
+					psoversin = rawvers / (versamt * 1.2)
+					psoversout = psoversin / 2
+				else
+					soversdiff = versthirtyperc - newsovers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / (versamt * 1.2)) + (soversremain / (versamt * 1.3))
+					psoversout = psoversin / 2
+				end
+			elseif newsovers < verstwentyperc and newsovers >= verstenperc then
+				if (newsovers + rawvers) <= verstwentyperc then
+					psoversin = rawvers / (versamt * 1.1)
+					psoversout = psoversin / 2
+				else
+					soversdiff = verstwentyperc - newsovers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / (versamt * 1.1)) + (soversremain / (versamt * 1.2))
+					psoversout = psoversin / 2
+				end
+			else
+				if (newsovers + rawvers) < verstenperc then
+					psoversin = rawvers / versamt
+					psoversout = psoversin / 2
+				else
+					soversdiff = verstenperc - newsovers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / versamt) + (soversremain / (versamt * 1.1))
+					psoversout = psoversin / 2
+				end
+			end
+		else
+			if oldvers >= verscap then
+				psoversin = 0
+				psoversout = 0
+			elseif oldvers < verscap and oldvers >= versfiftyperc then
+				if (oldvers + rawvers) <= verscap then
+					psoversin = rawvers / (versamt * 1.5)
+					psoversout = psoversin / 2
+				else 
+					soversdiff = verscap - oldvers				
+					psoversin = soversdiff / (versamt * 1.5)
+					psoversout = psoversin / 2
+				end
+			elseif oldvers < versfiftyperc and oldvers >= versfourtyperc then
+				if (oldvers + rawvers) <= versfiftyperc then
+					psoversin = rawvers / (versamt * 1.4)
+					psoversout = psoversin / 2
+				else 
+					soversdiff = versfiftyperc - oldvers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / (versamt * 1.4)) + (soversremain / (versamt * 1.5))
+					psoversout = psoversin / 2
+				end
+			elseif oldvers < versfourtyperc and oldvers >= versthirtyperc then
+				if (oldvers + rawvers) <= versfourtyperc then
+					psoversin = rawvers / (versamt * 1.3)
+					psoversout = psoversin / 2
+				else
+					soversdiff = versfourtyperc - oldvers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / (versamt * 1.3)) + (soversremain / (versamt * 1.4))
+					psoversout = psoversin / 2
+				end
+			elseif oldvers < versthirtyperc and oldvers >= verstwentyperc then
+				if (oldvers + rawvers) <= versthirtyperc then
+					psoversin = rawvers / (versamt * 1.2)
+					psoversout = psoversin / 2
+				else
+					soversdiff = versthirtyperc - oldvers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / (versamt * 1.2)) + (soversremain / (versamt * 1.3))
+					psoversout = psoversin / 2
+				end
+			elseif oldvers < verstwentyperc and oldvers >= verstenperc then
+				if (oldvers + rawvers) <= verstwentyperc then
+					psoversin = rawvers / (versamt * 1.1)
+					psoversout = psoversin / 2
+				else
+					soversdiff = verstwentyperc - oldvers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / (versamt * 1.1)) + (soversremain / (versamt * 1.2))
+					psoversout = psoversin / 2
+				end
+			else
+				if (oldvers + rawvers) < verstenperc then
+					psoversin = rawvers / versamt
+					psoversout = psoversin / 2
+				else
+					soversdiff = verstenperc - oldvers
+					soversremain = rawvers - soversdiff
+					psoversin = (soversdiff / versamt) + (soversremain / (versamt * 1.1))
+					psoversout = psoversin / 2
+				end
+			end
+		end
+	
+		if eqststats ~= nil and newstvers ~= nil then
+			if newstvers >= verscap then
+				pstversin = 0
+				pstversout = 0
+			elseif newstvers < verscap and newstvers >= versfiftyperc then
+				if (newstvers + rawvers) <= verscap then
+					pstversin = rawvers / (versamt * 1.5)
+					pstversout = pstversin / 2
+				else 
+					stversdiff = verscap - newstvers				
+					pstversin = stversdiff / (versamt * 1.5)
+					pstversout = pstversin / 2
+				end
+			elseif newstvers < versfiftyperc and newstvers >= versfourtyperc then
+				if (newstvers + rawvers) <= versfiftyperc then
+					pstversin = rawvers / (versamt * 1.4)
+					pstversout = pstversin / 2
+				else 
+					stversdiff = versfiftyperc - newstvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / (versamt * 1.4)) + (stversremain / (versamt * 1.5))
+					pstversout = pstversin / 2
+				end
+			elseif newstvers < versfourtyperc and newstvers >= versthirtyperc then
+				if (newstvers + rawvers) <= versfourtyperc then
+					pstversin = rawvers / (versamt * 1.3)
+					pstversout = pstversin / 2
+				else
+					stversdiff = versfourtyperc - newstvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / (versamt * 1.3)) + (stversremain / (versamt * 1.4))
+					pstversout = pstversin / 2
+				end
+			elseif newstvers < versthirtyperc and newstvers >= verstwentyperc then
+				if (newstvers + rawvers) <= versthirtyperc then
+					pstversin = rawvers / (versamt * 1.2)
+					pstversout = pstversin / 2
+				else
+					stversdiff = versthirtyperc - newstvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / (versamt * 1.2)) + (stversremain / (versamt * 1.3))
+					pstversout = pstversin / 2
+				end
+			elseif newstvers < verstwentyperc and newstvers >= verstenperc then
+				if (newstvers + rawvers) <= verstwentyperc then
+					pstversin = rawvers / (versamt * 1.1)
+					pstversout = pstversin / 2
+				else
+					stversdiff = verstwentyperc - newstvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / (versamt * 1.1)) + (stversremain / (versamt * 1.2))
+					pstversout = pstversin / 2
+				end
+			else
+				if (newstvers + rawvers) < verstenperc then
+					pstversin = rawvers / versamt
+					pstversout = pstversin / 2
+				else
+					stversdiff = verstenperc - newstvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / versamt) + (stversremain / (versamt * 1.1))
+					pstversout = pstversin / 2
+				end
+			end
+		elseif eqststats ~=nil then
+			if oldvers >= verscap then
+				pstversin = 0
+				pstversout = 0
+			elseif oldvers < verscap and oldvers >= versfiftyperc then
+				if (oldvers + rawvers) <= verscap then
+					pstversin = rawvers / (versamt * 1.5)
+					pstversout = pstversin / 2
+				else 
+					stversdiff = verscap - oldvers				
+					pstversin = stversdiff / (versamt * 1.5)
+					pstversout = pstversin / 2
+				end
+			elseif oldvers < versfiftyperc and oldvers >= versfourtyperc then
+				if (oldvers + rawvers) <= versfiftyperc then
+					pstversin = rawvers / (versamt * 1.4)
+					pstversout = pstversin / 2
+				else 
+					stversdiff = versfiftyperc - oldvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / (versamt * 1.4)) + (stversremain / (versamt * 1.5))
+					pstversout = pstversin / 2
+				end
+			elseif oldvers < versfourtyperc and oldvers >= versthirtyperc then
+				if (oldvers + rawvers) <= versfourtyperc then
+					pstversin = rawvers / (versamt * 1.3)
+					pstversout = pstversin / 2
+				else
+					stversdiff = versfourtyperc - oldvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / (versamt * 1.3)) + (stversremain / (versamt * 1.4))
+					pstversout = pstversin / 2
+				end
+			elseif oldvers < versthirtyperc and oldvers >= verstwentyperc then
+				if (oldvers + rawvers) <= versthirtyperc then
+					pstversin = rawvers / (versamt * 1.2)
+					pstversout = pstversin / 2
+				else
+					stversdiff = versthirtyperc - oldvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / (versamt * 1.2)) + (stversremain / (versamt * 1.3))
+					pstversout = pstversin / 2
+				end
+			elseif oldvers < verstwentyperc and oldvers >= verstenperc then
+				if (oldvers + rawvers) <= verstwentyperc then
+					pstversin = rawvers / (versamt * 1.1)
+					pstversout = pstversin / 2
+				else
+					stversdiff = verstwentyperc - oldvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / (versamt * 1.1)) + (stversremain / (versamt * 1.2))
+					pstversout = pstversin / 2
+				end
+			else
+				if (oldvers + rawvers) < verstenperc then
+					pstversin = rawvers / versamt
+					pstversout = pstversin / 2
+				else
+					stversdiff = verstenperc - oldvers
+					stversremain = rawvers - stversdiff
+					pstversin = (stversdiff / versamt) + (stversremain / (versamt * 1.1))
+					pstversout = pstversin / 2
+				end
+			end
+		end
     end
 
-    if rawmastery ~= nil then		
-        pmastery = (rawmastery / masteryamt) * masterycf
+    if rawmastery ~= nil then        
+		if newsomastery ~= nil then
+			if newsomastery >= masterycap then
+				psomastery = 0
+			elseif newsomastery < masterycap and newsomastery >= masteryfiftyperc then
+				if (newsomastery + rawmastery) <= masterycap then
+					psomastery = (rawmastery / (masteryamt * 1.5)) * masterycf
+				else 
+					somasterydiff = masterycap - newsomastery				
+					psomastery = (somasterydiff / (masteryamt * 1.5)) * masterycf
+				end
+			elseif newsomastery < masteryfiftyperc and newsomastery >= masteryfourtyperc then
+				if (newsomastery + rawmastery) <= masteryfiftyperc then
+					psomastery = (rawmastery / (masteryamt * 1.4)) * masterycf
+				else 
+					somasterydiff = masteryfiftyperc - newsomastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / (masteryamt * 1.4)) + (somasteryremain / (masteryamt * 1.5))) * masterycf
+				end
+			elseif newsomastery < masteryfourtyperc and newsomastery >= masterythirtyperc then
+				if (newsomastery + rawmastery) <= masteryfourtyperc then
+					psomastery = (rawmastery / (masteryamt * 1.3)) * masterycf
+				else
+					somasterydiff = masteryfourtyperc - newsomastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / (masteryamt * 1.3)) + (somasteryremain / (masteryamt * 1.4))) * masterycf
+				end
+			elseif newsomastery < masterythirtyperc and newsomastery >= masterytwentyperc then
+				if (newsomastery + rawmastery) <= masterythirtyperc then
+					psomastery = (rawmastery / (masteryamt * 1.2)) * masterycf
+				else
+					somasterydiff = masterythirtyperc - newsomastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / (masteryamt * 1.2)) + (somasteryremain / (masteryamt * 1.3))) * masterycf
+				end
+			elseif newsomastery < masterytwentyperc and newsomastery >= masterytenperc then
+				if (newsomastery + rawmastery) <= masterytwentyperc then
+					psomastery = (rawmastery / (masteryamt * 1.1)) * masterycf
+				else
+					somasterydiff = masterytwentyperc - newsomastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / (masteryamt * 1.1)) + (somasteryremain / (masteryamt * 1.2))) * masterycf
+				end
+			else
+				if (newsomastery + rawmastery) < masterytenperc then
+					psomastery = (rawmastery / masteryamt) * masterycf
+				else
+					somasterydiff = masterytenperc - newsomastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / masteryamt) + (somasteryremain / (masteryamt * 1.1))) * masterycf
+				end
+			end
+		else
+			if oldmastery >= masterycap then
+				psomastery = 0
+			elseif oldmastery < masterycap and oldmastery >= masteryfiftyperc then
+				if (oldmastery + rawmastery) <= masterycap then
+					psomastery = (rawmastery / (masteryamt * 1.5)) * masterycf
+				else 
+					somasterydiff = masterycap - oldmastery				
+					psomastery = (somasterydiff / (masteryamt * 1.5)) * masterycf
+				end
+			elseif oldmastery < masteryfiftyperc and oldmastery >= masteryfourtyperc then
+				if (oldmastery + rawmastery) <= masteryfiftyperc then
+					psomastery = (rawmastery / (masteryamt * 1.4)) * masterycf
+				else 
+					somasterydiff = masteryfiftyperc - oldmastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / (masteryamt * 1.4)) + (somasteryremain / (masteryamt * 1.5))) * masterycf
+				end
+			elseif oldmastery < masteryfourtyperc and oldmastery >= masterythirtyperc then
+				if (oldmastery + rawmastery) <= masteryfourtyperc then
+					psomastery = (rawmastery / (masteryamt * 1.3)) * masterycf
+				else
+					somasterydiff = masteryfourtyperc - oldmastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / (masteryamt * 1.3)) + (somasteryremain / (masteryamt * 1.4))) * masterycf
+				end
+			elseif oldmastery < masterythirtyperc and oldmastery >= masterytwentyperc then
+				if (oldmastery + rawmastery) <= masterythirtyperc then
+					psomastery = (rawmastery / (masteryamt * 1.2)) * masterycf
+				else
+					somasterydiff = masterythirtyperc - oldmastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / (masteryamt * 1.2)) + (somasteryremain / (masteryamt * 1.3))) * masterycf
+				end
+			elseif oldmastery < masterytwentyperc and oldmastery >= masterytenperc then
+				if (oldmastery + rawmastery) <= masterytwentyperc then
+					psomastery = (rawmastery / (masteryamt * 1.1)) * masterycf
+				else
+					somasterydiff = masterytwentyperc - oldmastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / (masteryamt * 1.1)) + (somasteryremain / (masteryamt * 1.2))) * masterycf
+				end
+			else
+				if (oldmastery + rawmastery) < masterytenperc then
+					psomastery = (rawmastery / masteryamt) * masterycf
+				else
+					somasterydiff = masterytenperc - oldmastery
+					somasteryremain = rawmastery - somasterydiff
+					psomastery = ((somasterydiff / masteryamt) + (somasteryremain / (masteryamt * 1.1))) * masterycf
+				end
+			end
+		end
+	
+		if eqststats ~= nil and newstmastery ~= nil then
+			if newstmastery >= masterycap then
+				pstmastery = 0
+			elseif newstmastery < masterycap and newstmastery >= masteryfiftyperc then
+				if (newstmastery + rawmastery) <= masterycap then
+					pstmastery = (rawmastery / (masteryamt * 1.5)) * masterycf
+				else 
+					stmasterydiff = masterycap - newstmastery				
+					pstmastery = (stmasterydiff / (masteryamt * 1.5)) * masterycf
+				end
+			elseif newstmastery < masteryfiftyperc and newstmastery >= masteryfourtyperc then
+				if (newstmastery + rawmastery) <= masteryfiftyperc then
+					pstmastery = (rawmastery / (masteryamt * 1.4)) * masterycf
+				else 
+					stmasterydiff = masteryfiftyperc - newstmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / (masteryamt * 1.4)) + (stmasteryremain / (masteryamt * 1.5))) * masterycf
+				end
+			elseif newstmastery < masteryfourtyperc and newstmastery >= masterythirtyperc then
+				if (newstmastery + rawmastery) <= masteryfourtyperc then
+					pstmastery = (rawmastery / (masteryamt * 1.3)) * masterycf
+				else
+					stmasterydiff = masteryfourtyperc - newstmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / (masteryamt * 1.3)) + (stmasteryremain / (masteryamt * 1.4))) * masterycf
+				end
+			elseif newstmastery < masterythirtyperc and newstmastery >= masterytwentyperc then
+				if (newstmastery + rawmastery) <= masterythirtyperc then
+					pstmastery = (rawmastery / (masteryamt * 1.2)) * masterycf
+				else
+					stmasterydiff = masterythirtyperc - newstmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / (masteryamt * 1.2)) + (stmasteryremain / (masteryamt * 1.3))) * masterycf
+				end
+			elseif newstmastery < masterytwentyperc and newstmastery >= masterytenperc then
+				if (newstmastery + rawmastery) <= masterytwentyperc then
+					pstmastery = (rawmastery / (masteryamt * 1.1)) * masterycf
+				else
+					stmasterydiff = masterytwentyperc - newstmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / (masteryamt * 1.1)) + (stmasteryremain / (masteryamt * 1.2))) * masterycf
+				end
+			else
+				if (newstmastery + rawmastery) < masterytenperc then
+					pstmastery = (rawmastery / masteryamt) * masterycf
+				else
+					stmasterydiff = masterytenperc - newstmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / masteryamt) + (stmasteryremain / (masteryamt * 1.1))) * masterycf
+				end
+			end
+		elseif eqststats ~=nil then
+			if oldmastery >= masterycap then
+				pstmastery = 0
+			elseif oldmastery < masterycap and oldmastery >= masteryfiftyperc then
+				if (oldmastery + rawmastery) <= masterycap then
+					pstmastery = (rawmastery / (masteryamt * 1.5)) * masterycf
+				else 
+					stmasterydiff = masterycap - oldmastery				
+					pstmastery = (stmasterydiff / (masteryamt * 1.5)) * masterycf
+				end
+			elseif oldmastery < masteryfiftyperc and oldmastery >= masteryfourtyperc then
+				if (oldmastery + rawmastery) <= masteryfiftyperc then
+					pstmastery = (rawmastery / (masteryamt * 1.4)) * masterycf
+				else 
+					stmasterydiff = masteryfiftyperc - oldmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / (masteryamt * 1.4)) + (stmasteryremain / (masteryamt * 1.5))) * masterycf
+				end
+			elseif oldmastery < masteryfourtyperc and oldmastery >= masterythirtyperc then
+				if (oldmastery + rawmastery) <= masteryfourtyperc then
+					pstmastery = (rawmastery / (masteryamt * 1.3)) * masterycf
+				else
+					stmasterydiff = masteryfourtyperc - oldmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / (masteryamt * 1.3)) + (stmasteryremain / (masteryamt * 1.4))) * masterycf
+				end
+			elseif oldmastery < masterythirtyperc and oldmastery >= masterytwentyperc then
+				if (oldmastery + rawmastery) <= masterythirtyperc then
+					pstmastery = (rawmastery / (masteryamt * 1.2)) * masterycf
+				else
+					stmasterydiff = masterythirtyperc - oldmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / (masteryamt * 1.2)) + (stmasteryremain / (masteryamt * 1.3))) * masterycf
+				end
+			elseif oldmastery < masterytwentyperc and oldmastery >= masterytenperc then
+				if (oldmastery + rawmastery) <= masterytwentyperc then
+					pstmastery = (rawmastery / (masteryamt * 1.1)) * masterycf
+				else
+					stmasterydiff = masterytwentyperc - oldmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / (masteryamt * 1.1)) + (stmasteryremain / (masteryamt * 1.2))) * masterycf
+				end
+			else
+				if (oldmastery + rawmastery) < masterytenperc then
+					pstmastery = (rawmastery / masteryamt) * masterycf
+				else
+					stmasterydiff = masterytenperc - oldmastery
+					stmasteryremain = rawmastery - stmasterydiff
+					pstmastery = ((stmasterydiff / masteryamt) + (stmasteryremain / (masteryamt * 1.1))) * masterycf
+				end
+			end
+		end
     end
 	
 	if rawavoid ~= nil then		
-		pavoid = rawavoid / avoidamt
+		if newsoavoid ~= nil then
+			if newsoavoid >= avoidcap then
+				psoavoid = 0
+			elseif newsoavoid < avoidcap and newsoavoid >= avoidfiftyperc then
+				if (newsoavoid + rawavoid) <= avoidcap then
+					psoavoid = rawavoid / (avoidamt * 1.5)
+				else 
+					soavoiddiff = avoidcap - newsoavoid				
+					psoavoid = soavoiddiff / (avoidamt * 1.5)
+				end
+			elseif newsoavoid < avoidfiftyperc and newsoavoid >= avoidfourtyperc then
+				if (newsoavoid + rawavoid) <= avoidfiftyperc then
+					psoavoid = rawavoid / (avoidamt * 1.4)
+				else 
+					soavoiddiff = avoidfiftyperc - newsoavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / (avoidamt * 1.4)) + (soavoidremain / (avoidamt * 1.5))
+				end
+			elseif newsoavoid < avoidfourtyperc and newsoavoid >= avoidthirtyperc then
+				if (newsoavoid + rawavoid) <= avoidfourtyperc then
+					psoavoid = rawavoid / (avoidamt * 1.3)
+				else
+					soavoiddiff = avoidfourtyperc - newsoavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / (avoidamt * 1.3)) + (soavoidremain / (avoidamt * 1.4))
+				end
+			elseif newsoavoid < avoidthirtyperc and newsoavoid >= avoidtwentyperc then
+				if (newsoavoid + rawavoid) <= avoidthirtyperc then
+					psoavoid = rawavoid / (avoidamt * 1.2)
+				else
+					soavoiddiff = avoidthirtyperc - newsoavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / (avoidamt * 1.2)) + (soavoidremain / (avoidamt * 1.3))
+				end
+			elseif newsoavoid < avoidtwentyperc and newsoavoid >= avoidtenperc then
+				if (newsoavoid + rawavoid) <= avoidtwentyperc then
+					psoavoid = rawavoid / (avoidamt * 1.1)
+				else
+					soavoiddiff = avoidtwentyperc - newsoavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / (avoidamt * 1.1)) + (soavoidremain / (avoidamt * 1.2))
+				end
+			else
+				if (newsoavoid + rawavoid) < avoidtenperc then
+					psoavoid = rawavoid / avoidamt
+				else
+					soavoiddiff = avoidtenperc - newsoavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / avoidamt) + (soavoidremain / (avoidamt * 1.1))
+				end
+			end
+		else
+			if oldavoid >= avoidcap then
+				psoavoid = 0
+			elseif oldavoid < avoidcap and oldavoid >= avoidfiftyperc then
+				if (oldavoid + rawavoid) <= avoidcap then
+					psoavoid = rawavoid / (avoidamt * 1.5)
+				else 
+					soavoiddiff = avoidcap - oldavoid				
+					psoavoid = soavoiddiff / (avoidamt * 1.5)
+				end
+			elseif oldavoid < avoidfiftyperc and oldavoid >= avoidfourtyperc then
+				if (oldavoid + rawavoid) <= avoidfiftyperc then
+					psoavoid = rawavoid / (avoidamt * 1.4)
+				else 
+					soavoiddiff = avoidfiftyperc - oldavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / (avoidamt * 1.4)) + (soavoidremain / (avoidamt * 1.5))
+				end
+			elseif oldavoid < avoidfourtyperc and oldavoid >= avoidthirtyperc then
+				if (oldavoid + rawavoid) <= avoidfourtyperc then
+					psoavoid = rawavoid / (avoidamt * 1.3)
+				else
+					soavoiddiff = avoidfourtyperc - oldavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / (avoidamt * 1.3)) + (soavoidremain / (avoidamt * 1.4))
+				end
+			elseif oldavoid < avoidthirtyperc and oldavoid >= avoidtwentyperc then
+				if (oldavoid + rawavoid) <= avoidthirtyperc then
+					psoavoid = rawavoid / (avoidamt * 1.2)
+				else
+					soavoiddiff = avoidthirtyperc - oldavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / (avoidamt * 1.2)) + (soavoidremain / (avoidamt * 1.3))
+				end
+			elseif oldavoid < avoidtwentyperc and oldavoid >= avoidtenperc then
+				if (oldavoid + rawavoid) <= avoidtwentyperc then
+					psoavoid = rawavoid / (avoidamt * 1.1)
+				else
+					soavoiddiff = avoidtwentyperc - oldavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / (avoidamt * 1.1)) + (soavoidremain / (avoidamt * 1.2))
+				end
+			else
+				if (oldavoid + rawavoid) < avoidtenperc then
+					psoavoid = rawavoid / avoidamt
+				else
+					soavoiddiff = avoidtenperc - oldavoid
+					soavoidremain = rawavoid - soavoiddiff
+					psoavoid = (soavoiddiff / avoidamt) + (soavoidremain / (avoidamt * 1.1))
+				end
+			end
+		end
+	
+		if eqststats ~= nil and newstavoid ~= nil then
+			if newstavoid >= avoidcap then
+				pstavoid = 0
+			elseif newstavoid < avoidcap and newstavoid >= avoidfiftyperc then
+				if (newstavoid + rawavoid) <= avoidcap then
+					pstavoid = rawavoid / (avoidamt * 1.5)
+				else 
+					stavoiddiff = avoidcap - newstavoid				
+					pstavoid = stavoiddiff / (avoidamt * 1.5)
+				end
+			elseif newstavoid < avoidfiftyperc and newstavoid >= avoidfourtyperc then
+				if (newstavoid + rawavoid) <= avoidfiftyperc then
+					pstavoid = rawavoid / (avoidamt * 1.4)
+				else 
+					stavoiddiff = avoidfiftyperc - newstavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / (avoidamt * 1.4)) + (stavoidremain / (avoidamt * 1.5))
+				end
+			elseif newstavoid < avoidfourtyperc and newstavoid >= avoidthirtyperc then
+				if (newstavoid + rawavoid) <= avoidfourtyperc then
+					pstavoid = rawavoid / (avoidamt * 1.3)
+				else
+					stavoiddiff = avoidfourtyperc - newstavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / (avoidamt * 1.3)) + (stavoidremain / (avoidamt * 1.4))
+				end
+			elseif newstavoid < avoidthirtyperc and newstavoid >= avoidtwentyperc then
+				if (newstavoid + rawavoid) <= avoidthirtyperc then
+					pstavoid = rawavoid / (avoidamt * 1.2)
+				else
+					stavoiddiff = avoidthirtyperc - newstavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / (avoidamt * 1.2)) + (stavoidremain / (avoidamt * 1.3))
+				end
+			elseif newstavoid < avoidtwentyperc and newstavoid >= avoidtenperc then
+				if (newstavoid + rawavoid) <= avoidtwentyperc then
+					pstavoid = rawavoid / (avoidamt * 1.1)
+				else
+					stavoiddiff = avoidtwentyperc - newstavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / (avoidamt * 1.1)) + (stavoidremain / (avoidamt * 1.2))
+				end
+			else
+				if (newstavoid + rawavoid) < avoidtenperc then
+					pstavoid = rawavoid / avoidamt
+				else
+					stavoiddiff = avoidtenperc - newstavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / avoidamt) + (stavoidremain / (avoidamt * 1.1))
+				end
+			end
+		elseif eqststats ~=nil then
+			if oldavoid >= avoidcap then
+				pstavoid = 0
+			elseif oldavoid < avoidcap and oldavoid >= avoidfiftyperc then
+				if (oldavoid + rawavoid) <= avoidcap then
+					pstavoid = rawavoid / (avoidamt * 1.5)
+				else 
+					stavoiddiff = avoidcap - oldavoid				
+					pstavoid = stavoiddiff / (avoidamt * 1.5)
+				end
+			elseif oldavoid < avoidfiftyperc and oldavoid >= avoidfourtyperc then
+				if (oldavoid + rawavoid) <= avoidfiftyperc then
+					pstavoid = rawavoid / (avoidamt * 1.4)
+				else 
+					stavoiddiff = avoidfiftyperc - oldavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / (avoidamt * 1.4)) + (stavoidremain / (avoidamt * 1.5))
+				end
+			elseif oldavoid < avoidfourtyperc and oldavoid >= avoidthirtyperc then
+				if (oldavoid + rawavoid) <= avoidfourtyperc then
+					pstavoid = rawavoid / (avoidamt * 1.3)
+				else
+					stavoiddiff = avoidfourtyperc - oldavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / (avoidamt * 1.3)) + (stavoidremain / (avoidamt * 1.4))
+				end
+			elseif oldavoid < avoidthirtyperc and oldavoid >= avoidtwentyperc then
+				if (oldavoid + rawavoid) <= avoidthirtyperc then
+					pstavoid = rawavoid / (avoidamt * 1.2)
+				else
+					stavoiddiff = avoidthirtyperc - oldavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / (avoidamt * 1.2)) + (stavoidremain / (avoidamt * 1.3))
+				end
+			elseif oldavoid < avoidtwentyperc and oldavoid >= avoidtenperc then
+				if (oldavoid + rawavoid) <= avoidtwentyperc then
+					pstavoid = rawavoid / (avoidamt * 1.1)
+				else
+					stavoiddiff = avoidtwentyperc - oldavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / (avoidamt * 1.1)) + (stavoidremain / (avoidamt * 1.2))
+				end
+			else
+				if (oldavoid + rawavoid) < avoidtenperc then
+					pstavoid = rawavoid / avoidamt
+				else
+					stavoiddiff = avoidtenperc - oldavoid
+					stavoidremain = rawavoid - stavoiddiff
+					pstavoid = (stavoiddiff / avoidamt) + (stavoidremain / (avoidamt * 1.1))
+				end
+			end
+		end
 	end
 	
 	if rawspeed ~= nil then		
-		pspeed = rawspeed / speedamt
+		if newsospeed ~= nil then
+			if newsospeed >= speedcap then
+				psospeed = 0
+			elseif newsospeed < speedcap and newsospeed >= speedfiftyperc then
+				if (newsospeed + rawspeed) <= speedcap then
+					psospeed = rawspeed / (speedamt * 1.5)
+				else 
+					sospeeddiff = speedcap - newsospeed				
+					psospeed = sospeeddiff / (speedamt * 1.5)
+				end
+			elseif newsospeed < speedfiftyperc and newsospeed >= speedfourtyperc then
+				if (newsospeed + rawspeed) <= speedfiftyperc then
+					psospeed = rawspeed / (speedamt * 1.4)
+				else 
+					sospeeddiff = speedfiftyperc - newsospeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / (speedamt * 1.4)) + (sospeedremain / (speedamt * 1.5))
+				end
+			elseif newsospeed < speedfourtyperc and newsospeed >= speedthirtyperc then
+				if (newsospeed + rawspeed) <= speedfourtyperc then
+					psospeed = rawspeed / (speedamt * 1.3)
+				else
+					sospeeddiff = speedfourtyperc - newsospeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / (speedamt * 1.3)) + (sospeedremain / (speedamt * 1.4))
+				end
+			elseif newsospeed < speedthirtyperc and newsospeed >= speedtwentyperc then
+				if (newsospeed + rawspeed) <= speedthirtyperc then
+					psospeed = rawspeed / (speedamt * 1.2)
+				else
+					sospeeddiff = speedthirtyperc - newsospeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / (speedamt * 1.2)) + (sospeedremain / (speedamt * 1.3))
+				end
+			elseif newsospeed < speedtwentyperc and newsospeed >= speedtenperc then
+				if (newsospeed + rawspeed) <= speedtwentyperc then
+					psospeed = rawspeed / (speedamt * 1.1)
+				else
+					sospeeddiff = speedtwentyperc - newsospeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / (speedamt * 1.1)) + (sospeedremain / (speedamt * 1.2))
+				end
+			else
+				if (newsospeed + rawspeed) < speedtenperc then
+					psospeed = rawspeed / speedamt
+				else
+					sospeeddiff = speedtenperc - newsospeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / speedamt) + (sospeedremain / (speedamt * 1.1))
+				end
+			end
+		else
+			if oldspeed >= speedcap then
+				psospeed = 0
+			elseif oldspeed < speedcap and oldspeed >= speedfiftyperc then
+				if (oldspeed + rawspeed) <= speedcap then
+					psospeed = rawspeed / (speedamt * 1.5)
+				else 
+					sospeeddiff = speedcap - oldspeed				
+					psospeed = sospeeddiff / (speedamt * 1.5)
+				end
+			elseif oldspeed < speedfiftyperc and oldspeed >= speedfourtyperc then
+				if (oldspeed + rawspeed) <= speedfiftyperc then
+					psospeed = rawspeed / (speedamt * 1.4)
+				else 
+					sospeeddiff = speedfiftyperc - oldspeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / (speedamt * 1.4)) + (sospeedremain / (speedamt * 1.5))
+				end
+			elseif oldspeed < speedfourtyperc and oldspeed >= speedthirtyperc then
+				if (oldspeed + rawspeed) <= speedfourtyperc then
+					psospeed = rawspeed / (speedamt * 1.3)
+				else
+					sospeeddiff = speedfourtyperc - oldspeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / (speedamt * 1.3)) + (sospeedremain / (speedamt * 1.4))
+				end
+			elseif oldspeed < speedthirtyperc and oldspeed >= speedtwentyperc then
+				if (oldspeed + rawspeed) <= speedthirtyperc then
+					psospeed = rawspeed / (speedamt * 1.2)
+				else
+					sospeeddiff = speedthirtyperc - oldspeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / (speedamt * 1.2)) + (sospeedremain / (speedamt * 1.3))
+				end
+			elseif oldspeed < speedtwentyperc and oldspeed >= speedtenperc then
+				if (oldspeed + rawspeed) <= speedtwentyperc then
+					psospeed = rawspeed / (speedamt * 1.1)
+				else
+					sospeeddiff = speedtwentyperc - oldspeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / (speedamt * 1.1)) + (sospeedremain / (speedamt * 1.2))
+				end
+			else
+				if (oldspeed + rawspeed) < speedtenperc then
+					psospeed = rawspeed / speedamt
+				else
+					sospeeddiff = speedtenperc - oldspeed
+					sospeedremain = rawspeed - sospeeddiff
+					psospeed = (sospeeddiff / speedamt) + (sospeedremain / (speedamt * 1.1))
+				end
+			end
+		end
+	
+		if eqststats ~= nil and newstspeed ~= nil then
+			if newstspeed >= speedcap then
+				pstspeed = 0
+			elseif newstspeed < speedcap and newstspeed >= speedfiftyperc then
+				if (newstspeed + rawspeed) <= speedcap then
+					pstspeed = rawspeed / (speedamt * 1.5)
+				else 
+					stspeeddiff = speedcap - newstspeed				
+					pstspeed = stspeeddiff / (speedamt * 1.5)
+				end
+			elseif newstspeed < speedfiftyperc and newstspeed >= speedfourtyperc then
+				if (newstspeed + rawspeed) <= speedfiftyperc then
+					pstspeed = rawspeed / (speedamt * 1.4)
+				else 
+					stspeeddiff = speedfiftyperc - newstspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / (speedamt * 1.4)) + (stspeedremain / (speedamt * 1.5))
+				end
+			elseif newstspeed < speedfourtyperc and newstspeed >= speedthirtyperc then
+				if (newstspeed + rawspeed) <= speedfourtyperc then
+					pstspeed = rawspeed / (speedamt * 1.3)
+				else
+					stspeeddiff = speedfourtyperc - newstspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / (speedamt * 1.3)) + (stspeedremain / (speedamt * 1.4))
+				end
+			elseif newstspeed < speedthirtyperc and newstspeed >= speedtwentyperc then
+				if (newstspeed + rawspeed) <= speedthirtyperc then
+					pstspeed = rawspeed / (speedamt * 1.2)
+				else
+					stspeeddiff = speedthirtyperc - newstspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / (speedamt * 1.2)) + (stspeedremain / (speedamt * 1.3))
+				end
+			elseif newstspeed < speedtwentyperc and newstspeed >= speedtenperc then
+				if (newstspeed + rawspeed) <= speedtwentyperc then
+					pstspeed = rawspeed / (speedamt * 1.1)
+				else
+					stspeeddiff = speedtwentyperc - newstspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / (speedamt * 1.1)) + (stspeedremain / (speedamt * 1.2))
+				end
+			else
+				if (newstspeed + rawspeed) < speedtenperc then
+					pstspeed = rawspeed / speedamt
+				else
+					stspeeddiff = speedtenperc - newstspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / speedamt) + (stspeedremain / (speedamt * 1.1))
+				end
+			end
+		elseif eqststats ~=nil then
+			if oldspeed >= speedcap then
+				pstspeed = 0
+			elseif oldspeed < speedcap and oldspeed >= speedfiftyperc then
+				if (oldspeed + rawspeed) <= speedcap then
+					pstspeed = rawspeed / (speedamt * 1.5)
+				else 
+					stspeeddiff = speedcap - oldspeed				
+					pstspeed = stspeeddiff / (speedamt * 1.5)
+				end
+			elseif oldspeed < speedfiftyperc and oldspeed >= speedfourtyperc then
+				if (oldspeed + rawspeed) <= speedfiftyperc then
+					pstspeed = rawspeed / (speedamt * 1.4)
+				else 
+					stspeeddiff = speedfiftyperc - oldspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / (speedamt * 1.4)) + (stspeedremain / (speedamt * 1.5))
+				end
+			elseif oldspeed < speedfourtyperc and oldspeed >= speedthirtyperc then
+				if (oldspeed + rawspeed) <= speedfourtyperc then
+					pstspeed = rawspeed / (speedamt * 1.3)
+				else
+					stspeeddiff = speedfourtyperc - oldspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / (speedamt * 1.3)) + (stspeedremain / (speedamt * 1.4))
+				end
+			elseif oldspeed < speedthirtyperc and oldspeed >= speedtwentyperc then
+				if (oldspeed + rawspeed) <= speedthirtyperc then
+					pstspeed = rawspeed / (speedamt * 1.2)
+				else
+					stspeeddiff = speedthirtyperc - oldspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / (speedamt * 1.2)) + (stspeedremain / (speedamt * 1.3))
+				end
+			elseif oldspeed < speedtwentyperc and oldspeed >= speedtenperc then
+				if (oldspeed + rawspeed) <= speedtwentyperc then
+					pstspeed = rawspeed / (speedamt * 1.1)
+				else
+					stspeeddiff = speedtwentyperc - oldspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / (speedamt * 1.1)) + (stspeedremain / (speedamt * 1.2))
+				end
+			else
+				if (oldspeed + rawspeed) < speedtenperc then
+					pstspeed = rawspeed / speedamt
+				else
+					stspeeddiff = speedtenperc - oldspeed
+					stspeedremain = rawspeed - stspeeddiff
+					pstspeed = (stspeeddiff / speedamt) + (stspeedremain / (speedamt * 1.1))
+				end
+			end
+		end
 	end
 	
 	if rawleech ~= nil then		
-		pleech = rawleech / leechamt
+		if newsoleech ~= nil then
+			if newsoleech >= leechcap then
+				psoleech = 0
+			elseif newsoleech < leechcap and newsoleech >= leechfiftyperc then
+				if (newsoleech + rawleech) <= leechcap then
+					psoleech = rawleech / (leechamt * 1.5)
+				else 
+					soleechdiff = leechcap - newsoleech				
+					psoleech = soleechdiff / (leechamt * 1.5)
+				end
+			elseif newsoleech < leechfiftyperc and newsoleech >= leechfourtyperc then
+				if (newsoleech + rawleech) <= leechfiftyperc then
+					psoleech = rawleech / (leechamt * 1.4)
+				else 
+					soleechdiff = leechfiftyperc - newsoleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / (leechamt * 1.4)) + (soleechremain / (leechamt * 1.5))
+				end
+			elseif newsoleech < leechfourtyperc and newsoleech >= leechthirtyperc then
+				if (newsoleech + rawleech) <= leechfourtyperc then
+					psoleech = rawleech / (leechamt * 1.3)
+				else
+					soleechdiff = leechfourtyperc - newsoleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / (leechamt * 1.3)) + (soleechremain / (leechamt * 1.4))
+				end
+			elseif newsoleech < leechthirtyperc and newsoleech >= leechtwentyperc then
+				if (newsoleech + rawleech) <= leechthirtyperc then
+					psoleech = rawleech / (leechamt * 1.2)
+				else
+					soleechdiff = leechthirtyperc - newsoleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / (leechamt * 1.2)) + (soleechremain / (leechamt * 1.3))
+				end
+			elseif newsoleech < leechtwentyperc and newsoleech >= leechtenperc then
+				if (newsoleech + rawleech) <= leechtwentyperc then
+					psoleech = rawleech / (leechamt * 1.1)
+				else
+					soleechdiff = leechtwentyperc - newsoleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / (leechamt * 1.1)) + (soleechremain / (leechamt * 1.2))
+				end
+			else
+				if (newsoleech + rawleech) < leechtenperc then
+					psoleech = rawleech / leechamt
+				else
+					soleechdiff = leechtenperc - newsoleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / leechamt) + (soleechremain / (leechamt * 1.1))
+				end
+			end
+		else
+			if oldleech >= leechcap then
+				psoleech = 0
+			elseif oldleech < leechcap and oldleech >= leechfiftyperc then
+				if (oldleech + rawleech) <= leechcap then
+					psoleech = rawleech / (leechamt * 1.5)
+				else 
+					soleechdiff = leechcap - oldleech				
+					psoleech = soleechdiff / (leechamt * 1.5)
+				end
+			elseif oldleech < leechfiftyperc and oldleech >= leechfourtyperc then
+				if (oldleech + rawleech) <= leechfiftyperc then
+					psoleech = rawleech / (leechamt * 1.4)
+				else 
+					soleechdiff = leechfiftyperc - oldleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / (leechamt * 1.4)) + (soleechremain / (leechamt * 1.5))
+				end
+			elseif oldleech < leechfourtyperc and oldleech >= leechthirtyperc then
+				if (oldleech + rawleech) <= leechfourtyperc then
+					psoleech = rawleech / (leechamt * 1.3)
+				else
+					soleechdiff = leechfourtyperc - oldleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / (leechamt * 1.3)) + (soleechremain / (leechamt * 1.4))
+				end
+			elseif oldleech < leechthirtyperc and oldleech >= leechtwentyperc then
+				if (oldleech + rawleech) <= leechthirtyperc then
+					psoleech = rawleech / (leechamt * 1.2)
+				else
+					soleechdiff = leechthirtyperc - oldleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / (leechamt * 1.2)) + (soleechremain / (leechamt * 1.3))
+				end
+			elseif oldleech < leechtwentyperc and oldleech >= leechtenperc then
+				if (oldleech + rawleech) <= leechtwentyperc then
+					psoleech = rawleech / (leechamt * 1.1)
+				else
+					soleechdiff = leechtwentyperc - oldleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / (leechamt * 1.1)) + (soleechremain / (leechamt * 1.2))
+				end
+			else
+				if (oldleech + rawleech) < leechtenperc then
+					psoleech = rawleech / leechamt
+				else
+					soleechdiff = leechtenperc - oldleech
+					soleechremain = rawleech - soleechdiff
+					psoleech = (soleechdiff / leechamt) + (soleechremain / (leechamt * 1.1))
+				end
+			end
+		end
+	
+		if eqststats ~= nil and newstleech ~= nil then
+			if newstleech >= leechcap then
+				pstleech = 0
+			elseif newstleech < leechcap and newstleech >= leechfiftyperc then
+				if (newstleech + rawleech) <= leechcap then
+					pstleech = rawleech / (leechamt * 1.5)
+				else 
+					stleechdiff = leechcap - newstleech				
+					pstleech = stleechdiff / (leechamt * 1.5)
+				end
+			elseif newstleech < leechfiftyperc and newstleech >= leechfourtyperc then
+				if (newstleech + rawleech) <= leechfiftyperc then
+					pstleech = rawleech / (leechamt * 1.4)
+				else 
+					stleechdiff = leechfiftyperc - newstleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / (leechamt * 1.4)) + (stleechremain / (leechamt * 1.5))
+				end
+			elseif newstleech < leechfourtyperc and newstleech >= leechthirtyperc then
+				if (newstleech + rawleech) <= leechfourtyperc then
+					pstleech = rawleech / (leechamt * 1.3)
+				else
+					stleechdiff = leechfourtyperc - newstleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / (leechamt * 1.3)) + (stleechremain / (leechamt * 1.4))
+				end
+			elseif newstleech < leechthirtyperc and newstleech >= leechtwentyperc then
+				if (newstleech + rawleech) <= leechthirtyperc then
+					pstleech = rawleech / (leechamt * 1.2)
+				else
+					stleechdiff = leechthirtyperc - newstleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / (leechamt * 1.2)) + (stleechremain / (leechamt * 1.3))
+				end
+			elseif newstleech < leechtwentyperc and newstleech >= leechtenperc then
+				if (newstleech + rawleech) <= leechtwentyperc then
+					pstleech = rawleech / (leechamt * 1.1)
+				else
+					stleechdiff = leechtwentyperc - newstleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / (leechamt * 1.1)) + (stleechremain / (leechamt * 1.2))
+				end
+			else
+				if (newstleech + rawleech) < leechtenperc then
+					pstleech = rawleech / leechamt
+				else
+					stleechdiff = leechtenperc - newstleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / leechamt) + (stleechremain / (leechamt * 1.1))
+				end
+			end
+		elseif eqststats ~=nil then
+			if oldleech >= leechcap then
+				pstleech = 0
+			elseif oldleech < leechcap and oldleech >= leechfiftyperc then
+				if (oldleech + rawleech) <= leechcap then
+					pstleech = rawleech / (leechamt * 1.5)
+				else 
+					stleechdiff = leechcap - oldleech				
+					pstleech = stleechdiff / (leechamt * 1.5)
+				end
+			elseif oldleech < leechfiftyperc and oldleech >= leechfourtyperc then
+				if (oldleech + rawleech) <= leechfiftyperc then
+					pstleech = rawleech / (leechamt * 1.4)
+				else 
+					stleechdiff = leechfiftyperc - oldleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / (leechamt * 1.4)) + (stleechremain / (leechamt * 1.5))
+				end
+			elseif oldleech < leechfourtyperc and oldleech >= leechthirtyperc then
+				if (oldleech + rawleech) <= leechfourtyperc then
+					pstleech = rawleech / (leechamt * 1.3)
+				else
+					stleechdiff = leechfourtyperc - oldleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / (leechamt * 1.3)) + (stleechremain / (leechamt * 1.4))
+				end
+			elseif oldleech < leechthirtyperc and oldleech >= leechtwentyperc then
+				if (oldleech + rawleech) <= leechthirtyperc then
+					pstleech = rawleech / (leechamt * 1.2)
+				else
+					stleechdiff = leechthirtyperc - oldleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / (leechamt * 1.2)) + (stleechremain / (leechamt * 1.3))
+				end
+			elseif oldleech < leechtwentyperc and oldleech >= leechtenperc then
+				if (oldleech + rawleech) <= leechtwentyperc then
+					pstleech = rawleech / (leechamt * 1.1)
+				else
+					stleechdiff = leechtwentyperc - oldleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / (leechamt * 1.1)) + (stleechremain / (leechamt * 1.2))
+				end
+			else
+				if (oldleech + rawleech) < leechtenperc then
+					pstleech = rawleech / leechamt
+				else
+					stleechdiff = leechtenperc - oldleech
+					stleechremain = rawleech - stleechdiff
+					pstleech = (stleechdiff / leechamt) + (stleechremain / (leechamt * 1.1))
+				end
+			end
+		end
 	end
 
 	--Round The outputs 
-	prcrit = mathround(pcrit, 2)
-	prhaste = mathround(phaste, 2)
-	prversin = mathround(pversin, 2)
-	prversout = mathround(pversout, 2)
-	prmastery = mathround(pmastery, 2)
-	prspeed = mathround(pspeed, 2)
-	prleech = mathround(pleech, 2)
-	pravoid = mathround(pavoid, 2)
-
+	prsocrit = mathround(psocrit, 2)
+	prstcrit = mathround(pstcrit, 2)
+	prsohaste = mathround(psohaste, 2)
+	prsthaste = mathround(psthaste, 2)
+	prsoversin = mathround(psoversin, 2)
+	prstversin = mathround(pstversin, 2)
+	prsoversout = mathround(psoversout, 2)
+	prstversout = mathround(pstversout, 2)
+	prsomastery = mathround(psomastery, 2)
+	prstmastery = mathround(pstmastery, 2)
+	prsospeed = mathround(psospeed, 2)
+	prstspeed = mathround(pstspeed, 2)
+	prsoleech = mathround(psoleech, 2)
+	prstleech = mathround(pstleech, 2)
+	prsoavoid = mathround(psoavoid, 2)
+	prstavoid = mathround(pstavoid, 2)
 
 	--Convert percentages to strings 
-	tostring(prcrit)
-	tostring(prhaste)
-	tostring(prversin)
-	tostring(prversout)
-	tostring(prmastery)
-	tostring(prleech)
-	tostring(pravoid)
-	tostring(prspeed)
+	tostring(prsocrit)
+	tostring(prstcrit)
+	tostring(prsohaste)
+	tostring(prsthaste)
+	tostring(prsoversin)
+	tostring(prstversin)
+	tostring(prsoversout)
+	tostring(prstversout)
+	tostring(prsomastery)
+	tostring(prstmastery)
+	tostring(prsoleech)
+	tostring(prstleech)
+	tostring(prsoavoid)
+	tostring(prstavoid)
+	tostring(prsospeed)
+	tostring(prstspeed)
 	
 	--Convert text color from decimal to hex
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
@@ -910,11 +2005,15 @@ local function getItemIdFromTooltip(self)
 	for i=1, self:NumLines() do		
 		local line = _G[self:GetName().."TextLeft"..i]
 		local text = line:GetText()
-		if text then
-		--If line contains "Critical Strike", then sets show a 'fontString' and set its text 
+		if text then		
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
-				_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prcrit .. "%)");
-				break
+				if prstcrit ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%) (" .. prstcrit .. "%)";
+					break
+				else
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%)");
+					break
+				end
 			end
 		end	
 	end
@@ -922,10 +2021,15 @@ local function getItemIdFromTooltip(self)
 	for i=1, self:NumLines() do
 		local line = _G[self:GetName().."TextLeft"..i]
 		local text = line:GetText()
-		if text then	
+		if text then			
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
-			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prhaste .. "%)");
-			break
+				if prsthaste ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%) (" .. prsthaste .. "%)";
+					break
+				else
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%)");
+					break
+				end
 			end
 		end	
 	end
@@ -935,8 +2039,13 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
-			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prmastery .. "%)");
-			break
+				if prstmastery ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%) (" .. prstmastery .. "%)";
+					break
+				else
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%)");
+					break
+				end
 			end
 		end	
 	end
@@ -946,8 +2055,13 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
-			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prversin .. "%/" .. prversout .. "%)");
-			break
+				if prstversin ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prsoversin .. "%/" .. prsoversout .. "%) (" .. prstversin .. "%/" .. prstversout .. "%)");
+					break
+				else
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prsoversin .. "%/" .. prsoversout .. "%)");
+					break
+				end
 			end
 		end		
 	end
@@ -957,8 +2071,13 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) and rawspeed ~= nil then
-			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prspeed .. "%)");
-			break
+				if prstspeed ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%) (" .. prstspeed .. "%)";
+					break
+				else
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%)");
+					break
+				end
 			end
 		end		
 	end
@@ -968,8 +2087,13 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) and rawleech ~= nil then
-			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prleech .. "%)");
-			break
+				if prstleech ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%) (" .. prstleech .. "%)";
+					break
+				else
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%)");
+					break
+				end
 			end
 		end		
 	end
@@ -979,8 +2103,13 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) and rawavoid ~= nil then
-			_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. pravoid .. "%)");
-			break
+				if prstavoid ~= nil then
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%) (" .. prstavoid .. "%)";
+					break
+				else
+					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%)");
+					break
+				end
 			end
 		end	
 	end	
