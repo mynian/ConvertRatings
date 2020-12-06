@@ -423,7 +423,7 @@ local function getItemIdFromTooltip(self)
 			newstvers = oldvers - eqstvers
 		end
 		if eqstavoid ~= nil then
-			newstvers = oldvers - eqstvers
+			newavoid = oldavoid - eqstavoid
 		end
 		if eqstspeed ~= nil then
 			newstspeed = oldspeed - eqstspeed
