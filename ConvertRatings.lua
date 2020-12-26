@@ -2007,12 +2007,16 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then		
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
-				if pstcrit ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%) (" .. prstcrit .. "%)");
+				if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_SPELL_TRIGGER_ONEQUIP"])) then
 					break
 				else
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%)");
-					break
+					if pstcrit ~= nil then
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%) (" .. prstcrit .. "%)");
+						break
+					else
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawcrit .. " " .. _G["ITEM_MOD_CRIT_RATING_SHORT"] .. hexcolor .. " (" .. prsocrit .. "%)");
+						break
+					end
 				end
 			end
 		end	
@@ -2023,12 +2027,16 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then			
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
-				if eqststats ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%) (" .. prsthaste .. "%)");
+				if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_SPELL_TRIGGER_ONEQUIP"])) then
 					break
 				else
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%)");
-					break
+					if eqststats ~= nil then
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%) (" .. prsthaste .. "%)");
+						break
+					else
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawhaste .. " " .. _G["ITEM_MOD_HASTE_RATING_SHORT"] .. hexcolor .. " (" .. prsohaste .. "%)");
+						break
+					end
 				end
 			end
 		end	
@@ -2039,12 +2047,16 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
-				if eqststats ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%) (" .. prstmastery .. "%)");
+				if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_SPELL_TRIGGER_ONEQUIP"])) then
 					break
 				else
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%)");
-					break
+					if eqststats ~= nil then
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%) (" .. prstmastery .. "%)");
+						break
+					else
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawmastery .. " " .. _G["ITEM_MOD_MASTERY_RATING_SHORT"] .. hexcolor .. " (" .. prsomastery .. "%)");
+						break
+					end
 				end
 			end
 		end	
@@ -2055,12 +2067,16 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
-				if eqststats ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prsoversin .. "%/" .. prsoversout .. "%) (" .. prstversin .. "%/" .. prstversout .. "%)");
+				if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_SPELL_TRIGGER_ONEQUIP"])) then
 					break
 				else
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prsoversin .. "%/" .. prsoversout .. "%)");
-					break
+					if eqststats ~= nil then
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prsoversin .. "%/" .. prsoversout .. "%) (" .. prstversin .. "%/" .. prstversout .. "%)");
+						break
+					else
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawvers .. " " .. _G["ITEM_MOD_VERSATILITY"] .. hexcolor .. " (" .. prsoversin .. "%/" .. prsoversout .. "%)");
+						break
+					end
 				end
 			end
 		end		
@@ -2071,12 +2087,16 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) and rawspeed ~= nil then
-				if eqststats ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%) (" .. prstspeed .. "%)");
+				if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_SPELL_TRIGGER_ONEQUIP"])) then
 					break
 				else
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%)");
-					break
+					if eqststats ~= nil then
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%) (" .. prstspeed .. "%)");
+						break
+					else
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawspeed .. " " .. _G["ITEM_MOD_CR_SPEED_SHORT"] .. hexcolor .. " (" .. prsospeed .. "%)");
+						break
+					end
 				end
 			end
 		end		
@@ -2087,12 +2107,16 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) and rawleech ~= nil then
-				if eqststats ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%) (" .. prstleech .. "%)");
+				if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_SPELL_TRIGGER_ONEQUIP"])) then
 					break
 				else
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%)");
-					break
+					if eqststats ~= nil then
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%) (" .. prstleech .. "%)");
+						break
+					else
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawleech .. " " .. _G["ITEM_MOD_CR_LIFESTEAL_SHORT"] .. hexcolor .. " (" .. prsoleech .. "%)");
+						break
+					end
 				end
 			end
 		end		
@@ -2103,12 +2127,16 @@ local function getItemIdFromTooltip(self)
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) and rawavoid ~= nil then
-				if eqststats ~= nil then
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%) (" .. prstavoid .. "%)");
+				if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_SPELL_TRIGGER_ONEQUIP"])) then
 					break
 				else
-					_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%)");
-					break
+					if eqststats ~= nil then
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%) (" .. prstavoid .. "%)");
+						break
+					else
+						_G[self:GetName().."TextLeft"..i]:SetText("+" .. rawavoid .. " " .. _G["ITEM_MOD_CR_AVOIDANCE_SHORT"] .. hexcolor .. " (" .. prsoavoid .. "%)");
+						break
+					end
 				end
 			end
 		end	
