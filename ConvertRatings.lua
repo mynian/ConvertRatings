@@ -288,7 +288,7 @@ local function getItemIdFromTooltip(self)
 
 	--Declare variables for future use
 	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newsomastery, newstmastery, oldcrit, newsocrit, newstcrit, oldhaste, newsohaste, newsthaste, oldvers, newsovers, newstvers, oldavoid, newsoavoid, newstavoid, oldspeed, newsospeed, newstspeed, oldleech, newsoleech, newstleech;
-	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats, eqsomastery, eqstmastery, eqsocrit, eqstcrit, eqsohaste, eqsthaste, eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed, stitemtype, stitemslot, stitemlink;
+	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats, eqsomastery, eqstmastery, eqsocrit, eqstcrit, eqsohaste, eqsthaste, eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed, stitemtype, stitemslot, stitemlink, gem1name, gem2name, gem3name;
 	
 	
 	--Check to see if trainer window is open to prevent errors 
@@ -299,7 +299,27 @@ local function getItemIdFromTooltip(self)
 	
 		--Gets stats items
 		stats = GetItemStats(itemLink);
+
+		--Get Socketed Gems
+		gem1name = GetItemGem(itemLink, 1)
+		gem2name = GetItemGem(itemLink, 2)
+		gem3name = GetItemGem(itemLink, 3)
+
+		--[[Debug Code
+		table.foreach(stats, print)
+		print(gem1name)
+		print(gem2name)
+		print(gem3name)
+		--]]
 		
+		--moar debug code
+		local _, testitemId, testenchantId, testjewelId1, testjewelId2, testjewelId3, testjewelId4, testsuffixId, testuniqueId, testlinkLevel, testspecializationID, testreforgeId, testunknown1, testunknown2 = strsplit(":", itemLink)
+		print("enchantid = " .. testenchantId)
+		print("gem1 = " .. testjewelId1)
+		print("gem2 = " .. testjewelId2)
+		print("gem3 = " .. testjewelId3)
+		print("gem4 = " .. testjewelId4)
+
 		--If not an item with stats, don't do anything
 		if(stats == nil) then
 			return;
@@ -2000,6 +2020,19 @@ local function getItemIdFromTooltip(self)
 	
 	--Convert text color from decimal to hex
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+
+	--More debug code
+		-- Loop over each line in the tooltip:
+		for i=1, self:NumLines() do
+    		local left = _G[self:GetName() .. "TextLeft" .. i]
+   			 -- Print out the line number, the side (left/right), and the text that
+    		-- appears there, or "no text" if there is no text there:
+   			 print(i, "LEFT", left:GetText() or "no text")
+    		-- Do the same for the right-aligned text:
+    		local right = _G[self:GetName() .. "TextRight" .. i]
+    		print(i, "RIGHT", right:GetText() or "no text")
+		end
+		--
     
 	--Set output values in the same line as the rating in tooltip 
 	for i=1, self:NumLines() do		
