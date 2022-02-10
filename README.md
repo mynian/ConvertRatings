@@ -1,3 +1,5 @@
+# Convert Ratings
+
 This addon takes the amount of haste, crit, etc. rating on an item, turn it into a percentage, and then adds it next to the rating in your tooltip. 
 
 slash command: /convertratings  or /cvr 
