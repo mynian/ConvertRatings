@@ -1731,10 +1731,6 @@ local function getItemIdFromTooltip(self)
 					pstspeed = (stspeeddiff / (speedamt * 1.4)) + (stspeedremain / (speedamt * 1.5))
 				end
 			elseif oldspeed < speedfourtyperc and oldspeed >= speedthirtyperc then
-					stspeeddiff = speedfourtyperc - oldspeed
-					stspeedremain = rawspeed - stspeeddiff
-					pstspeed = (stspeeddiff / (speedamt * 1.3)) + (stspeedremain / (speedamt * 1.4))
-				end
 				if (oldspeed + rawspeed) <= speedfourtyperc then
 					pstspeed = rawspeed / (speedamt * 1.3)
 				else
