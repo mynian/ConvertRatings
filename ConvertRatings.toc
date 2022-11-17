@@ -1,7 +1,7 @@
-## Interface: 100000
+## Interface: 100002
 ## Title: ConvertRatings
 ## Notes: Shows Combat Rating Percentages in tooltips
-## Version: 2.2.2
+## Version: 2.2.3
 ## SavedVariables: cvred, cvgreen, cvblue, cvalpha
 
 ConvertRatings.lua
