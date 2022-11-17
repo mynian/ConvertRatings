@@ -2165,8 +2165,12 @@ local function getItemIdFromTooltip(self)
 end
 
 --Hooks to make the addon function
-GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getItemIdFromTooltip)
+
+--Old Hooks saved for reference
+--[[GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ItemRefTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip1:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 ShoppingTooltip2:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
 GameTooltip.ItemTooltip.Tooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
+]]
