@@ -293,7 +293,7 @@ local function getItemIdFromTooltip(self)
 	speedcap = speedfiftyperc + ((speedamt * 60) * 1.5)
 
    	--Get itemLink of mouseover 
-	local name, itemLink = self:GetItem();		
+	local itemLink = C_Item.GetItemLinkByGUID(self:GetTooltipData()["guid"])	
 	
 	--Check to make sure an itemLink is actually returned
 	if(itemLink == nil) then
