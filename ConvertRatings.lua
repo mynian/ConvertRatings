@@ -2164,8 +2164,15 @@ local function getItemIdFromTooltip(self)
 	end	
 end
 
---Hooks to make the addon function
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getItemIdFromTooltip)
+local function OnPlayerEnteringWorld(self, event)
+	--Hooks to make the addon function
+	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getItemIdFromTooltip)
+end
+
+--Create a frame to register the PLAYER_ENTERING_WORLD event to securly hook the tooltip's after everything is loaded 
+local frame = CreateFrame("Frame")
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:SetScript("OnEvent", OnPlayerEnteringWorld)
 
 --Old Hooks saved for reference
 --[[GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
