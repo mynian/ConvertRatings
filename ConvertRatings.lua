@@ -292,8 +292,14 @@ local function getItemIdFromTooltip(self)
 	speedfiftyperc = speedfourtyperc + ((speedamt * 12) * 1.4)
 	speedcap = speedfiftyperc + ((speedamt * 60) * 1.5)
 
-   	--Get itemLink of mouseover 
-	local name, itemLink = self:GetItem();		
+	local itemGuid = self:GetTooltipData()["guid"]
+	local itemLink = nil
+
+	if itemGuid == nil then
+		itemLink = self:GetTooltipData()["hyperlink"]
+	else
+		itemLink = C_Item.GetItemLinkByGUID(itemGuid)
+	end
 	
 	--Check to make sure an itemLink is actually returned
 	if(itemLink == nil) then
@@ -2164,8 +2170,15 @@ local function getItemIdFromTooltip(self)
 	end	
 end
 
---Hooks to make the addon function
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getItemIdFromTooltip)
+local function OnPlayerEnteringWorld(self, event)
+	--Hooks to make the addon function
+	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getItemIdFromTooltip)
+end
+
+--Create a frame to register the PLAYER_ENTERING_WORLD event to securly hook the tooltip's after everything is loaded 
+local frame = CreateFrame("Frame")
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:SetScript("OnEvent", OnPlayerEnteringWorld)
 
 --Old Hooks saved for reference
 --[[GameTooltip:HookScript("OnTooltipSetItem", getItemIdFromTooltip);
