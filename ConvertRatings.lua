@@ -293,12 +293,13 @@ local function getItemIdFromTooltip(self)
 	speedcap = speedfiftyperc + ((speedamt * 60) * 1.5)
 
 	local itemGuid = self:GetTooltipData()["guid"]
+	local itemLink = nil
 
 	if itemGuid == nil then
-		return;
+		itemLink = self:GetTooltipData()["hyperlink"]
+	else
+		itemLink = C_Item.GetItemLinkByGUID(itemGuid)
 	end
-	
-	local itemLink = C_Item.GetItemLinkByGUID(itemGuid)
 	
 	--Check to make sure an itemLink is actually returned
 	if(itemLink == nil) then
