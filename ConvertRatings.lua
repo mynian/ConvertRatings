@@ -298,7 +298,7 @@ local function getItemIdFromTooltip(self)
 		return;
 	end
 	
-	local itemLink = C_Item.GetItemLinkByGUID(guid)
+	local itemLink = C_Item.GetItemLinkByGUID(itemGuid)
 	
 	--Check to make sure an itemLink is actually returned
 	if(itemLink == nil) then
