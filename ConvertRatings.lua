@@ -2024,6 +2024,9 @@ local function getItemIdFromTooltip(self)
 	--Set output values in the same line as the rating in tooltip 
 	for i=1, self:NumLines() do		
 		local line = _G[self:GetName().."TextLeft"..i]
+		if line == nil then
+			return
+		end
 		local text = line:GetText()
 		if text then		
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_CRIT_RATING_SHORT"])) and rawcrit ~= nil then
@@ -2045,6 +2048,9 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, self:NumLines() do
 		local line = _G[self:GetName().."TextLeft"..i]
+		if line == nil then
+			return
+		end
 		local text = line:GetText()
 		if text then			
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_HASTE_RATING_SHORT"])) and rawhaste ~= nil then
@@ -2066,6 +2072,9 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, self:NumLines() do
 		local line = _G[self:GetName().."TextLeft"..i]
+		if line == nil then
+			return
+		end
 		local text = line:GetText()
 		if text then	
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_MASTERY_RATING_SHORT"])) and rawmastery ~= nil then
@@ -2087,6 +2096,9 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, self:NumLines() do
 		local line = _G[self:GetName().."TextLeft"..i]
+		if line == nil then
+			return
+		end
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName().."TextLeft"..i]:GetText(), _G["ITEM_MOD_VERSATILITY"])) and rawvers ~= nil then
@@ -2108,6 +2120,9 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, self:NumLines() do
 		local line = _G[self:GetName().."TextLeft"..i]
+		if line == nil then
+			return
+		end
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_SPEED_SHORT"])) and rawspeed ~= nil then
@@ -2129,6 +2144,9 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, self:NumLines() do
 		local line = _G[self:GetName().."TextLeft"..i]
+		if line == nil then
+			return
+		end
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_LIFESTEAL_SHORT"])) and rawleech ~= nil then
@@ -2150,6 +2168,9 @@ local function getItemIdFromTooltip(self)
 	
 	for i=1, self:NumLines() do
 		local line = _G[self:GetName().."TextLeft"..i]
+		if line == nil then
+			return
+		end
 		local text = line:GetText()
 		if text then
 			if(string.find(_G[self:GetName() .. "TextLeft"..i]:GetText(), _G["ITEM_MOD_CR_AVOIDANCE_SHORT"])) and rawavoid ~= nil then
