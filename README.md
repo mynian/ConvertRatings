@@ -4,8 +4,6 @@ This addon takes the amount of haste, crit, etc. rating on an item, turn it into
 
 slash command: /convertratings  or /cvr 
 
-Slash command prints color options to chat.
-
 Version 3.0.0 adds the ability to change the display color options from exclusively via slash commands to the in game addon options panel. You can still use the old slash commands to change the color if you wish.
 
 Version 2.0.0 is released with hopefully full support for the squish and new Diminishing returns on secondary stats. 
