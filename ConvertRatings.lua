@@ -3,6 +3,7 @@ cvred = 1
 cvgreen = .996
 cvblue = .545
 cvalpha = 1
+cvcolor = "Default"
 
 --Hard coded color options table 
 local colorTable = {
@@ -11,19 +12,16 @@ local colorTable = {
 	["red"] = {1, 0, 0},
 	["black"] = {0, 0, 0},
 	["white"] = {1, 1, 1},
-	["lightblue"] = {0, 1, 1},
-	["lightred"] = {1, .5, .5},
+	["light blue"] = {0, 1, 1},
+	["light red"] = {1, .5, .5},
 	["pink"] = {1, .5, 1},
 	["purple"] = {.7, 0, 1},
-	["orange"] = {1, 0.5, 1},
+	["orange"] = {1, .5, 0},
 	["default"] = {1, .996, .545}
 }
 
---equipment slot table
-local invtable = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 16, 17, 16, 15, 16, 0, 0, 5, 16, 17, 17, 0, 0, 16, 0, 0}
-
 --Color Picker
-function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
+local function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
  ColorPickerFrame:SetColorRGB(cvred, cvgreen, cvblue);
  ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (cvalpha ~= nil), cvalpha;
  ColorPickerFrame.previousValues = {cvred, cvgreen, cvblue, cvalpha};
@@ -32,7 +30,7 @@ function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
  ColorPickerFrame:Show(); 
  end
 
-local function myColorCallback(restore)
+function myColorCallback(restore)
  local newR, newG, newB, newA;
  if restore then
   newR, newG, newB, newA = unpack(restore);  
@@ -42,25 +40,129 @@ local function myColorCallback(restore)
   cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;
 end
 
+--Create a Frame to add to the default options panel
+local cvrpanel = CreateFrame("Frame")
+cvrpanel.name = "Convert Ratings"
+
+--Options Panel Title
+local cvropttitle = cvrpanel:CreateFontString("ARTWORK", nil, "GameFontNormalLarge")
+cvropttitle:SetPoint("TOP")
+cvropttitle:SetText("Convert Ratings")
+
+--Add a dropdown menu to select a pre defined color
+local cvrddtitle = cvrpanel:CreateFontString("ARTWORK", nil, "GameFontNormal")
+cvrddtitle:SetPoint("TOPLEFT", cvrpanel, 0, - 80)
+cvrddtitle:SetText("Pick a Color")
+
+local cvrdropdown = CreateFrame("Frame", "CVRDropDown", cvrpanel, "UIDropDownMenuTemplate")
+cvrdropdown:SetPoint("TOPLEFT", cvrpanel, -20, -100)
+UIDropDownMenu_SetWidth(cvrdropdown, 150)
+
+local function cvrdropdown_OnClick(self, arg1, arg2, checked)
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower(arg1)])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. hexcolor .. arg1)
+	cvcolor = tostring(arg1)
+end
+
+function cvrdropdown_Menu(frame, level, menuList)
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. hexcolor .. cvcolor)
+	local info = UIDropDownMenu_CreateInfo()	
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("default")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Default", "Default"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("blue")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Blue", "Blue"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("green")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Green", "Green"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("red")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Red", "Red"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("black")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Black", "Black"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("white")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "White", "White"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("light blue")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Light Blue", "Light Blue"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("light red")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Light Red", "Light Red"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("pink")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Pink", "Pink"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("purple")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Purple", "Purple"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("orange")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Orange", "Orange"
+	UIDropDownMenu_AddButton(info)
+end
+
+UIDropDownMenu_Initialize(cvrdropdown, cvrdropdown_Menu)
+
+--Add a button to open the custom color picker
+local cvrddtitle = cvrpanel:CreateFontString("ARTWORK", nil, "GameFontNormal")
+cvrddtitle:SetPoint("TOPLEFT", cvrpanel, 0, -20)
+cvrddtitle:SetText("Choose a Color")
+
+local cvrbutton = CreateFrame("Button", nil, cvrpanel, "UIPanelButtonTemplate")
+cvrbutton:SetPoint("TOPLEFT", cvrpanel, 0, -40)
+cvrbutton:SetText("Color Wheel")
+cvrbutton:SetWidth(150)
+cvrbutton:HookScript("OnClick", function() ShowColorPicker(cvred, cvgreen, cvblue, nil, myColorCallback); cvcolor = "Custom"; UIDropDownMenu_SetText(cvrdropdown, "Current Color: "  .. cvcolor)  end)
+	
+--Add our panel to the options frame	
+InterfaceOptions_AddCategory(cvrpanel)
+
 --Slash Command to change the color of the output 
 SLASH_CONVERTRATINGS1, SLASH_CONVERTRATINGS2 = '/convertratings', '/cvr';
 function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	--Grab the first input word as the command and the rest of the input as a user variable 
 	local command, rest = msg:match("^(%S*)%s*(.-)$");
-	--Hard coded color options parsing 
-	
+	--Hard coded color options parsing 	
 	if (colorTable[string.lower(command)]) then
 		cvred, cvgreen, cvblue = unpack(colorTable[string.lower(command)]);
+		UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. command);
 		print("Convert Ratings output color set to "..string.lower(command));
 	elseif string.lower(command) == 'custom' and rest == "" then
 		ShowColorPicker(cvred, cvgreen, cvblue, nil, myColorCallback);
 	else
-		--when no valid args entered, output this stuff 
-		print("Convert Ratings: Valid color options are red, green, blue, black, white, lightblue, lightred, pink, purple, orange or custom")
-		print("Convert Ratings: The custom option will bring up the Color Picker for you to choose a color.")
-		print("Convert Ratings: To reset to the default color, use /convertratings default")
+		--when no valid args entered, open the options panel
+		InterfaceOptionsFrame_OpenToCategory(cvrpanel.name)
 	end
 end
+
+--equipment slot table
+local invtable = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 16, 17, 16, 15, 16, 0, 0, 5, 16, 17, 17, 0, 0, 16, 0, 0}
+
 
 --rating tables to allow addon to work at all levels 
 masterytab = { 
@@ -222,7 +324,7 @@ local function mathround(number, precision)
   return number;
 end
 
-local masteryamt, critamt, hasteamt, versinamt, versoutamt, leechamt, avoidamt, speedamt, cvlevel;
+local masteryamt, critamt, hasteamt, versinamt, versoutamt, leechamt, avoidamt, speedamt, cvlevel, gem1, gem2, gem3;
 
 --Here is the function where the stats are pulled from the item that is currently moused over
 local function getItemIdFromTooltip(self)
@@ -2191,9 +2293,36 @@ local function getItemIdFromTooltip(self)
 	end	
 end
 
+--[[local function getgeminfo(self)	
+	local itemGuid = self:GetTooltipData()["guid"]
+	local itemLink = nil
+
+	if itemGuid == nil then
+		itemLink = self:GetTooltipData()["hyperlink"]
+	else
+		itemLink = C_Item.GetItemLinkByGUID(itemGuid)
+	end
+	
+	if itemLink == nil then
+     		return;
+	else	
+		gem1 = C_TooltipInfo.GetExistingSocketGem(1, false)	
+	end	
+	
+	if gem1 == nil then
+		return;
+	else
+		print(gem1)
+	end
+end
+]]
+
 local function OnPlayerEnteringWorld(self, event)
 	--Hooks to make the addon function
 	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getItemIdFromTooltip)
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. hexcolor .. cvcolor)
+	--TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getgeminfo)
 end
 
 --Create a frame to register the PLAYER_ENTERING_WORLD event to securly hook the tooltip's after everything is loaded 
