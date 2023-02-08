@@ -1,7 +1,11 @@
 ## Interface: 100005
 ## Title: ConvertRatings
 ## Notes: Shows Combat Rating Percentages in tooltips
-## Version: 3.0.0
+## Version: @project-version@
 ## SavedVariables: cvred, cvgreen, cvblue, cvalpha, cvcolor
+
+## X-Curse-Project-ID: 255616
+## X-WoWI-ID: 24341
+## X-Wago-ID: Rn6Vjo6d
 
 ConvertRatings.lua
