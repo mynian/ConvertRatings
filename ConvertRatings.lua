@@ -75,6 +75,11 @@ function cvrdropdown_Menu(frame, level, menuList)
 	info.text, info.arg1 = hexcolor .. "Default", "Default"
 	UIDropDownMenu_AddButton(info)
 	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("black")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Black", "Black"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
 	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("blue")])
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
 	info.text, info.arg1 = hexcolor .. "Blue", "Blue"
@@ -83,21 +88,6 @@ function cvrdropdown_Menu(frame, level, menuList)
 	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("green")])
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
 	info.text, info.arg1 = hexcolor .. "Green", "Green"
-	UIDropDownMenu_AddButton(info)
-	info.func = cvrdropdown_OnClick
-	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("red")])
-	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
-	info.text, info.arg1 = hexcolor .. "Red", "Red"
-	UIDropDownMenu_AddButton(info)
-	info.func = cvrdropdown_OnClick
-	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("black")])
-	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
-	info.text, info.arg1 = hexcolor .. "Black", "Black"
-	UIDropDownMenu_AddButton(info)
-	info.func = cvrdropdown_OnClick
-	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("white")])
-	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
-	info.text, info.arg1 = hexcolor .. "White", "White"
 	UIDropDownMenu_AddButton(info)
 	info.func = cvrdropdown_OnClick
 	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("light blue")])
@@ -110,6 +100,11 @@ function cvrdropdown_Menu(frame, level, menuList)
 	info.text, info.arg1 = hexcolor .. "Light Red", "Light Red"
 	UIDropDownMenu_AddButton(info)
 	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("orange")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "Orange", "Orange"
+	UIDropDownMenu_AddButton(info)
+	info.func = cvrdropdown_OnClick
 	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("pink")])
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
 	info.text, info.arg1 = hexcolor .. "Pink", "Pink"
@@ -120,10 +115,15 @@ function cvrdropdown_Menu(frame, level, menuList)
 	info.text, info.arg1 = hexcolor .. "Purple", "Purple"
 	UIDropDownMenu_AddButton(info)
 	info.func = cvrdropdown_OnClick
-	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("orange")])
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("red")])
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
-	info.text, info.arg1 = hexcolor .. "Orange", "Orange"
-	UIDropDownMenu_AddButton(info)
+	info.text, info.arg1 = hexcolor .. "Red", "Red"
+	UIDropDownMenu_AddButton(info)	
+	info.func = cvrdropdown_OnClick
+	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("white")])
+	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	info.text, info.arg1 = hexcolor .. "White", "White"
+	UIDropDownMenu_AddButton(info)	
 end
 
 UIDropDownMenu_Initialize(cvrdropdown, cvrdropdown_Menu)
