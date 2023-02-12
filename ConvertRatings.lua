@@ -344,7 +344,7 @@ local function getItemIdFromTooltip(self)
 	--Determine Mastery Coefficient
 	masterycf = select(2,GetMasteryEffect())
 		
-	--Set Player level :M
+	--Set Player level
 	cvlevel = UnitLevel("player")
 		
 	--Select the level based rating amounts 
@@ -423,8 +423,7 @@ local function getItemIdFromTooltip(self)
 	--Declare variables for future use
 	local rawcrit, rawhaste, rawmastery, rawvers, stats, rawleech, rawavoid, rawspeed, hexcolor, oldmastery, newsomastery, newstmastery, oldcrit, newsocrit, newstcrit, oldhaste, newsohaste, newsthaste, oldvers, newsovers, newstvers, oldavoid, newsoavoid, newstavoid, oldspeed, newsospeed, newstspeed, oldleech, newsoleech, newstleech;
 	local eqitemslot, eqitemslotname, eqitemtype, eqsoitemlink, eqstitemlink, eqsostats, eqststats, eqsomastery, eqstmastery, eqsocrit, eqstcrit, eqsohaste, eqsthaste, eqsovers, eqstvers, eqsoleech, eqstleech, eqsoavoid, eqstavoid, eqsospeed, eqstspeed, stitemtype, stitemslot, stitemlink;
-	
-	
+		
 	--Check to see if trainer window is open to prevent errors 
 	local numServices = GetNumTrainerServices()
 	if numServices ~= 0 then
@@ -2305,7 +2304,8 @@ local function getItemIdFromTooltip(self)
 	end	
 end
 
---[[local function getgeminfo(self)	
+--[[ Attempt to get the stats from Gems WIP
+	local function getgeminfo(self)	
 	local itemGuid = self:GetTooltipData()["guid"]
 	local itemLink = nil
 
@@ -2332,6 +2332,7 @@ end
 local function OnPlayerEnteringWorld(self, event)
 	--Hooks to make the addon function
 	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getItemIdFromTooltip)
+	--Set the info in the dropdown menu to the values from the saved variables so that it shows the currently selected color when logging in
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
 	UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. hexcolor .. cvcolor)
 	--TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getgeminfo)
