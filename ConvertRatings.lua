@@ -49,15 +49,17 @@ local cvropttitle = cvrpanel:CreateFontString("ARTWORK", nil, "GameFontNormalLar
 cvropttitle:SetPoint("TOP")
 cvropttitle:SetText("Convert Ratings")
 
---Add a dropdown menu to select a pre defined color
+--Add title text to the options menu for the dropdown menu
 local cvrddtitle = cvrpanel:CreateFontString("ARTWORK", nil, "GameFontNormal")
 cvrddtitle:SetPoint("TOPLEFT", cvrpanel, 0, - 80)
 cvrddtitle:SetText("Pick a Color")
 
+--Create the dropdown menu frame
 local cvrdropdown = CreateFrame("Frame", "CVRDropDown", cvrpanel, "UIDropDownMenuTemplate")
 cvrdropdown:SetPoint("TOPLEFT", cvrpanel, -20, -100)
 UIDropDownMenu_SetWidth(cvrdropdown, 150)
 
+--Function to set the color of the addon, update the text in the dropdown menu and update the savedvariable for the menu to display the chosen color between sessions
 local function cvrdropdown_OnClick(self, arg1, arg2, checked)
 	cvred, cvgreen, cvblue = unpack(colorTable[string.lower(arg1)])
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
@@ -65,14 +67,23 @@ local function cvrdropdown_OnClick(self, arg1, arg2, checked)
 	cvcolor = tostring(arg1)
 end
 
+--Code for the dropdown menu
 function cvrdropdown_Menu(frame, level, menuList)
+	--convert the current color variables to hex
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	--Set the text of the dropdown when you click on it to the currently selected color
 	UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. hexcolor .. cvcolor)
-	local info = UIDropDownMenu_CreateInfo()	
+	--Create a dropdown menu item's info
+	local info = UIDropDownMenu_CreateInfo()
+	--tell it to do something when you click on this option
 	info.func = cvrdropdown_OnClick
+	--pull the color assignements for the variables from the color table and set them in the addon
 	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("default")])
+	--convert the color variables to hex for display in the dropdown menu
 	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	--Set the text of the dropdown item, and the value that it passes out of the dropdown when you click on it
 	info.text, info.arg1 = hexcolor .. "Default", "Default"
+	--Put the item into the dropdown menu
 	UIDropDownMenu_AddButton(info)
 	info.func = cvrdropdown_OnClick
 	cvred, cvgreen, cvblue = unpack(colorTable[string.lower("black")])
@@ -126,13 +137,15 @@ function cvrdropdown_Menu(frame, level, menuList)
 	UIDropDownMenu_AddButton(info)	
 end
 
+--Function to initialize the dropdown menu
 UIDropDownMenu_Initialize(cvrdropdown, cvrdropdown_Menu)
 
---Add a button to open the custom color picker
+--Add title text in the options menu for a button to open up the color picker for the user to choose a custom color
 local cvrddtitle = cvrpanel:CreateFontString("ARTWORK", nil, "GameFontNormal")
 cvrddtitle:SetPoint("TOPLEFT", cvrpanel, 0, -20)
-cvrddtitle:SetText("Choose a Color")
+cvrddtitle:SetText("Choose a Custom Color")
 
+--Create the button for the color picker in the options menu
 local cvrbutton = CreateFrame("Button", nil, cvrpanel, "UIPanelButtonTemplate")
 cvrbutton:SetPoint("TOPLEFT", cvrpanel, 0, -40)
 cvrbutton:SetText("Color Wheel")
@@ -162,7 +175,6 @@ end
 
 --equipment slot table
 local invtable = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 16, 17, 16, 15, 16, 0, 0, 5, 16, 17, 17, 0, 0, 16, 0, 0}
-
 
 --rating tables to allow addon to work at all levels 
 masterytab = { 
