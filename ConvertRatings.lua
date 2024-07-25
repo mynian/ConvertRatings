@@ -12,15 +12,15 @@ local colorTable = {
 	["red"] = {1, 0, 0},
 	["black"] = {0, 0, 0},
 	["white"] = {1, 1, 1},
-	["light blue"] = {0, 1, 1},
-	["light red"] = {1, .5, .5},
+	["lightblue"] = {0, 1, 1},
+	["lightred"] = {1, .5, .5},
 	["pink"] = {1, .5, 1},
 	["purple"] = {.7, 0, 1},
 	["orange"] = {1, .5, 0},
 	["default"] = {1, .996, .545}
 }
 
---Color Picker
+--[[Color Picker
 local function ShowColorPicker(cvred, cvgreen, cvblue, cvalpha, changedCallback)
  ColorPickerFrame:SetColorRGB(cvred, cvgreen, cvblue);
  ColorPickerFrame.hasOpacity, ColorPickerFrame.opacity = (cvalpha ~= nil), cvalpha;
@@ -39,6 +39,7 @@ function myColorCallback(restore)
  end 
   cvred, cvgreen, cvblue, cvalpha = newR, newG, newB, newA;
 end
+--]]
 
 --[[Create a Frame to add to the default options panel
 local cvrpanel = CreateFrame("Frame")
@@ -172,10 +173,10 @@ function SlashCmdList.CONVERTRATINGS(msg, editBox)
 	--Hard coded color options parsing 	
 	if (colorTable[string.lower(command)]) then
 		cvred, cvgreen, cvblue = unpack(colorTable[string.lower(command)]);
-		UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. command);
+		--UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. command);
 		print("Convert Ratings output color set to "..string.lower(command));
-	elseif string.lower(command) == 'custom' and rest == "" then
-		ShowColorPicker(cvred, cvgreen, cvblue, nil, myColorCallback);
+	--elseif string.lower(command) == 'custom' and rest == "" then
+		--ShowColorPicker(cvred, cvgreen, cvblue, nil, myColorCallback);
 	else
 		--when no valid args entered, open the options panel
 		--InterfaceOptionsFrame_OpenToCategory(cvrpanel.name)
@@ -2358,8 +2359,8 @@ local function OnPlayerEnteringWorld(self, event)
 	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getItemIdFromTooltip)
 	--TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getgeminfo)
 	--Set the info in the dropdown menu to the values from the saved variables so that it shows the currently selected color when logging in
-	hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
-	UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. hexcolor .. cvcolor)
+	--hexcolor = string.format("|cff%02x%02x%02x", cvred*255, cvgreen*255, cvblue*255)
+	--UIDropDownMenu_SetText(cvrdropdown, "Current Color: " .. hexcolor .. cvcolor)
 	--TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, getgeminfo)
 end
 
