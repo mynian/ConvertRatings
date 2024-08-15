@@ -457,7 +457,7 @@ local function getItemIdFromTooltip(self)
 	else
 	
 		--Gets stats items
-		stats = GetItemStats(itemLink);
+		stats = C_Item.GetItemStats(itemLink);
 		
 		--If not an item with stats, don't do anything
 		if(stats == nil) then
@@ -503,12 +503,12 @@ local function getItemIdFromTooltip(self)
 	
 		--Slot one stats table
 		if eqsoitemlink ~= nil then
-			eqsostats = GetItemStats(eqsoitemlink)
+			eqsostats = C_Item.GetItemStats(eqsoitemlink)
 		end
 
 		--Slot two stats table
 		if eqstitemlink ~= nil then
-			eqststats = GetItemStats(eqstitemlink)			
+			eqststats = C_Item.GetItemStats(eqstitemlink)			
 		end
 	
 		--Slot one individual stat pulls
